@@ -17,3 +17,6 @@ https://github.com/yandex/codestyle/blob/master/javascript.ru.md
 
 Работаем по git flow. https://github.com/nvie/gitflow
 Каждую задачу делаем на свое ветке. Ветка именуется: `feature/(номер задачи)_краткое-описание`, например `feature/2_add-new-message-api`
+
+## Общая схема ответственности компонентов
+https://www.draw.io/#Dshri%20%D0%BE%D0%B1%D1%89%D0%B0%D1%8F%20%D1%81%D1%85%D0%B5%D0%BC%D0%B0.html
