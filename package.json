@@ -1,0 +1,19 @@
+{
+  "name": "shri-production",
+  "version": "1.0.0",
+  "description": "Сборка проекта",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ya-shred/production.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ya-shred/production/issues"
+  },
+  "homepage": "https://github.com/ya-shred/production#readme"
+}
