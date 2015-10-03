@@ -1,0 +1,85 @@
+.user-list
+    width: 100%
+    box-sizing: border-box
+
+    &__item
+        width: 100%
+        padding: 15px 0 5px 10px
+        box-sizing: border-box
+        display: flex
+
+        &.online
+
+            .user-list__status
+                background: #06ff00
+        &.offline
+
+            .user-list__status
+                background: #fcb316
+    &__photo
+        width: 50px
+        height: 50px
+
+    &__box-content
+        width: 250px
+        display: flex
+        margin-left: 10px
+        flex-direction: column
+        justify-content: center
+        border-bottom: 1px solid #e6e9f0
+
+    &__content
+        display: flex
+        padding-right: 10px
+        justify-content: space-between
+        margin-bottom: 5px
+        &:last-child
+            margin: 0
+
+    &__box-name
+        max-width: 170px
+        position: relative
+
+    &__name
+        font-size: 16px
+        font-family: PTS
+        text-overflow ellipsis
+        overflow: hidden
+        white-space: nowrap
+        display: block
+
+    &__status
+        width: 6px
+        height: 6px
+        position: absolute
+        border-radius: 6px
+        right: -10px
+        top: 2px
+        bottom: 0
+        left: auto
+        margin: auto
+
+    &__last-message
+        font-size: 16px
+        font-family: robothin
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+        max-width: 170px
+        color: #999
+        &.new-message
+            color: #fd5
+
+    &__current-new-message
+        padding: 3px 6px
+        box-sizing: border-box
+        background: #fd5
+        font-size: 12px
+        font-family: PT
+        color: #2d2d2d
+        border-radius: 50px
+
+    &__date
+        font-size: 15px
+        color: #999
+        font-family: robothin

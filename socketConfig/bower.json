@@ -1,0 +1,9 @@
+{
+  "name": "shri-socket",
+  "main": "browser.min.js",
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "test_page"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "test_page",
+  "dependencies": {
+    "shri-socket": "git://github.com/ya-shred/socket.git#084ac93b482e39b586035c9e43abdf6581caf24a"
+  }
+}

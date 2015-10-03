@@ -1,0 +1,19 @@
+{
+  "name": "socket2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "client.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "",
+  "dependencies": {
+    "shri-socket": "git://github.com/ya-shred/socket.git#084ac93b482e39b586035c9e43abdf6581caf24a"
+  },
+  "license": "ISC",
+  "bugs": {},
+  "homepage": "",
+  "devDependencies": {}
+}
