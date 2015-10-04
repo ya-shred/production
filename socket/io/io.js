@@ -38,6 +38,7 @@ var model = {
                 return Promise.all([model.joinChannel(user, socket), model.joinUserInfo(user, socket), model.joinSelf(user, socket)]);
             })
             .then(function () {
+                socket.send(api.getHistory(userInfo));
                 // Сообщаем всем что пользователь подключился
                 model.connected(userInfo);
                 // Обработка всех поступающих от пользователя сообщений
