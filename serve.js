@@ -10,10 +10,11 @@ var GitHubStrategy = require('passport-github').Strategy;
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
+var io = require('./socket/models/io').server(server);
 var config = require('config');
 
 var userModel = require('./socket/models/user');
+var userController = require('./socket/controllers/user');
 
 var EXPRESS_SID_KEY = 'connect.sid';
 var COOKIE_SECRET = 'shred 15';
@@ -133,7 +134,7 @@ app.get('*', function (req, res, next) {
 app.use(express.static(path.join(__dirname, 'app/frontendPublic')));
 
 io.on('connection', function (socket) {
-    userModel.newUser(socket);
+    userController.newUser(socket);
 });
 
 module.exports = app;

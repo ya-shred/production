@@ -1,36 +1,21 @@
-var mongo = require('../mongodb/mongodb.js');
+var mongo = require('../services/mongo.js');
 
 var MESSAGE_HANDLERS = {
-    authenticate: 'onAuthenticateMessage',
     error: 'onErrorMessage',
-    send_message: 'onSendMessage'
+    send_message: 'onSendMessage',
+    users_list_request: 'onUsersList'
 };
 
 var model = {
     handlers: {
-        onAuthenticateMessage: function (_, message) {
-            var userId = message.data.userId;
-            //return backend
-            //    .checkUser(userId)
-            //    .then(function (user) {
-            //        return mongo
-            //            .checkAndAddUser(user)
-            //            .then(function (isNew) {
-            //                user.isNew = !!isNew;
-            //                return user;
-            //            });
-            //    })
-            //    .then(function (user) {
-            //        return {
-            //            user: user,
-            //            message: {
-            //                type: 'authenticated',
-            //                data: {
-            //                    user: user
-            //                }
-            //            }
-            //        }
-            //    })
+        onErrorMessage: function () {
+            return Promise.reject({
+                type: 'status',
+                data: {
+                    status: 'error',
+                    message: 'unknown command'
+                }
+            });
         },
         onSendMessage: function (user, message) {
             return {
@@ -46,15 +31,20 @@ var model = {
                 }
             }
         },
-        onErrorMessage: function () {
-            return Promise.reject({
-                type: 'status',
-                data: {
-                    status: 'error',
-                    message: 'unknown command'
+        onUsersList: function (user) {
+            return {
+                channel: message.data.channel,
+                message: {
+                    type: 'new_message',
+                    data: {
+                        channel: message.data.channel,
+                        message: message.data.message,
+                        user: user,
+                        datetime: +new Date()
+                    }
                 }
-            });
-        }
+            }
+        },
     },
     /**
      * Процессим сообщение от пользователя, делаем все необходимые действия

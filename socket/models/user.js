@@ -1,4 +1,4 @@
-var mongo = require('./mongo');
+var mongo = require('../services/mongo');
 
 var model = {
     /**
@@ -22,20 +22,7 @@ var model = {
      * @returns {Promise}
      */
     getUser: function (id) {
-        return new Promise(function (resolve, reject) {
-            var collection = mongo.db().collection('users');
-            collection.findOne({id: id}, function (err, user) {
-                if (err) {
-                    reject(err);
-                }
-
-                if (user) {
-                    resolve(user);
-                } else {
-                    reject('not found');
-                }
-            });
-        })
+        return mongo.getUserById(id);
     },
     /**
      * Сохранить запись о пользователе в БД
@@ -43,24 +30,7 @@ var model = {
      * @returns {Promise}
      */
     storeUser: function (user) {
-        return new Promise(function (resolve, reject) {
-            var collection = mongo.db().collection('users');
-            collection.insert({
-                id: user.id,
-                _full: user,
-                userName: user.username,
-                displayName: user.displayName,
-                email: user.email,
-                profileUrl: user.profileUrl,
-                avatarUrl: user._json.avatar_url
-            }, function (err, user) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(user)
-                }
-            });
-        });
+        return mongo.storeUser(user);
     },
     /**
      * Сериализация пользователя для пасспорта
@@ -69,13 +39,6 @@ var model = {
      */
     serializeUser: function (user) {
         return user.id;
-    },
-    /**
-     * Подключился новый пользователь
-     * @param {Socket} socket
-     */
-    newUser: function (socket) {
-        console.log('new user');
     }
 };
 
