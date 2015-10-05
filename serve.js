@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var session = require('express-session');
-var MongoClient = require('mongodb').MongoClient;
 var MongoStore = require('connect-mongo')(session);
 var stylus = require('stylus');
 
@@ -111,3 +110,5 @@ var server = app.listen(config.get('port'), function () {
     var port = server.address().port;
     console.log('Example app listening at http://lodalhost:%s', port);
 });
+
+module.exports = app;
