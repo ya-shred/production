@@ -6,7 +6,7 @@ import '../../socket/client';
 
 var MESSAGES_HANDLERS = {
     new_message: 'onNewMessage',
-    users_info: 'onNewUsers',
+    users_list_response: 'onUsersList',
     user_connected: 'onUserConnected',
     user_disconnected: 'onUserDisconnected',
     new_user: 'onNewUser'
@@ -18,7 +18,7 @@ var model = {
     init: function () {
         socket = socketClient.connect(
             function (numberOfConnect) {
-
+                socket.send({type: 'users_list_request'});
             }, function (message) {
                 console.log('new message', message);
                 var handler = MESSAGES_HANDLERS[message.type];
@@ -33,7 +33,7 @@ var model = {
         onNewMessage: function (message) {
             MessageActions.newMessage(message.data);
         },
-        onNewUsers: function (message) {
+        onUsersList: function (message) {
             UsersListActions.resetUsers(message.data);
         },
         onUserConnected: function (message) {
@@ -47,8 +47,10 @@ var model = {
         }
     },
     sendMessage: function (data) {
-        data.type = 'send_message';
-        socket.send(data);
+        socket.send({
+            type: 'send_message',
+            data: data
+        });
     }
 };
 

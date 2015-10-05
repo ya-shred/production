@@ -1,4 +1,5 @@
 var mongo = require('../services/mongo.js');
+var userModel = require('../models/user');
 
 var MESSAGE_HANDLERS = {
     error: 'onErrorMessage',
@@ -31,20 +32,23 @@ var model = {
                 }
             }
         },
-        onUsersList: function (user) {
-            return {
-                channel: message.data.channel,
-                message: {
-                    type: 'new_message',
-                    data: {
-                        channel: message.data.channel,
-                        message: message.data.message,
-                        user: user,
-                        datetime: +new Date()
+        onUsersList: function (currentUser) {
+            return userModel.getUsers(currentUser)
+                .then(function (users) {
+                    var rooms = userModel.filterSelfRooms();
+                    users.forEach(function (user) {
+                        user.online = rooms.indexOf(user.id) !== -1;
+                    });
+                    return {
+                        message: {
+                            type: 'users_list_response',
+                            data: {
+                                users: users
+                            }
+                        }
                     }
-                }
-            }
-        },
+                });
+        }
     },
     /**
      * Процессим сообщение от пользователя, делаем все необходимые действия
@@ -103,18 +107,6 @@ var model = {
             type: 'channels_info',
             data: {
                 channels: channels
-            }
-        }
-    },
-    /**
-     * Отправляем информацию о пользователях
-     * @param users
-     */
-    usersList: function (users) {
-        return {
-            type: 'users_info',
-            data: {
-                users: users
             }
         }
     },

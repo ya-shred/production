@@ -18,8 +18,11 @@ var api = {
         }
         return {
             type: 'send_message',
-            data: params
+            data: params.data
         }
+    },
+    users_list_request: function(params) {
+        return params;
     }
 };
 
