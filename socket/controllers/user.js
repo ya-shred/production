@@ -4,37 +4,50 @@ var mongo = require('../services/mongo');
 var io = require('../models/io').io;
 
 var model = {
+    inited: (function () {
+        return mongo.init
+            .then(function () {
+                return mongo.getExistedUsers()
+            })
+            .then(function (users) {
+                model.existedUsers = users.map(function (user) {
+                    return user.id;
+                });
+            });
+    })(),
+    existedUsers: [],
     /**
      * Подключился новый пользователь
      * @param {Socket} socket
      */
     newUser: function (socket) {
-        var user = socket.request.user;
-        console.log('new user', user.id);
-        if (model.isNew(user)) {
-            model.connectNewUser(user, socket);
-        }
-        socket.join('general'); // Сейчас подключаем к общему каналу, по которому сейчас идут сообщения
+        model.inited.then(function () {
+            var user = socket.request.user;
+            if (model.isNew(user)) {
+                model.connectNewUser(user, socket);
+            }
+            socket.join('general'); // Сейчас подключаем к общему каналу, по которому сейчас идут сообщения
 
-        // Подключаем пользователя к его каналам, информации о пользователях и отправляем ему эти данные
-        return Promise.all([
-            model.joinChannel(user, socket),
-            model.joinUserInfo(user, socket),
-            model.joinSelf(user, socket)
-        ])
-            .then(function () {
-                // Сообщаем всем что пользователь подключился
-                model.connected(user, socket);
-                // Обработка всех поступающих от пользователя сообщений
-                model.listen(user, socket);
-            })
-            // Если что-то пошло не так, то отключаем пользователя
-            .catch(function (error) {
-                console.log('error', error);
-                socket.send(error);
-                socket.disconnect();
-                model.disconnected(user);
-            });
+            // Подключаем пользователя к его каналам, информации о пользователях и отправляем ему эти данные
+            return Promise.all([
+                model.joinChannel(user, socket),
+                model.joinUserInfo(user, socket),
+                model.joinSelf(user, socket)
+            ])
+                .then(function () {
+                    // Сообщаем всем что пользователь подключился
+                    model.connected(user, socket);
+                    // Обработка всех поступающих от пользователя сообщений
+                    model.listen(user, socket);
+                })
+                // Если что-то пошло не так, то отключаем пользователя
+                .catch(function (error) {
+                    console.log('error', error);
+                    socket.send(error);
+                    socket.disconnect();
+                    model.disconnected(user);
+                });
+        })
     },
     /**
      * Слушаем входящие сообщение и отвечаем на них
@@ -71,7 +84,7 @@ var model = {
      * @returns {boolean}
      */
     isNew: function (user) {
-        return Object.keys(io.sockets.adapter.rooms).indexOf(model.getUserRoom(user)) === -1;
+        return model.existedUsers.indexOf(user.id) === -1;
     },
     /**
      * Подключам пользователя к каналам сообщений
@@ -137,7 +150,8 @@ var model = {
      * @param {Socket} socket
      */
     connectNewUser: function (currentUser, socket) {
-        return mongo.getUsers(currentUser)
+        model.existedUsers.push(currentUser.id);
+        return mongo.getUsers(currentUser) // подключаем только тех пользователей, к которым есть доступ у нового пользователя
             .then(function (users) {
                 users = users.map(function (user) {
                     return user.id;
@@ -149,7 +163,7 @@ var model = {
                     .forEach(function (socket) {
                         socket.join(model.getUserRoom(currentUser));
                     });
-                socket.broadcast.to(model.getUserRoom(user)).send(api.newUser(user));
+                socket.broadcast.to(model.getUserRoom(currentUser)).send(api.newUser(currentUser));
             });
     },
     /**
