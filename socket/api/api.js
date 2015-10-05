@@ -1,6 +1,4 @@
 var mongo = require('../mongodb/mongodb.js');
-var backend = require('../backend/backend.js');
-//var socketServer = require('../io/io.js');
 
 var MESSAGE_HANDLERS = {
     authenticate: 'onAuthenticateMessage',
@@ -12,27 +10,27 @@ var model = {
     handlers: {
         onAuthenticateMessage: function (_, message) {
             var userId = message.data.userId;
-            return backend
-                .checkUser(userId)
-                .then(function (user) {
-                    return mongo
-                        .checkAndAddUser(user)
-                        .then(function (isNew) {
-                            user.isNew = !!isNew;
-                            return user;
-                        });
-                })
-                .then(function (user) {
-                    return {
-                        user: user,
-                        message: {
-                            type: 'authenticated',
-                            data: {
-                                user: user
-                            }
-                        }
-                    }
-                })
+            //return backend
+            //    .checkUser(userId)
+            //    .then(function (user) {
+            //        return mongo
+            //            .checkAndAddUser(user)
+            //            .then(function (isNew) {
+            //                user.isNew = !!isNew;
+            //                return user;
+            //            });
+            //    })
+            //    .then(function (user) {
+            //        return {
+            //            user: user,
+            //            message: {
+            //                type: 'authenticated',
+            //                data: {
+            //                    user: user
+            //                }
+            //            }
+            //        }
+            //    })
         },
         onSendMessage: function (user, message) {
             return {

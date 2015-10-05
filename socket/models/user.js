@@ -1,9 +1,11 @@
 var mongo = require('./mongo');
 
 var model = {
-    /*
-     Найти существующего, или создать запись пользователя
-     по данным из PassportJS.
+    /**
+     * Найти существующего, или создать запись пользователя
+     * по данным из PassportJS.
+     * @param {User} profile
+     * @returns {Promise}
      */
     findOrCreateUser: function (profile) {
         return model.getUser(profile.id)
@@ -14,8 +16,10 @@ var model = {
                 return model.storeUser(profile);
             });
     },
-    /*
-     Вернуть учетную запись пользователя
+    /**
+     * Вернуть учетную запись пользователя
+     * @param user.id
+     * @returns {Promise}
      */
     getUser: function (id) {
         return new Promise(function (resolve, reject) {
@@ -33,10 +37,10 @@ var model = {
             });
         })
     },
-
-
-    /*
-     Сохранить запись о пользователе в БД
+    /**
+     * Сохранить запись о пользователе в БД
+     * @param {User} user
+     * @returns {Promise}
      */
     storeUser: function (user) {
         return new Promise(function (resolve, reject) {
@@ -58,9 +62,20 @@ var model = {
             });
         });
     },
-
+    /**
+     * Сериализация пользователя для пасспорта
+     * @param {User} user
+     * @returns {Number}
+     */
     serializeUser: function (user) {
         return user.id;
+    },
+    /**
+     * Подключился новый пользователь
+     * @param {Socket} socket
+     */
+    newUser: function (socket) {
+        console.log('new user');
     }
 };
 

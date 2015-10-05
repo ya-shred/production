@@ -2,14 +2,7 @@ window.io = require('socket.io-client');
 /**
  * Клиентская библиотека для работы с сокет сервером.
  */
-var socketServerUrl;
-
-if (process.env.NODE_ENV === 'production') {
-    socketServerUrl = 'https://shri-socket.herokuapp.com/';
-} else {
-    socketServerUrl = 'http://localhost:8010/';
-}
-
+var socketServerUrl = window.location.origin;
 var socket = null;
 
 /**

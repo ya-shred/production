@@ -1,37 +1,43 @@
-var express = require('express');
 var passport = require('passport');
 var path = require('path');
-var cookieParser = require('cookie-parser');
+var expressCookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
+var expressSession = require('express-session');
+var MongoStore = require('connect-mongo')(expressSession);
 var stylus = require('stylus');
-
+var GitHubStrategy = require('passport-github').Strategy;
+var express = require('express');
+var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 var config = require('config');
 
-var GitHubStrategy = require('passport-github').Strategy;
+var userModel = require('./socket/models/user');
 
-var userModel = require('./app/models/user');
-
-var app = express();
-
-// configure Express
-var sessionCookie = 'connect.sid';
-var sessionOptions = {
-    secret: 'shred 15',
+var EXPRESS_SID_KEY = 'connect.sid';
+var COOKIE_SECRET = 'shred 15';
+var cookieParser = expressCookieParser(COOKIE_SECRET);
+var sessionStore = new MongoStore({
+    url: config.get('dbConnectionUrl')
+});
+var session = expressSession({
+    secret: COOKIE_SECRET,
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({
-        url: config.get('dbConnectionUrl')
-    }),
-    name: sessionCookie
-};
+    store: sessionStore,
+    name: EXPRESS_SID_KEY
+});
+
+server.listen(config.get('frontPort'), function () {
+    var port = server.address().port;
+    console.log('Example app listening at http://lodalhost:%s', port);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'app/loginViews'));
 app.set('view engine', 'hbs');
-app.use(cookieParser());
+app.use(cookieParser);
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -39,7 +45,27 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use(methodOverride());
-app.use(session(sessionOptions));
+app.use(session);
+
+io.use(function (socket, next) {
+    cookieParser(socket.request, {}, function(err) {
+        var sessionId = socket.request.signedCookies[EXPRESS_SID_KEY];
+
+        sessionStore.get(sessionId, function(err, session) {
+            socket.request.session = session;
+
+            passport.initialize()(socket.request, {}, function() {
+                passport.session()(socket.request, {}, function() {
+                    if (socket.request.user) {
+                        next(null, true);
+                    } else {
+                        next(new Error('User is not authenticated'), false);
+                    }
+                })
+            });
+        });
+    });
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -97,7 +123,7 @@ app.get('/logout', function (req, res) {
 });
 
 app.get('*', function (req, res, next) {
-    if (req.session && req.session.passport.user) {
+    if (req.session && req.session.passport && req.session.passport.user) {
         return next();
     }
 
@@ -106,9 +132,8 @@ app.get('*', function (req, res, next) {
 
 app.use(express.static(path.join(__dirname, 'app/frontendPublic')));
 
-var server = app.listen(config.get('port'), function () {
-    var port = server.address().port;
-    console.log('Example app listening at http://lodalhost:%s', port);
+io.on('connection', function (socket) {
+    userModel.newUser(socket);
 });
 
 module.exports = app;

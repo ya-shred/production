@@ -8,4 +8,4 @@ webpack(config).watch({ // watch options:
     console.log(stats.hash);
 });
 
-var express = require('./serve');
+require('./serve');
