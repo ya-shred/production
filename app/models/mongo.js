@@ -7,7 +7,8 @@ var db = null;
 // Use connect method to connect to the Server
 MongoClient.connect(url, function (err, dbLink) {
     if (err) {
-        return console.error('Ошибка подключения к БД', err);
+        console.error('Ошибка подключения к БД', err);
+        process.exit(1);
     }
     console.log('Успешно подключились к БД');
     db = dbLink;
