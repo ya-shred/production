@@ -10,10 +10,10 @@ var socket = null;
  */
 var api = {
     send_message: function (params) {
-        if (!params.channel) {
+        if (!params.data.channel) {
             return {error: 'Не указан канал отправки'};
         }
-        if (!params.message) {
+        if (!params.data.message) {
             return {error: 'Пустое сообщение недопустимо'};
         }
         return {
