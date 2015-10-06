@@ -4,7 +4,8 @@ var userModel = require('../models/user');
 var MESSAGE_HANDLERS = {
     error: 'onErrorMessage',
     send_message: 'onSendMessage',
-    users_list_request: 'onUsersList'
+    users_list_request: 'onUsersList',
+    user_info_request: 'onUserInfo'
 };
 
 var model = {
@@ -48,6 +49,16 @@ var model = {
                         }
                     }
                 });
+        },
+        onUserInfo: function (currentUser) {
+            return {
+                message: {
+                    type: 'user_info_response',
+                    data: {
+                        user: currentUser
+                    }
+                }
+            }
         }
     },
     /**

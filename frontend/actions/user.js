@@ -6,7 +6,7 @@ export default {
     infoFetched: function (data) {
         AppDispatcher.handleSocketAction({
             actionType: INFO_FETCHED,
-            info: data
+            info: data.user
         });
     }
 };

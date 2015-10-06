@@ -21,7 +21,10 @@ var api = {
             data: params.data
         }
     },
-    users_list_request: function(params) {
+    users_list_request: function (params) {
+        return params;
+    },
+    user_info_request: function (params) {
         return params;
     }
 };
@@ -49,7 +52,9 @@ class Socket {
 }
 
 var model = {
-    connect: function (onConnectCallback = () => {}, onMessageCallback = () => {}) {
+    connect: function (onConnectCallback = () => {
+    }, onMessageCallback = () => {
+    }) {
         if (!socket) {
             socket = io.connect(socketServerUrl);
         }

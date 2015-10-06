@@ -7,6 +7,7 @@ import '../../socket/client';
 var MESSAGES_HANDLERS = {
     new_message: 'onNewMessage',
     users_list_response: 'onUsersList',
+    user_info_response: 'onUserFetched',
     user_connected: 'onUserConnected',
     user_disconnected: 'onUserDisconnected',
     new_user: 'onNewUser'
@@ -18,6 +19,9 @@ var model = {
     init: function () {
         socket = socketClient.connect(
             function (numberOfConnect) {
+                if (numberOfConnect === 1) { // Первое подключение
+                    socket.send({type: 'user_info_request'});
+                }
                 socket.send({type: 'users_list_request'});
             }, function (message) {
                 console.log('new message', message);
@@ -35,6 +39,9 @@ var model = {
         },
         onUsersList: function (message) {
             UsersListActions.resetUsers(message.data);
+        },
+        onUserFetched: function (message) {
+            UserActions.infoFetched(message.data);
         },
         onUserConnected: function (message) {
             UsersListActions.userConnected(message.data);
