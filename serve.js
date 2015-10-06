@@ -32,7 +32,7 @@ var session = expressSession({
 
 server.listen(config.get('frontPort'), function () {
     var port = server.address().port;
-    console.log('Example app listening at http://lodalhost:%s', port);
+    console.log('Example app listening at http://localhost:%s', port);
 });
 
 // view engine setup
