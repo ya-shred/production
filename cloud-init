@@ -37,9 +37,9 @@ write_files:
     content: |
       #!/bin/sh
       # pull latest master version
-      git --work-tree=/root/shri/production --git-dir=/root/shri/production.git pull origin master
+      git --work-tree=/root/shri/production --git-dir=/root/shri/production.git reset --hard origin/master
       # run post receive script to rerun app
-      /root/shri/production.git/hooks/post-receive
+      . /root/shri/production.git/hooks/post-receive
 
   - path: /root/shri/update-server
     permissions: '0644'
