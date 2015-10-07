@@ -30,3 +30,8 @@ https://github.com/yandex/codestyle/blob/master/javascript.ru.md
 Запуск
 - дев сборка ``npm run dev``
 - прод сборка ``npm run prod``
+
+Деплой на прод сервер:
+- подключить репозиторий git remote add live ssh://root@188.166.104.29/root/shri/production.git
+- деплой git push live master
+- сервер поднимится не сразу. Он сначала должен собраться

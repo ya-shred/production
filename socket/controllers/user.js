@@ -12,6 +12,7 @@ var model = {
         userModel.inited.then(function () {
             var user = socket.request.user;
             if (userModel.isNew(user)) {
+                console.log('new user');
                 model.connectNewUser(user, socket);
             }
             socket.join('general'); // Сейчас подключаем к общему каналу, по которому сейчас идут сообщения
@@ -128,7 +129,7 @@ var model = {
      * @param {Socket} socket
      */
     connectNewUser: function (currentUser, socket) {
-        model.existedUsers.push(currentUser.id);
+        userModel.existedUsers.push(currentUser.id);
         return mongo.getUsers(currentUser) // подключаем только тех пользователей, к которым есть доступ у нового пользователя
             .then(function (users) {
                 users = users.map(function (user) {

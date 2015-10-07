@@ -1,0 +1,72 @@
+#cloud-config
+# install on Ubuntu node v4.1.0 on 14.04
+apt_sources:
+  # Enable MongoDB repository
+  - source: deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse
+    keyid: 7F0CEB10
+    filename: mongodb.list
+apt_update: true
+packages:
+  - mongodb-org
+  - git
+  - build-essential
+  - g++
+  - libkrb5-dev
+runcmd:
+  - /root/init
+  # run git update server
+  - node /root/shri/update-server
+write_files:
+  - path: /root/init
+    permissions: '0755'
+    content: |
+      #!/bin/sh
+      # create necessary dirs
+      mkdir /root/shri /root/shri/production /root/shri/production.git
+      # init bare repo
+      cd /root/shri/production.git && git init --bare
+      # move post-receive script
+      cp /root/shri/post-receive /root/shri/production.git/hooks/post-receive
+      # install node project management
+      npm i -g pm2
+      # connect repo
+      git --work-tree=/root/shri/production --git-dir=/root/shri/production.git remote add origin https://github.com/ya-shred/production.git
+
+  - path: /root/shri/update-repo
+    permissions: '0755'
+    content: |
+      #!/bin/sh
+      # pull latest master version
+      git --work-tree=/root/shri/production --git-dir=/root/shri/production.git pull origin master
+      # run post receive script to rerun app
+      /root/shri/production.git/hooks/post-receive
+
+  - path: /root/shri/update-server
+    permissions: '0644'
+    content: |
+      http = require('http');
+      child_process = require('child_process');
+
+      http.createServer(function (req, res) {
+        console.log('update repo');
+        child_process.execSync('/root/shri/update-repo');
+        res.end();
+      }).listen(9009)
+
+      console.log('Start listening on 9009');
+
+  - path: /root/shri/post-receive
+    permissions: '0755'
+    content: |
+      #!/bin/sh
+      git --work-tree=/root/shri/production --git-dir=/root/shri/production.git checkout -f
+      cd /root/shri/production
+      npm i
+      pm2 delete shri
+      export NODE_ENV='production'
+      export GITHUB_ID='445868a757f11c5e9341'
+      export GITHUB_SECRET='a21ae6337941c5641670a7439f72112151485191'
+      export FRONT_PORT='80'
+      export MONGOLAB_URI='mongodb://localhost:27017/backend'
+      export GITHUB_CALLBACK=http://`echo $(hostname -I)`/auth/github/callback
+      pm2 start prod.js --name shri
