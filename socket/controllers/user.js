@@ -71,6 +71,7 @@ var model = {
                 });
         });
 
+
         socket.on('disconnect', function () {
             model.disconnected(user);
             console.log('user disconnected');

@@ -5,6 +5,7 @@ var MESSAGE_HANDLERS = {
     error: 'onErrorMessage',
     send_message: 'onSendMessage',
     history_request: 'onGetHistory',
+    send_updated_message: 'onSendUpdatedMessage',
     users_list_request: 'onUsersList',
     user_info_request: 'onUserInfo',
     peer_connect: 'onPeerConnect',
@@ -80,7 +81,19 @@ var model = {
                     };
                 });
         },
-
+        onSendUpdatedMessage: function (user, message) {
+            console.log("sndupdmsg");
+            return {
+                channel: message.data.channel,
+                message: {
+                    type: 'get_updated_message',
+                    data: {
+                        id: message.data.id,
+                        message: message.data.message
+                    }
+                }
+            }
+        },
         onUsersList: function (currentUser) {
             return userModel.getUsers(currentUser)
                 .then(function (users) {

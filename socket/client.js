@@ -20,6 +20,18 @@ var api = {
             type: 'send_message',
             data: params.data
         }
+    },
+    send_updated_message: function (params) {
+        if (!params.data.channel) {
+            return {error: 'Не указан канал отправки'};
+        }
+        if (!params.data.message) {
+            return {error: 'Пустое сообщение недопустимо'};
+        }
+        return {
+            type: 'send_updated_message',
+            data: params.data
+        }
     }
 };
 
