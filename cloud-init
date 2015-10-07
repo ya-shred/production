@@ -24,7 +24,8 @@ write_files:
       # create necessary dirs
       mkdir /root/shri /root/shri/production /root/shri/production.git
       # init bare repo
-      cd /root/shri/production.git && git init --bare
+      cd /root/shri/production.git
+      git init --bare
       # move post-receive script
       cp /root/shri/post-receive /root/shri/production.git/hooks/post-receive
       # install node project management
@@ -36,7 +37,9 @@ write_files:
     permissions: '0755'
     content: |
       #!/bin/sh
+      cd /root/shri/production.git/
       # pull latest master version
+      git --work-tree=/root/shri/production --git-dir=/root/shri/production.git fetch
       git --work-tree=/root/shri/production --git-dir=/root/shri/production.git reset --hard origin/master
       # run post receive script to rerun app
       . /root/shri/production.git/hooks/post-receive

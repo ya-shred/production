@@ -35,3 +35,13 @@ https://github.com/yandex/codestyle/blob/master/javascript.ru.md
 - подключить репозиторий git remote add live ssh://root@IP/root/shri/production.git
 - деплой git push live master
 - сервер поднимится не сразу. Он сначала должен собраться
+
+Развертка прод сервера
+- сервер не ниже 1Gb ram
+- Distributions: ubuntu 14.04
+- Applications: node v4.1.0 on 14.04
+- ставим галочку 'User Data' и туда вставляем содержимое файла cloud-init
+- добавляем ssh ключи
+- запускаем создание droplet
+- после создания нужно поменять адрес webhook в проекте https://github.com/ya-shred/production/settings/hooks/6036173
+- поменять адреса callback при гит авторизации https://github.com/organizations/ya-shred/settings/applications/250785
