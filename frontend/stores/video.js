@@ -40,11 +40,18 @@ const store = assign({}, EventEmitter.prototype, {
     },
 
     removeStream: (stream, ind) => {
-        streams.splice(ind, 1);
+        store.disconnectStream(streams.splice(ind, 1)[0]);
         if (streams.length === 1) {
+            store.disconnectStream(streams[0]);
             streams.length = 0;
             state = '';
         }
+    },
+
+    disconnectStream: (stream) => {
+        stream.getTracks().forEach((track) => {
+            track.stop();
+        });
     },
 
     clearStreams: () => {
@@ -60,7 +67,7 @@ const store = assign({}, EventEmitter.prototype, {
     },
 
     stopCall: () => {
-        store.clearStreams();
+        //store.clearStreams();
         store.closeCalls();
     },
 

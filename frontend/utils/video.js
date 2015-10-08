@@ -52,16 +52,6 @@ var model = {
             calls.push(peerObj.call(peer, mediaStream));
         });
         return calls;
-    },
-
-    stopCall: () => {
-        model.calls.forEach((call) => {
-            call.close();
-        });
-        model.stream.getTracks().forEach((track) => {
-            track.stop();
-        });
-        model.disconnectVideo(model.your_video);
     }
 };
 
