@@ -278,6 +278,7 @@ body .main__description {
 
     body .main__description {
         width: 99%;
+        max-width: 550px;
     }
 }
 
