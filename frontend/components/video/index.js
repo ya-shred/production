@@ -1,36 +1,76 @@
 import React from 'react';
 import './index.styl';
-import Video from '../../utils/video'
+import VideoStore from '../../stores/video'
+import VideoAction from '../../actions/video'
+
+let getStreams = () => {
+    return {videos: VideoStore.getAllStreams()};
+};
 
 export default class VideoCall extends React.Component {
     constructor() {
         super();
+        this.state = getStreams();
     }
 
     componentDidMount() {
-        Video.init
-            .then(() => {
-                return Video.listen(this.refs.video_other.getDOMNode())
-            });
+        VideoStore.addChangeListener(this.onChange);
+    }
+
+    componentWillUnmount() {
+        VideoStore.removeChangeListener(this.onChange);
+    }
+
+    componentDidUpdate() {
+        let _this = this;
+        this.state.videos.forEach((video, id) => {
+            var $video = _this.refs['video_' + id].getDOMNode();
+            _this.bindStream($video, video);
+        });
+    }
+
+    //shouldComponentUpdate(nextProps, nextState) {
+        //return nextState.videos.length !== this.state.videos.length;
+    //}
+
+
+    bindStream = (video, stream) => {
+        video.src = window.URL.createObjectURL(stream);
+        video.onloadedmetadata = function (e) {
+            video.play();
+        };
+    }
+
+    onChange = () => {
+        var streams = getStreams();
+        this.setState(streams);
+        this.setState({callDisabled: !!streams.videos.length});
     }
 
     call = () => {
-        Video.connect(this.refs.video_you.getDOMNode());
+        this.setState({callDisabled: true});
+        VideoAction.callToAll();
     }
 
     stopCall = () => {
-        Video.stopCall();
+        this.setState({callDisabled: false});
+        VideoAction.stopCall();
     }
 
     render() {
+        let videos = this.state.videos.map((video, id) => {
+            return (
+                <video className='video__out' ref={'video_' + id} key={id} />
+            )
+        });
+
         return (
             <div className='video'>
-                <video className='video__out' ref='video_you' />
-                <video className='video__out' ref='video_other' />
-                <button className='video__call' onClick={this.call} >
+                {videos}
+                <button className='video__call' onClick={this.call} disabled={this.state.callDisabled}>
                     Позвонить
                 </button>
-                <button className='video__call' onClick={this.stopCall} >
+                <button className='video__call' onClick={this.stopCall} disabled={!this.state.callDisabled}>
                     Завершить разговор
                 </button>
             </div>

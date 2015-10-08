@@ -1,0 +1,6 @@
+export default {
+    RECEIVE_CALL: 'RECEIVE_CALL',
+    GROUP_CALL: 'GROUP_CALL',
+    DEST_PEERS: 'DEST_PEERS',
+    STOP_CALL: 'STOP_CALL'
+};

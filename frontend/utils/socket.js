@@ -3,7 +3,7 @@ import UserActions from '../actions/user';
 import UsersListActions from '../actions/usersList';
 import MessageActions from '../actions/message';
 import '../../socket/client';
-import Video from './video'
+import VideoActions from '../actions/video'
 
 var MESSAGES_HANDLERS = {
     new_message: 'onNewMessage',
@@ -71,7 +71,7 @@ var model = {
             UsersListActions.newUser(message.data);
         },
         onGotPeers: function(message) {
-            Video.gotDestPeer(message.data.peers);
+            VideoActions.gotDestPeer(message.data.peers);
         }
     },
 

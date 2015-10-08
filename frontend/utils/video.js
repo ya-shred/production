@@ -1,8 +1,10 @@
 import Peer from 'peerjs'
-import UserStore from '../stores/user.js'
 import SocketAPI from './socket'
+import VideoAction from '../actions/video'
 
 var key = 'ugzzgfk803cba9k9';
+var peerId = null;
+var peerObj = null;
 
 navigator.getUserMedia = navigator.getUserMedia ||
     navigator.webkitGetUserMedia ||
@@ -11,81 +13,23 @@ navigator.getUserMedia = navigator.getUserMedia ||
 var model = {
     init: (() => {
         return new Promise(function (resolve, reject) {
-            var peer = new Peer({key: 'ugzzgfk803cba9k9'});
+            var peer = new Peer({key: key});
             peer.on('open', (id) => {
                 SocketAPI.connectPeer(id);
-                model.peerId = id;
-                model.peer = peer;
+                peerId = id;
+                peerObj = peer;
                 resolve(id);
                 console.log('My peer ID is: ' + id);
+                model.listen();
             });
         });
     })(),
 
-    listen: ($video) => {
-        model.peer.on('call', (call) => {
+    listen: () => {
+        peerObj.on('call', (call) => {
             console.log('someone call', call);
-            var stream = null;
-            // Answer the call, providing our mediaStream
-            call.answer();
-
-            call.on('stream', (st) => {
-                stream = st;
-                model.connectVideoToStream($video, st);
-            });
-
-            call.on('close', () => {
-                model.disconnectVideo($video);
-            });
+            VideoAction.receiveCall(call);
         });
-    },
-
-    connectVideoToStream: ($video, stream) => {
-        $video.src = window.URL.createObjectURL(stream);
-        $video.onloadedmetadata = function (e) {
-            $video.play();
-        };
-    },
-
-    disconnectVideo: ($video) => {
-        $video.src = '';
-    },
-
-    peerId: null,
-
-    status: '',
-    your_video: null,
-
-    connect: ($video) => {
-        return model.init
-            .then(() => {
-                model.status = 'connect init';
-                model.your_video = $video;
-                model.getDestPeer();
-
-                //    return Promise.all([
-                //        model.getDestPeer(),
-                //        model.getUserMedia()
-                //    ])
-                //})
-                //.then(([destPeer, mediaStream]) => {
-                //    model.calling(destPeer, mediaStream, $video);
-            })
-    },
-
-    getDestPeer: () => {
-        model.status = 'require peers';
-        SocketAPI.getDestPeers();
-    },
-
-    gotDestPeer: (peers) => {
-        if (model.status === 'require peers' && model.your_video) {
-            model.status = 'got peers';
-            return model.getUserMedia()
-                .then((stream) => {
-                    model.calling(peers, stream, model.your_video);
-                })
-        }
     },
 
     getUserMedia: () => {
@@ -102,17 +46,12 @@ var model = {
         });
     },
 
-    calls: [],
-    stream: null,
-
-    calling: (peers, mediaStream, $video) => {
-        model.connectVideoToStream($video, mediaStream);
-        model.stream = mediaStream;
-        var calls = model.calls = [];
-        // Call a peer, providing our mediaStream
+    calling: (peers, mediaStream) => {
+        var calls = [];
         peers.forEach((peer) => {
-            calls.push(model.peer.call(peer, mediaStream));
-        })
+            calls.push(peerObj.call(peer, mediaStream));
+        });
+        return calls;
     },
 
     stopCall: () => {
