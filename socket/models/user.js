@@ -1,5 +1,6 @@
 var mongo = require('../services/mongo');
-var io = require('../models/io').io;
+var ioModel = require('../models/io');
+var io = ioModel.io;
 
 var model = {
     inited: (function () {
@@ -14,6 +15,26 @@ var model = {
             });
     })(),
     existedUsers: [],
+    getUsersPeer: function (currentUser) {
+        return new Promise(function (resolve, reject) {
+            model.getUsers(currentUser)
+                .then(function (users) {
+                    users = users.map(function (user) {
+                        return user.id;
+                    });
+                    resolve(ioModel.getSockets()
+                        .map(function (socket) {
+                            return socket.request.user;
+                        })
+                        .filter(function (user) {
+                            return user && users.indexOf(user.id) !== -1;
+                        })
+                        .map(function(user) {
+                            return user.peerId;
+                        }));
+                });
+        });
+    },
     /**
      * Список id пользователей, для которых созданы личные комнаты
      * @param rooms
@@ -81,7 +102,7 @@ var model = {
      * @param {User} currentUser
      * @returns {*}
      */
-    getUsers: function(currentUser) {
+    getUsers: function (currentUser) {
         return mongo.getUsers(currentUser);
     }
 };
