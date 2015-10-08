@@ -23,8 +23,8 @@ export default class VideoCall extends React.Component {
 
     componentDidUpdate() {
         let _this = this;
-        this.state.videos.forEach((video, id) => {
-            var $video = _this.refs['video_' + id].getDOMNode();
+        this.state.videos.forEach((video) => {
+            var $video = _this.refs['video_' + video.id].getDOMNode();
             _this.bindStream($video, video);
         });
     }
@@ -58,9 +58,9 @@ export default class VideoCall extends React.Component {
     }
 
     render() {
-        let videos = this.state.videos.map((video, id) => {
+        let videos = this.state.videos.map((video) => {
             return (
-                <video className='video__out' ref={'video_' + id} key={id} />
+                <video className='video__out' ref={'video_' + video.id} key={video.id} />
             )
         });
 

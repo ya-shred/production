@@ -14,22 +14,22 @@ let state = '';
 const store = assign({}, EventEmitter.prototype, {
     answerCall: (callObj) => {
         var stream = null;
-        var ind = 0;
 
         return store.getUserStream()
             .then((userStream) => {
-                !streams.length && store.addStream(userStream);
+                !streams.length && userStream && store.addStream(userStream);
+                activeCalls.push(callObj);
 
                 callObj.answer(userStream);
 
                 callObj.on('stream', (st) => {
                     stream = st;
-                    ind = store.addStream(stream) - 1;
+                    store.addStream(stream);
                     store.emitChange();
                 });
 
                 callObj.on('close', () => {
-                    store.removeStream(stream, ind);
+                    store.removeStream(stream);
                     store.emitChange();
                 });
             })
@@ -39,8 +39,9 @@ const store = assign({}, EventEmitter.prototype, {
         return streams.push(stream);
     },
 
-    removeStream: (stream, ind) => {
-        store.disconnectStream(streams.splice(ind, 1)[0]);
+    removeStream: (stream) => {
+        let ind = streams.indexOf(stream);
+        ind !== -1 && store.disconnectStream(streams.splice(ind, 1)[0]);
         if (streams.length === 1) {
             store.disconnectStream(streams[0]);
             streams.length = 0;

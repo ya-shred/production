@@ -58,7 +58,11 @@ var model = {
                     console.log('sending', response);
                     // Отправляем необходимые данные в комнату
                     if (response.message) {
-                        io.to(response.channel || model.getSelfRoom(user)).send(response.message);
+                        if (response.channel) {
+                            io.to(response.channel).send(response.message);
+                        } else {
+                            socket.send(response.message);
+                        }
                     }
                 })
                 // Если обработка прошла с ошибкой, отправляем сообщение об ошибке
