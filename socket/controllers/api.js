@@ -4,7 +4,7 @@ var userModel = require('../models/user');
 var MESSAGE_HANDLERS = {
     error: 'onErrorMessage',
     send_message: 'onSendMessage',
-    history_message: 'onGetHistory',
+    history_request: 'onGetHistory',
     users_list_request: 'onUsersList',
     user_info_request: 'onUserInfo'
 };
@@ -23,34 +23,29 @@ var model = {
         },
 
         onGetHistory: function () {
-            return new Promise(function (resolve, reject) {
-                mongo.getHistory().then(result => {
-                    resolve({
+            return mongo.getHistory()
+                .then(result => {
+                    return {
                         message: {
-                            type: 'new_history',
+                            type: 'history_response',
                             data: result
                         }
-                    })
+                    };
                 });
-            });
         },
         onSendMessage: function (user, message) {
-            return new Promise(function (resolve, reject) {
-                message.data.user = user;
-                message.data.datetime = +new Date();
-                mongo.insertMessage(message.data)
+            message.data.user = user;
+            message.data.datetime = +new Date();
+            return mongo.insertMessage(message.data)
                 .then(result => {
-                    resolve({
+                    return {
                         channel: message.data.channel,
                         message: {
                             type: 'new_message',
                             data: result
                         }
-                    });
-                },error => {
-                    reject(error);
+                    };
                 });
-            });
         },
 
         onUsersList: function (currentUser) {

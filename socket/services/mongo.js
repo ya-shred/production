@@ -10,6 +10,7 @@ model = {
         console.log('close connection');
         db.close();
     },
+
     init: (function () {
         return new Promise(function (resolve, reject) {
             // Use connect method to connect to the Server
@@ -25,6 +26,7 @@ model = {
             });
         });
     })(),
+
     /**
      * Вернуть учетную запись пользователя
      * @param user.id
@@ -47,15 +49,11 @@ model = {
         });
     },
 
-
-
-
     /**
      * Сохранить запись о пользователе в БД
      * @param {User} user
      * @returns {Promise}
      */
-
     storeUser: function (user) {
         return new Promise(function (resolve, reject) {
             var collection = db.collection('users');
@@ -77,16 +75,18 @@ model = {
         });
     },
 
-
     getHistory: function () {
         return new Promise(function (resolve, reject) {
             var collection = db.collection('messages');
             collection.find({}).toArray(function (err, result) {
-                resolve(result);
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
             });
         });
     },
-
 
     insertMessage: function (data) {
         return new Promise(function (resolve, reject) {
@@ -99,8 +99,6 @@ model = {
             });
         });
     },
-
-
 
     getChannels: function (user) {
         return new Promise(function (resolve, reject) {

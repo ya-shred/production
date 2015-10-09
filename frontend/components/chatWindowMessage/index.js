@@ -8,21 +8,21 @@ var getMessages = () => {
     return MessageStore.getAllMessages();
 };
 
-
-class ChatWindowMessage extends React.Component {
+export default class ChatWindowMessage extends React.Component {
     constructor() {
         super();
         this.state = {
-            messages: getMessages(),
+            messages: getMessages()
         }
     }
+
     componentDidMount() {
         MessageStore.addChangeListener(this.onChange);
     }
 
     onChange = () => {
         this.setState(getMessages());
-    };
+    }
 
     componentWillUnmount() {
         MessageStore.removeChangeListener(this.onChange);
@@ -33,7 +33,7 @@ class ChatWindowMessage extends React.Component {
         return <section className="chat-window">
 
             <div className="chat-window__content">
-                <MessageList messages={ this.state.messages } />
+                <MessageList messages={ this.state.messages }/>
             </div>
 
             <div className="chat-window__box-send-message">
@@ -43,6 +43,4 @@ class ChatWindowMessage extends React.Component {
         </section>
     }
 
-}
-
-export default ChatWindowMessage;
+};

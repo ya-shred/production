@@ -5,7 +5,6 @@ import SocketActions from './socket';
 export default {
     sendMessage: function (data) {
         SocketActions.sendMessage(data);
-        console.log(data);
         AppDispatcher.handleViewAction({
             actionType: SEND_MESSAGE,
             message: data

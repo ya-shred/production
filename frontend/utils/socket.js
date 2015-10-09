@@ -6,7 +6,7 @@ import '../../socket/client';
 
 var MESSAGES_HANDLERS = {
     new_message: 'onNewMessage',
-    new_history: 'onHistory',
+    history_response: 'onHistory',
     users_list_response: 'onUsersList',
     user_info_response: 'onUserFetched',
     user_connected: 'onUserConnected',
@@ -22,9 +22,8 @@ var model = {
             function (numberOfConnect) {
                 if (numberOfConnect === 1) { // Первое подключение
                     socket.send({type: 'user_info_request'});
-
                 }
-                socket.send( { type: 'history_message'} );
+                socket.send( { type: 'history_request'} );
                 socket.send( { type: 'users_list_request' } );
 
             }, function (message) {

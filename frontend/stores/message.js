@@ -4,19 +4,15 @@ import assign  from 'react/lib/Object.assign';
 import { EventEmitter } from 'events';
 const CHANGE_EVENT = 'change';
 
-var messages = [];
+let messages = [];
 
-
-var addItem = function (message) {
+let addItem = function (message) {
     messages.push(message);
 };
 
-var saveHistory = function(his) {
-    for(var i = 0; i < his.length; i++) {
-        messages.push(his[i]);
-    }
+let saveHistory = function(his) {
+    messages = messages.concat(his);
 };
-
 
 const AppStore = assign({}, EventEmitter.prototype, {
 
@@ -34,10 +30,6 @@ const AppStore = assign({}, EventEmitter.prototype, {
 
     getAllMessages: function () {
         return messages;
-    },
-
-    getHistoryMessages: function () {
-        return historyMessage;
     }
 
 });
