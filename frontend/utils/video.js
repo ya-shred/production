@@ -1,9 +1,9 @@
 import Peer from './peer';
 import VideoAction from '../actions/video';
 
-navigator.getUserMedia = navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia;
+window.navigator.getUserMedia = window.navigator.getUserMedia ||
+    window.navigator.webkitGetUserMedia ||
+    window.navigator.mozGetUserMedia;
 
 var model = {
     init: () => {
@@ -21,7 +21,7 @@ var model = {
 
     getUserMedia: () => {
         return new Promise(function (resolve, reject) {
-            navigator.getUserMedia({video: true, audio: true},
+            window.navigator.getUserMedia({video: true, audio: true},
                 function (stream) {
                     resolve(stream);
                 },

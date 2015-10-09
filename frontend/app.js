@@ -1,3 +1,4 @@
+global.navigator = window.navigator;
 import React from 'react';
 import Components from './components/components.js';
 import './app-styles/app.styl';
