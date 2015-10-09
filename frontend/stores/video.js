@@ -3,15 +3,13 @@ import VideoAPI from '../utils/video';
 import SocketAPI from '../utils/socket';
 import AppDispatcher from '../dispatchers/dispatcher';
 import assign  from 'react/lib/Object.assign';
-import { EventEmitter } from 'events';
-
-const CHANGE_EVENT = 'change';
+import BaseStore from './base';
 
 let streams = [];
 let activeCalls = [];
 let state = '';
 
-const store = assign({}, EventEmitter.prototype, {
+const store = assign({}, BaseStore, {
     answerCall: (callObj) => {
         var stream = null;
 
@@ -90,16 +88,15 @@ const store = assign({}, EventEmitter.prototype, {
         activeCalls = VideoAPI.calling(peers, streams[0]);
         activeCalls.forEach((callObj) => {
             let stream = null;
-            let ind = 0;
 
             callObj.on('stream', (st) => {
                 stream = st;
-                ind = store.addStream(stream) - 1;
+                store.addStream(stream);
                 store.emitChange();
             });
 
             callObj.on('close', () => {
-                store.removeStream(stream, ind);
+                store.removeStream(stream);
                 store.emitChange();
             });
         });
@@ -107,18 +104,6 @@ const store = assign({}, EventEmitter.prototype, {
 
     getAllStreams: () => {
         return streams;
-    },
-
-    emitChange: () => {
-        store.emit(CHANGE_EVENT);
-    },
-
-    addChangeListener: function (callback) {
-        this.on(CHANGE_EVENT, callback)
-    },
-
-    removeChangeListener: function (callback) {
-        this.removeChangeListener(CHANGE_EVENT, callback);
     },
 
     dispatcherIndex: AppDispatcher.register(function (payload) {

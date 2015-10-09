@@ -1,9 +1,7 @@
 import Actions from '../constants/usersList';
 import AppDispatcher from '../dispatchers/dispatcher';
 import assign  from 'react/lib/Object.assign';
-import { EventEmitter } from 'events';
-
-const CHANGE_EVENT = 'change';
+import BaseStore from './base';
 
 const users = [];
 
@@ -33,19 +31,7 @@ var setOffline = function (userId) {
     });
 };
 
-const store = assign({}, EventEmitter.prototype, {
-
-    emitChange: function () {
-        this.emit(CHANGE_EVENT);
-    },
-
-    addChangeListener: function (callback) {
-        this.on(CHANGE_EVENT, callback)
-    },
-
-    removeChangeListener: function (callback) {
-        this.removeChangeListener(CHANGE_EVENT, callback);
-    },
+const store = assign({}, BaseStore, {
 
     getAllUsers: function () {
         return users;

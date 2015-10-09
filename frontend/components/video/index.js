@@ -29,11 +29,6 @@ export default class VideoCall extends React.Component {
         });
     }
 
-    //shouldComponentUpdate(nextProps, nextState) {
-        //return nextState.videos.length !== this.state.videos.length;
-    //}
-
-
     bindStream = (video, stream) => {
         video.src = window.URL.createObjectURL(stream);
         video.onloadedmetadata = function (e) {
