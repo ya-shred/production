@@ -10,6 +10,7 @@ model = {
         console.log('close connection');
         db.close();
     },
+
     init: (function () {
         return new Promise(function (resolve, reject) {
             // Use connect method to connect to the Server
@@ -25,6 +26,7 @@ model = {
             });
         });
     })(),
+
     /**
      * Вернуть учетную запись пользователя
      * @param user.id
@@ -46,6 +48,7 @@ model = {
             });
         });
     },
+
     /**
      * Сохранить запись о пользователе в БД
      * @param {User} user
@@ -72,11 +75,31 @@ model = {
         });
     },
 
-    getHistory: function (user) {
+    getHistory: function () {
         return new Promise(function (resolve, reject) {
-            resolve([{channel: 'test', message: 'test'}]);
+            var collection = db.collection('messages');
+            collection.find({}).toArray(function (err, result) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
         });
     },
+
+    insertMessage: function (data) {
+        return new Promise(function (resolve, reject) {
+            var collection = db.collection('messages');
+            collection.insertOne(data, function (err, result) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(result.ops[0]);
+            });
+        });
+    },
+
     getChannels: function (user) {
         return new Promise(function (resolve, reject) {
             // Get the documents collection

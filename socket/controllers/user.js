@@ -44,10 +44,15 @@ var model = {
      * @param {Socket} socket
      */
     listen: function (user, socket) {
+
+
         socket.on('message', function (message) {
-            console.log('got message', message);
+
+            console.log('got message!!!', message);
+
             // Процессим сообщение
             api.processMessage(user, message)
+
                 // Если обработка сообщения прошла успешна
                 .then(function (response) {
                     console.log('sending', response);

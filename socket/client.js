@@ -20,12 +20,6 @@ var api = {
             type: 'send_message',
             data: params.data
         }
-    },
-    users_list_request: function (params) {
-        return params;
-    },
-    user_info_request: function (params) {
-        return params;
     }
 };
 
@@ -43,10 +37,10 @@ class Socket {
             if (message.error) {
                 return message.error;
             } else {
-                this.socket.send(message);
+                return this.socket.send(message);
             }
         } else {
-            return 'Неизвестная команда';
+            return this.socket.send(params);
         }
     }
 }

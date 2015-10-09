@@ -4,10 +4,14 @@ import assign  from 'react/lib/Object.assign';
 import { EventEmitter } from 'events';
 const CHANGE_EVENT = 'change';
 
-const messages = [];
+let messages = [];
 
-var addItem = function (message) {
+let addItem = function (message) {
     messages.push(message);
+};
+
+let saveHistory = function(his) {
+    messages = messages.concat(his);
 };
 
 const AppStore = assign({}, EventEmitter.prototype, {
@@ -31,15 +35,15 @@ const AppStore = assign({}, EventEmitter.prototype, {
 });
 
 AppDispatcher.register(function (payload) {
-
     var action = payload.action;
-
     switch (action.actionType) {
         case Actions.NEW_MESSAGE:
-            addItem(payload.action.message);
+            addItem(action.message);
+        break;
+        case Actions.HISTORY_MESSAGE:
+            saveHistory(action.message);
         break;
     }
-
     AppStore.emitChange();
     return true;
 });

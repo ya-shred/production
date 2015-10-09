@@ -18,16 +18,16 @@ export default class MessageList extends React.Component {
     }
 
     render() {
+
         var msg = this.props.messages.map(function (item) {
             return <MessageItem
-                key={item.id}
+                key={item._id}
                 avatar={item.user.avatarUrl}
                 name={item.user.displayName}
                 message={item.message}
                 datetime={item.datetime}
                 />
         });
-
         return <div className="message-list" key={this.props.key}  ref="messageList">
             {msg}
         </div>

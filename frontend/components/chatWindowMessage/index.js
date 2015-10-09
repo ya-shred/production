@@ -5,15 +5,15 @@ import MessageList from "../messageList";
 import './index.styl';
 
 var getMessages = () => {
-    return {
-        messages: MessageStore.getAllMessages()
-    }
+    return MessageStore.getAllMessages();
 };
 
-class ChatWindowMessage extends React.Component {
+export default class ChatWindowMessage extends React.Component {
     constructor() {
         super();
-        this.state = getMessages();
+        this.state = {
+            messages: getMessages()
+        }
     }
 
     componentDidMount() {
@@ -21,7 +21,7 @@ class ChatWindowMessage extends React.Component {
     }
 
     onChange = () => {
-        this.setState(getMessages());
+        this.setState({messages: getMessages()});
     }
 
     componentWillUnmount() {
@@ -29,10 +29,11 @@ class ChatWindowMessage extends React.Component {
     }
 
     render() {
+
         return <section className="chat-window">
 
             <div className="chat-window__content">
-                <MessageList messages={this.state.messages}/>
+                <MessageList messages={ this.state.messages }/>
             </div>
 
             <div className="chat-window__box-send-message">
@@ -42,6 +43,4 @@ class ChatWindowMessage extends React.Component {
         </section>
     }
 
-}
-
-export default ChatWindowMessage;
+};

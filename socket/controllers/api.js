@@ -4,12 +4,14 @@ var userModel = require('../models/user');
 var MESSAGE_HANDLERS = {
     error: 'onErrorMessage',
     send_message: 'onSendMessage',
+    history_request: 'onGetHistory',
     users_list_request: 'onUsersList',
     user_info_request: 'onUserInfo'
 };
 
 var model = {
     handlers: {
+
         onErrorMessage: function () {
             return Promise.reject({
                 type: 'status',
@@ -19,20 +21,37 @@ var model = {
                 }
             });
         },
-        onSendMessage: function (user, message) {
-            return {
-                channel: message.data.channel,
-                message: {
-                    type: 'new_message',
-                    data: {
-                        channel: message.data.channel,
-                        message: message.data.message,
-                        user: user,
-                        datetime: +new Date()
-                    }
-                }
-            }
+
+        onGetHistory: function () {
+            return mongo.getHistory()
+                .then(result => {
+                    return {
+                        message: {
+                            type: 'history_response',
+                            data: {
+                                history: result
+                            }
+                        }
+                    };
+                });
         },
+        onSendMessage: function (user, message) {
+            message.data.user = user;
+            message.data.datetime = +new Date();
+            return mongo.insertMessage(message.data)
+                .then(result => {
+                    return {
+                        channel: message.data.channel,
+                        message: {
+                            type: 'new_message',
+                            data: {
+                                message: result
+                            }
+                        }
+                    };
+                });
+        },
+
         onUsersList: function (currentUser) {
             return userModel.getUsers(currentUser)
                 .then(function (users) {
@@ -50,6 +69,7 @@ var model = {
                     }
                 });
         },
+
         onUserInfo: function (currentUser) {
             return {
                 message: {
@@ -68,6 +88,7 @@ var model = {
      */
     processMessage: function (user, message) {
         var messageHandler = model.handlers[MESSAGE_HANDLERS[message.type]];
+
         if (!messageHandler) {
             return Promise.resolve(model.handlers[MESSAGE_HANDLERS['error']]());
         }
