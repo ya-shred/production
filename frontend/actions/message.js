@@ -14,14 +14,14 @@ export default {
     getHistory: function (data) {
         AppDispatcher.handleSocketAction({
             actionType: HISTORY_MESSAGE,
-            message: data
+            message: data.history
         });
     },
 
     newMessage: function (data) {
         AppDispatcher.handleSocketAction({
             actionType: NEW_MESSAGE,
-            message: data
+            message: data.message
         });
     }
 };

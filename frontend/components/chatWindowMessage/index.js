@@ -21,7 +21,7 @@ export default class ChatWindowMessage extends React.Component {
     }
 
     onChange = () => {
-        this.setState(getMessages());
+        this.setState({messages: getMessages()});
     }
 
     componentWillUnmount() {

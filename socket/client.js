@@ -40,7 +40,7 @@ class Socket {
                 return this.socket.send(message);
             }
         } else {
-            return this.socket.send(message);
+            return this.socket.send(params);
         }
     }
 }

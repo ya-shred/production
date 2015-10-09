@@ -28,7 +28,9 @@ var model = {
                     return {
                         message: {
                             type: 'history_response',
-                            data: result
+                            data: {
+                                history: result
+                            }
                         }
                     };
                 });
@@ -42,7 +44,9 @@ var model = {
                         channel: message.data.channel,
                         message: {
                             type: 'new_message',
-                            data: result
+                            data: {
+                                message: result
+                            }
                         }
                     };
                 });
