@@ -24,7 +24,6 @@ var model = {
                     socket.send({type: 'user_info_request'});
 
                 }
-
                 socket.send( { type: 'history_message'} );
                 socket.send( { type: 'users_list_request' } );
 

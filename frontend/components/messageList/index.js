@@ -28,9 +28,7 @@ export default class MessageList extends React.Component {
                 datetime={item.datetime}
                 />
         });
-
         return <div className="message-list" key={this.props.key}  ref="messageList">
-            {history}
             {msg}
         </div>
 
