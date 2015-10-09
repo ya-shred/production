@@ -46,11 +46,16 @@ model = {
             });
         });
     },
+
+
+
+
     /**
      * Сохранить запись о пользователе в БД
      * @param {User} user
      * @returns {Promise}
      */
+
     storeUser: function (user) {
         return new Promise(function (resolve, reject) {
             var collection = db.collection('users');
@@ -72,11 +77,31 @@ model = {
         });
     },
 
-    getHistory: function (user) {
+
+    getHistory: function () {
         return new Promise(function (resolve, reject) {
-            resolve([{channel: 'test', message: 'test'}]);
+            var collection = db.collection('messages');
+            collection.find({}).toArray(function (err, result) {
+                resolve(result);
+            });
         });
     },
+
+
+    insertMessage: function (data) {
+        return new Promise(function (resolve, reject) {
+            var collection = db.collection('messages');
+            collection.insertOne(data, function (err, result) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(result.ops[0]);
+            });
+        });
+    },
+
+
+
     getChannels: function (user) {
         return new Promise(function (resolve, reject) {
             // Get the documents collection

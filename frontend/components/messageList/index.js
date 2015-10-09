@@ -18,6 +18,7 @@ export default class MessageList extends React.Component {
     }
 
     render() {
+
         var msg = this.props.messages.map(function (item) {
             return <MessageItem
                 key={item.id}
@@ -29,6 +30,7 @@ export default class MessageList extends React.Component {
         });
 
         return <div className="message-list" key={this.props.key}  ref="messageList">
+            {history}
             {msg}
         </div>
 

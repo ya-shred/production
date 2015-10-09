@@ -6,6 +6,7 @@ import '../../socket/client';
 
 var MESSAGES_HANDLERS = {
     new_message: 'onNewMessage',
+    new_history: 'onHistory',
     users_list_response: 'onUsersList',
     user_info_response: 'onUserFetched',
     user_connected: 'onUserConnected',
@@ -21,10 +22,16 @@ var model = {
             function (numberOfConnect) {
                 if (numberOfConnect === 1) { // Первое подключение
                     socket.send({type: 'user_info_request'});
+
                 }
-                socket.send({type: 'users_list_request'});
+
+                socket.send( { type: 'history_message'} );
+                socket.send( { type: 'users_list_request' } );
+
             }, function (message) {
+
                 console.log('new message', message);
+
                 var handler = MESSAGES_HANDLERS[message.type];
                 if (!handler) {
                     console.log('Неизвестное сообщение');
@@ -36,6 +43,9 @@ var model = {
     handlers: {
         onNewMessage: function (message) {
             MessageActions.newMessage(message.data);
+        },
+        onHistory: function (message) {
+            MessageActions.getHistory(message.data);
         },
         onUsersList: function (message) {
             UsersListActions.resetUsers(message.data);
@@ -53,6 +63,7 @@ var model = {
             UsersListActions.newUser(message.data);
         }
     },
+
     sendMessage: function (data) {
         socket.send({
             type: 'send_message',

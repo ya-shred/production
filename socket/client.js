@@ -26,6 +26,9 @@ var api = {
     },
     user_info_request: function (params) {
         return params;
+    },
+    history_message: function (params) {
+        return params;
     }
 };
 

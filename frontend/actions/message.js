@@ -1,5 +1,5 @@
 import AppDispatcher from '../dispatchers/dispatcher';
-import { NEW_MESSAGE, SEND_MESSAGE } from '../constants/message';
+import { NEW_MESSAGE, SEND_MESSAGE, HISTORY_MESSAGE } from '../constants/message';
 import SocketActions from './socket';
 
 export default {
@@ -8,6 +8,13 @@ export default {
         console.log(data);
         AppDispatcher.handleViewAction({
             actionType: SEND_MESSAGE,
+            message: data
+        });
+    },
+
+    getHistory: function (data) {
+        AppDispatcher.handleSocketAction({
+            actionType: HISTORY_MESSAGE,
             message: data
         });
     },
