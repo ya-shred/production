@@ -3,6 +3,7 @@ import UserActions from '../actions/user';
 import UsersListActions from '../actions/usersList';
 import MessageActions from '../actions/message';
 import '../../socket/client';
+import VideoActions from '../actions/video'
 
 var MESSAGES_HANDLERS = {
     new_message: 'onNewMessage',
@@ -11,7 +12,9 @@ var MESSAGES_HANDLERS = {
     user_info_response: 'onUserFetched',
     user_connected: 'onUserConnected',
     user_disconnected: 'onUserDisconnected',
-    new_user: 'onNewUser'
+    new_user: 'onNewUser',
+    status: 'onStatus',
+    peers_response: 'onGotPeers'
 };
 
 var socket = null;
@@ -39,6 +42,13 @@ var model = {
             });
     },
     handlers: {
+        onStatus: function (message) {
+            if (message.data.status === 'ok') {
+                console.log('ok response', message.data.message);
+            } else {
+                console.log('error response', message.data.message);
+            }
+        },
         onNewMessage: function (message) {
             MessageActions.newMessage(message.data);
         },
@@ -59,6 +69,9 @@ var model = {
         },
         onNewUser: function (message) {
             UsersListActions.newUser(message.data);
+        },
+        onGotPeers: function(message) {
+            VideoActions.gotDestPeer(message.data.peers);
         }
     },
 
@@ -67,6 +80,19 @@ var model = {
             type: 'send_message',
             data: data
         });
+    },
+    getDestPeers: function () {
+        socket.send({
+            type: 'peers_request'
+        });
+    },
+    connectPeer: (peerId) => {
+        socket.send({
+            type: 'peer_connect',
+            data: {
+                id: peerId
+            }
+        })
     }
 };
 

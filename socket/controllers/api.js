@@ -6,12 +6,40 @@ var MESSAGE_HANDLERS = {
     send_message: 'onSendMessage',
     history_request: 'onGetHistory',
     users_list_request: 'onUsersList',
-    user_info_request: 'onUserInfo'
+    user_info_request: 'onUserInfo',
+    peer_connect: 'onPeerConnect',
+    peers_request: 'onPeersRequest'
 };
 
 var model = {
     handlers: {
-
+        onPeersRequest: function (user) {
+            return userModel.getUsersPeer(user)
+                .then(function (peers) {
+                    return {
+                        message: {
+                            type: 'peers_response',
+                            data: {
+                                peers: peers
+                            }
+                        }
+                    }
+                });
+        },
+        
+        onPeerConnect: function (user, message) {
+            user.peerId = message.data.id;
+            return {
+                message: {
+                    type: 'status',
+                    data: {
+                        status: 'ok',
+                        message: 'peer ' + user.peerId + ' assigned to user'
+                    }
+                }
+            }
+        },
+        
         onErrorMessage: function () {
             return Promise.reject({
                 type: 'status',
@@ -35,6 +63,7 @@ var model = {
                     };
                 });
         },
+        
         onSendMessage: function (user, message) {
             message.data.user = user;
             message.data.datetime = +new Date();
@@ -88,7 +117,6 @@ var model = {
      */
     processMessage: function (user, message) {
         var messageHandler = model.handlers[MESSAGE_HANDLERS[message.type]];
-
         if (!messageHandler) {
             return Promise.resolve(model.handlers[MESSAGE_HANDLERS['error']]());
         }

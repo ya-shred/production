@@ -1,25 +1,11 @@
 import Actions from '../constants/user.js';
 import AppDispatcher from '../dispatchers/dispatcher';
 import assign  from 'react/lib/Object.assign';
-import { EventEmitter } from 'events';
-
-const CHANGE_EVENT = 'change';
+import BaseStore from './base';
 
 let userInfo = {};
 
-const store = assign({}, EventEmitter.prototype, {
-
-    emitChange: function () {
-        this.emit(CHANGE_EVENT);
-    },
-
-    addChangeListener: function (callback) {
-        this.on(CHANGE_EVENT, callback)
-    },
-
-    removeChangeListener: function (callback) {
-        this.removeChangeListener(CHANGE_EVENT, callback);
-    },
+const store = assign({}, BaseStore, {
 
     getUserInfo: function () {
         return userInfo;

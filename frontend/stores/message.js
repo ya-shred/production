@@ -1,8 +1,7 @@
 import Actions from '../constants/message.js';
 import AppDispatcher from '../dispatchers/dispatcher';
 import assign  from 'react/lib/Object.assign';
-import { EventEmitter } from 'events';
-const CHANGE_EVENT = 'change';
+import BaseStore from './base';
 
 let messages = [];
 
@@ -14,19 +13,7 @@ let saveHistory = function(his) {
     messages = messages.concat(his);
 };
 
-const AppStore = assign({}, EventEmitter.prototype, {
-
-    emitChange: function () {
-        this.emit(CHANGE_EVENT);
-    },
-
-    addChangeListener: function (callback) {
-        this.on(CHANGE_EVENT, callback)
-    },
-
-    removeChangeListener: function (callback) {
-        this.removeChangeListener(CHANGE_EVENT, callback);
-    },
+const store = assign({}, BaseStore, {
 
     getAllMessages: function () {
         return messages;
@@ -44,10 +31,8 @@ AppDispatcher.register(function (payload) {
             saveHistory(action.message);
         break;
     }
-    AppStore.emitChange();
+    store.emitChange();
     return true;
 });
 
-
-
-module.exports = AppStore;
+module.exports = store;

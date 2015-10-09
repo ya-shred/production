@@ -17,8 +17,15 @@ var AppDispatcher = assign(new Dispatcher(), {
 			source: "SOCKET_ACTION",
 			action: action
 		})
+	},
+
+	handlePeerAction: function (action) {
+		//console.log('socket action: ', action);
+		this.dispatch({
+			source: "PEER_ACTION",
+			action: action
+		})
 	}
 });
-
 
 export default AppDispatcher;
