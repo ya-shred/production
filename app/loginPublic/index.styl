@@ -27,11 +27,33 @@ body
             height: auto;
             display: block;
     .main
-        width 100%
+        width: 50%;
+        height: 50%;
+        min-width: 700px;
+        max-width: 900px;
+        min-height: 700px;
+        max-height: 900px;
+        overflow: auto;
+        margin: auto;
         padding: 40px 60px;
-        position relative
-        z-index 1
-        box-sizing border-box
+        position: absolute;
+        z-index: 1;
+        box-sizing: border-box;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        -webkit-transition: transform ease-in-out .9s, opacity ease-in-out .9s;
+        -moz-transition: transform ease-in-out .9s, opacity ease-in-out .9s;
+        -o-transition: transform ease-in-out .9s, opacity ease-in-out .9s;
+        transition: transform ease-in-out .9s, opacity ease-in-out .9s;
+        &__description
+            font-size: 21px
+            color #fff
+            font-family: robothin
+            width 480px
+            line-height 30px
+            margin-bottom 50px
         .logo
             width 240px
             margin-bottom 50px
@@ -43,13 +65,6 @@ body
             color #fff
             font-family: American
             margin-bottom 30px
-        &__description
-            font-size: 21px
-            color #fff
-            font-family: robothin
-            width 480px
-            line-height 30px
-            margin-bottom 50px
         .link-git
             display inline-flex
             align-items center
@@ -85,3 +100,24 @@ body
             &__icon-git
                 display block
                 margin-left 10px
+    @media (max-width: 700px), screen and (max-height: 700px)
+        .main
+            transform: scale(0.8);
+            -webkit-transform: scale(0.8);
+            -o-transform: scale(0.8);
+            -moz-transform: scale(0.8);
+    @media (max-width: 550px), screen and (max-height: 550px)
+        .main
+            transform: scale(0.6);
+            -webkit-transform: scale(0.6);
+            -o-transform: scale(0.6);
+            -moz-transform: scale(0.6);
+            min-width: 100px;
+            min-height: 100px;
+            position: relative;
+            width: 100%;
+            height: auto;
+            padding: 1px 1px;
+            &__description
+                width: 99%;
+                max-width: 550px;

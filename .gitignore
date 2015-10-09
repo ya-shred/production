@@ -3,3 +3,5 @@ node_modules
 *.log
 app/frontendPublic
 .DS_Store
+app/loginPublic/index.css
+
