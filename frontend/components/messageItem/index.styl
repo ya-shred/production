@@ -2,9 +2,11 @@
     &__content-item
         width: 100%
         display: flex
-        margin-bottom: 20px
+        padding: 15px 0 5px 10px
         box-sizing: border-box
-
+        &_editing
+            .chat-window__content-sending
+                display: none
     &__content-avatar
         position: relative
         margin-right: 10px
@@ -37,3 +39,11 @@
 
     &__content-sending
         padding-top: 5px
+
+    &__content-edit
+        padding-left: 10px
+        font-family: PT
+        cursor: pointer
+        font-size: 13px
+        &:hover
+            text-decoration: underline

@@ -8,6 +8,7 @@ import VideoActions from '../actions/video'
 var MESSAGES_HANDLERS = {
     new_message: 'onNewMessage',
     history_response: 'onHistory',
+    get_updated_message: 'onGetUpdatedMessage',
     users_list_response: 'onUsersList',
     user_info_response: 'onUserFetched',
     user_connected: 'onUserConnected',
@@ -52,6 +53,9 @@ var model = {
         onNewMessage: function (message) {
             MessageActions.newMessage(message.data);
         },
+        onGetUpdatedMessage: function (message) {
+            MessageActions.getUpdatedMessage(message.data);
+        },
         onHistory: function (message) {
             MessageActions.getHistory(message.data);
         },
@@ -78,6 +82,12 @@ var model = {
     sendMessage: function (data) {
         socket.send({
             type: 'send_message',
+            data: data
+        });
+    },
+    sendUpdatedMessage: function (data) {
+        socket.send({
+            type: 'send_updated_message',
             data: data
         });
     },

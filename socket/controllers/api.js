@@ -5,6 +5,7 @@ var MESSAGE_HANDLERS = {
     error: 'onErrorMessage',
     send_message: 'onSendMessage',
     history_request: 'onGetHistory',
+    send_updated_message: 'onSendUpdatedMessage',
     users_list_request: 'onUsersList',
     user_info_request: 'onUserInfo',
     peer_connect: 'onPeerConnect',
@@ -65,8 +66,8 @@ var model = {
         },
         
         onSendMessage: function (user, message) {
-            message.data.user = user;
             message.data.datetime = +new Date();
+            message.data.userId = user.id;
             return mongo.insertMessage(message.data)
                 .then(result => {
                     return {
@@ -80,7 +81,25 @@ var model = {
                     };
                 });
         },
-
+        onSendUpdatedMessage: function (user, message) {
+            if(user.id === message.data.userId) {
+                return mongo.updateMessage(message.data)
+                    .then(result => {
+                        return {
+                            channel: message.data.channel,
+                            message: {
+                                type: 'get_updated_message',
+                                data: {
+                                    id: message.data.id,
+                                    message: message.data.message
+                                }
+                            }
+                        };
+                    });
+            } else {
+                console.log("user wants to edit not his message");
+            }
+        },
         onUsersList: function (currentUser) {
             return userModel.getUsers(currentUser)
                 .then(function (users) {
