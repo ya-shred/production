@@ -20,31 +20,44 @@ var resetItems = function (items) {
 
 var setOnline = function (userId) {
     users.some(function (el) {
-       if (el.id === userId) {
-           return el.online = true;
-       }
+        if (el.id === userId) {
+            return el.online = true;
+        }
     });
 };
 
 var setOffline = function (userId) {
     users.some(function (el) {
-       if (el.id === userId) {
-           el.online = false;
-           return true;
-       }
+        if (el.id === userId) {
+            el.online = false;
+            return true;
+        }
     });
 };
 
 let searchUser = (text) => {
-    if (text){
+    if (text) {
         return users.filter((user) => {
             let userDisplayName = user.displayName.toLowerCase();
             let test = text.toLowerCase();
             return userDisplayName.indexOf(test) > -1;
         });
 
-    } else{
-        return users;
+    } else {
+        return users.sort(function (a, b) {
+            if (a.online === b.online) {
+                if (a.displayName < b.displayName) {
+                    return -1;
+                }
+                if (a.displayName > b.displayName) {
+                    return 1;
+                }
+            }
+            if (a.online === true) {
+                return -1;
+            }
+            return 1;
+        });
     }
 };
 

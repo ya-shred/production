@@ -27,7 +27,6 @@ export default class MessageList extends React.Component {
             msg = <NotFound text="Пусто!"/>;
         } else {
             msg = this.props.messages.map(function (item) {
-//console.log(item)
                 var messageUser = UsersListStore.getUserById(item.userId);
                 return (
                     <MessageItem
