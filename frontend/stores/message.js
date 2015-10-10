@@ -47,7 +47,7 @@ let countUserMessageNumber = (userId) => {
 let updateMessage = (message) => {
     console.log("id: " + message.id + ", text: " + message.message);
     for (let key in messages) {
-        if (messages[key].id === message.id) {
+        if (messages[key]._id === message.id) {
             messages[key].message = message.message;
             break;
         }
@@ -59,7 +59,11 @@ let searchMessageText;
 const store = assign({}, BaseStore, {
 
     getAllMessages() {
-        return searchMessage(searchMessageText);
+        if (UsersListStore.getAllUsers().length){
+            return searchMessage(searchMessageText);
+        } else {
+            return [];
+        }
     },
 
     getUserLastMessage(userId) {

@@ -16,7 +16,7 @@ export default class MessageItem extends React.Component {
     };
 
     saveMessage = (text) => {
-        MessageActions.sendUpdatedMessage({channel: 'general', id: this.props.messageId, userId: this.props.userId, message: text});
+        MessageActions.sendUpdatedMessage({channel: 'general', newText: text, messageObj: this.props.message, messageUser: this.props.messageUser});
         this.setState({editing: false});
     };
 
@@ -31,30 +31,29 @@ export default class MessageItem extends React.Component {
 
         const currentUser = UserStore.getUserInfo();
         if (this.state.editing) {
-            editAera = <EditArea value={ this.props.message } messageId={ this.props.messageId } onSave={this.saveMessage} onCancel={this.cancelEditing}/>;
+            editAera = <EditArea message={ this.props.message } onSave={this.saveMessage} onCancel={this.cancelEditing}/>;
             contentItemClass = "chat-window__content-item chat-window__content-item_editing"
         } else {
             contentItemClass = "chat-window__content-item"
         }
 
-        if (this.props.userId === currentUser.id){
+        if (this.props.message.userId === currentUser.id){
             editButton = <span className="chat-window__content-edit" onClick={this.openEditArea}>редактировать</span>
         }
-
         return (
             <div className={contentItemClass} key={ this.props.key }>
                 <figure className="chat-window__content-avatar">
-                    <img className="chat-window__avatar" src={ this.props.avatar }/>
+                    <img className="chat-window__avatar" src={ this.props.messageUser.avatarUrl }/>
                 </figure>
                 <div className="chat-window__content-sending">
                     <div className="chat-window__content-name">
-                        {this.props.name}
+                        {this.props.messageUser.displayName}
                         <span className="chat-window__content-date">
-                            {moment(+this.props.datetime).format('DD.MM.YYYY в HH:mm')}
+                            {moment(+this.props.message.datetime).format('DD.MM.YYYY в HH:mm')}
                         </span>
                         {editButton}
                     </div>
-                    <div className="chat-window__content-message">{ this.props.message }</div>
+                    <div className="chat-window__content-message">{ this.props.message.message }</div>
                 </div>
                 {editAera}
             </div>

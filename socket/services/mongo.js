@@ -1,4 +1,6 @@
-var MongoClient = require('mongodb').MongoClient;
+var mongo = require('mongodb');
+var MongoClient = mongo.MongoClient;
+var ObjectId = mongo.ObjectID;
 var config = require('config');
 
 // Connection URL
@@ -101,9 +103,11 @@ model = {
     },
 
     updateMessage: function (data) {
+        console.log('data.message'+data.message);
+        console.log('data.id'+data.id);
         return new Promise(function (resolve, reject) {
             var collection = db.collection('messages');
-            collection.findAndModify({id: data.id}, [], {$set: {message: data.message}}, function (err, result) {
+            collection.findOneAndUpdate({_id: new ObjectId(data.id)}, {$set: {message: data.message}}, function (err, result) {
                 if (err) {
                     return reject(err);
                 }

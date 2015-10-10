@@ -68,7 +68,6 @@ var model = {
         onSendMessage: function (user, message) {
             message.data.datetime = +new Date();
             message.data.userId = user.id;
-            message.data.id = message._id
             return mongo.insertMessage(message.data)
                 .then(result => {
                     return {
@@ -86,6 +85,7 @@ var model = {
             if(user.id === message.data.userId) {
                 return mongo.updateMessage(message.data)
                     .then(result => {
+                        console.log('res', result);
                         return {
                             channel: message.data.channel,
                             message: {

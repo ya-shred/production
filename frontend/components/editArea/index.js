@@ -11,8 +11,8 @@ export default class EditArea extends React.Component {
     constructor(props) {
         super();
         this.state = {
-            value: props.value || '',
-            messageId: props.messageId || ''
+            value: props.message.message || '',
+            messageId: props.message._id || ''
         }
     }
 
@@ -58,5 +58,5 @@ export default class EditArea extends React.Component {
     }
 
 }
-EditArea.propTypes = { value: React.PropTypes.string };
-EditArea.defaultProps = { value: 0 };
+//EditArea.propTypes = { value: React.PropTypes.string };
+//EditArea.defaultProps = { value: 0 };
