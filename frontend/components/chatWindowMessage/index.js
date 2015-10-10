@@ -8,7 +8,7 @@ import MessageList from "../messageList";
 import './index.styl';
 
 var getMessages = () => {
-    return MessageStore.getAllMessages();
+    return MessageStore.getCurrentMessages();
 };
 
 

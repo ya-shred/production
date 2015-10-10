@@ -8,7 +8,7 @@ import SearchUser from '../searchUser';
 
 var getUsersState = () => {
     return {
-        users: UsersListStore.getAllUsers()
+        users: UsersListStore.getCurrentUsers()
     };
 };
 

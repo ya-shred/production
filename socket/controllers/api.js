@@ -85,7 +85,6 @@ var model = {
             if(user.id === message.data.userId) {
                 return mongo.updateMessage(message.data)
                     .then(result => {
-                        console.log('res', result);
                         return {
                             channel: message.data.channel,
                             message: {

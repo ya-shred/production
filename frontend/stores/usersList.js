@@ -53,6 +53,10 @@ let searchUserText;
 const store = assign({}, BaseStore, {
 
     getAllUsers() {
+        return users;
+    },
+
+    getCurrentUsers() {
         return searchUser(searchUserText);
     },
 
