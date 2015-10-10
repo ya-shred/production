@@ -1,6 +1,7 @@
 import React from 'react';
 import UserItem from '../userItem';
 import NotFound from '../notFound';
+import MessageStore from '../../stores/message.js';
 import './index.styl';
 
 export default class UserList extends React.Component {
@@ -18,11 +19,16 @@ export default class UserList extends React.Component {
                 } else {
                     userStatusClass = "user-list__item"
                 }
+                let userLastMessage = MessageStore.getUserLastMessage(user.id);
+                let userMessagesNumber = MessageStore.countUserMessagesNumber(user.id);
+
                 return (
                     <UserItem
                         key={user.id}
                         user={user}
-                        userStatus={userStatusClass}/>
+                        userStatus={userStatusClass}
+                        lastMessage={userLastMessage}
+                        messagesNumber={userMessagesNumber}/>
                 );
             });
         }

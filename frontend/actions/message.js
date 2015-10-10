@@ -1,6 +1,6 @@
 import AppDispatcher from '../dispatchers/dispatcher';
 
-import { NEW_MESSAGE, SEND_MESSAGE, SEARCH_MESSAGE, SEND_UPDATED_MESSAGE, GET_UPDATED_MESSAGE } from '../constants/message';
+import { NEW_MESSAGE, SEND_MESSAGE, SEARCH_MESSAGE, HISTORY_MESSAGE, SEND_UPDATED_MESSAGE, GET_UPDATED_MESSAGE } from '../constants/message';
 
 import SocketActions from './socket';
 

@@ -66,8 +66,9 @@ var model = {
         },
         
         onSendMessage: function (user, message) {
-            message.data.user = user;
             message.data.datetime = +new Date();
+            message.data.userId = user.id;
+            message.data.id = message._id
             return mongo.insertMessage(message.data)
                 .then(result => {
                     return {
@@ -82,16 +83,22 @@ var model = {
                 });
         },
         onSendUpdatedMessage: function (user, message) {
-            console.log("sndupdmsg");
-            return {
-                channel: message.data.channel,
-                message: {
-                    type: 'get_updated_message',
-                    data: {
-                        id: message.data.id,
-                        message: message.data.message
-                    }
-                }
+            if(user.id === message.data.userId) {
+                return mongo.updateMessage(message.data)
+                    .then(result => {
+                        return {
+                            channel: message.data.channel,
+                            message: {
+                                type: 'get_updated_message',
+                                data: {
+                                    id: message.data.id,
+                                    message: message.data.message
+                                }
+                            }
+                        };
+                    });
+            } else {
+                console.log("user wants to edit not his message");
             }
         },
         onUsersList: function (currentUser) {

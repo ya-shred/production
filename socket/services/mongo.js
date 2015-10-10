@@ -100,6 +100,18 @@ model = {
         });
     },
 
+    updateMessage: function (data) {
+        return new Promise(function (resolve, reject) {
+            var collection = db.collection('messages');
+            collection.findAndModify({id: data.id}, [], {$set: {message: data.message}}, function (err, result) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(result);
+            });
+        });
+    },
+
     getChannels: function (user) {
         return new Promise(function (resolve, reject) {
             // Get the documents collection

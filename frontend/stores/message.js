@@ -3,6 +3,7 @@ import AppDispatcher from '../dispatchers/dispatcher';
 import assign  from 'react/lib/Object.assign';
 import UsersListStore from './usersList';
 import BaseStore from './base';
+import _ from 'lodash';
 
 let messages = [];
 
@@ -13,7 +14,6 @@ let addItem = function (message) {
 let saveHistory = function(his) {
     messages = messages.concat(his);
 };
-
 
 let searchMessage = (text) => {
     if (text){
@@ -30,6 +30,20 @@ let searchMessage = (text) => {
     }
 };
 
+let searchUserLastMessage = (userId) => {
+    let lastMessage = _.findLast(messages, (message) => {
+        return message.userId === userId;
+    });
+    return lastMessage;
+};
+
+let countUserMessageNumber = (userId) => {
+    let userMessagesNumber = messages.filter((message) => {
+        return message.userId === userId;
+    });
+    return userMessagesNumber.length;
+};
+
 let updateMessage = (message) => {
     console.log("id: " + message.id + ", text: " + message.message);
     for (let key in messages) {
@@ -43,9 +57,17 @@ let updateMessage = (message) => {
 let searchMessageText;
 
 const store = assign({}, BaseStore, {
-    
-    getAllMessages: function () {
-        return messages;
+
+    getAllMessages() {
+        return searchMessage(searchMessageText);
+    },
+
+    getUserLastMessage(userId) {
+        return searchUserLastMessage(userId);
+    },
+
+    countUserMessagesNumber(userId) {
+        return countUserMessageNumber(userId);
     }
 
 });

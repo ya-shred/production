@@ -16,7 +16,7 @@ export default class MessageItem extends React.Component {
     };
 
     saveMessage = (text) => {
-        MessageActions.sendUpdatedMessage({channel: 'general', id: this.props.messageId, message: text});
+        MessageActions.sendUpdatedMessage({channel: 'general', id: this.props.messageId, userId: this.props.userId, message: text});
         this.setState({editing: false});
     };
 
