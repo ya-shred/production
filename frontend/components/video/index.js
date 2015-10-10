@@ -29,7 +29,7 @@ export default class VideoCall extends React.Component {
         });
     }
 
-    bindStream = (video, stream) => {
+    bindStream (video, stream) {
         video.src = window.URL.createObjectURL(stream);
         video.onloadedmetadata = function (e) {
             video.play();
