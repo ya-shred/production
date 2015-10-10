@@ -120,6 +120,7 @@ app.get('/auth/github/callback', passport.authenticate('github', {
 
 app.get('/logout', function (req, res) {
     req.logout();
+
     res.redirect('/');
 });
 
@@ -127,7 +128,6 @@ app.get('*', function (req, res, next) {
     if (req.session && req.session.passport && req.session.passport.user) {
         return next();
     }
-
     res.render('index');
 });
 
