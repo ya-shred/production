@@ -28,35 +28,89 @@ body
 			display: block;
 	.main
 		width 100%
-		padding: 40px 60px;
+		height 100vh
+		display flex
+		align-items center
 		position relative
 		z-index 1
-		box-sizing border-box
+		.main__wrapper
+			margin-left 6%
+		@media screen and ( max-width: 1024px)
+			justify-content center
+			.main__wrapper
+				text-align center
+				margin-left 0
+		@media screen and (max-width: 640px)
+			.main__wrapper
+				padding 20px
 		.logo
-			width 240px
+			width 500px
 			margin-bottom 50px
 			&__logo
 				max-width 100%
+			@media screen and (max-width: 1920px)
+				width 440px
+			@media screen and ( max-width: 1600px)
+				width 380px
+			@media screen and ( max-width: 1024px)
+				margin 0 auto 40px
+				width 360px
+			@media screen and ( max-width: 640px)
+				width 280px
+				margin-bottom 20px
 		&__title
-			font-size: 40px
-			line-height 50px
+			font-size: 70px
+			line-height 80px
 			color #fff
 			font-family: American
 			margin-bottom 30px
+			@media screen and (max-width: 1920px)
+				font-size: 55px
+				line-height 65px
+			@media screen and (max-width: 1600px)
+				font-size: 30px
+				line-height 40px
+				margin-bottom 20px
+			@media screen and (max-width 1024px)
+				font-size: 35px
+				line-height 45px
+				margin-bottom 20px
+			@media screen and (max-width 640px)
+				font-size: 24px
+				line-height 34px
+				margin-bottom 15px
+
+
 		&__description
-			font-size: 21px
+			font-size: 34px
 			color #fff
 			font-family: robothin
-			width 480px
-			line-height 30px
+			width 780px
+			line-height 40px
 			margin-bottom 50px
+			@media screen and (max-width: 1920px)
+				width 740px
+				font-size: 26px
+				line-height 36px
+			@media screen and (max-width: 1600px)
+				width 600px
+				font-size: 20px
+				line-height 30px
+			@media screen and (max-width: 1024px)
+				width 520px
+				font-size: 16px
+				line-height 26px
+			@media screen and ( max-width: 640px)
+				width 100%
+				font-size: 16px
+				line-height 26px
 		.link-git
 			display inline-flex
 			align-items center
-			padding: 16px 25px 14px;
+			padding: 25px 25px;
 			text-decoration none
 			font-family: robothin
-			font-size: 15px
+			font-size: 25px
 			text-transform: uppercase;
 			letter-spacing 2px
 			color #fff
@@ -64,6 +118,12 @@ body
 			border: none;
 			border-radius: 6px;
 			background: #45cba1;
+			@media screen and (max-width 1920px)
+				padding: 18px 18px;
+				font-size: 18px
+			@media screen and (max-width 1600px)
+				padding: 13px 15px;
+				font-size: 16px
 			&:before
 				content ""
 				border 1px solid #fff

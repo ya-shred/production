@@ -9,6 +9,7 @@ var getMessages = () => {
 };
 
 
+
 class ChatWindowMessage extends React.Component {
     constructor() {
         super();
