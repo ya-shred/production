@@ -1,87 +1,124 @@
 @import '/reset/reset.styl'
 @import 'fonts.styl'
 body
-	width 100%
-	.container-video
-		position fixed
-		top: 0
-		left 0
-		width: 100vw;
-		height: 100vh;
-		&:before
-			content ""
-			width 100%
-			height 100%
-			position absolute
-			top 0
-			left 0
-			background rgba(17,17,17,.8)
-			z-index 1
-		&__video-bg
-			position: absolute;
-			right: 0;
-			bottom: 0;
-			min-width: 100%;
-			min-height: 100%;
-			width: auto;
-			height: auto;
-			display: block;
-	.main
-		width 100%
-		padding: 40px 60px;
-		position relative
-		z-index 1
-		box-sizing border-box
-		.logo
-			width 240px
-			margin-bottom 50px
-			&__logo
-				max-width 100%
-		&__title
-			font-size: 40px
-			line-height 50px
-			color #fff
-			font-family: American
-			margin-bottom 30px
-		&__description
-			font-size: 21px
-			color #fff
-			font-family: robothin
-			width 480px
-			line-height 30px
-			margin-bottom 50px
-		.link-git
-			display inline-flex
-			align-items center
-			padding: 16px 25px 14px;
-			text-decoration none
-			font-family: robothin
-			font-size: 15px
-			text-transform: uppercase;
-			letter-spacing 2px
-			color #fff
-			position: relative;
-			border: none;
-			border-radius: 6px;
-			background: #45cba1;
-			&:before
-				content ""
-				border 1px solid #fff
-				position absolute
-				box-sizing border-box
-				top: 0
-				left 0
-				width 100%
-				height 100%
-				opacity 0
-				border-radius: 6px;
-				transform scale3d(0.6, 0.6, 1)
-				transition transform 0.3s, opacity 0.3s
-				transition-timing-function cubic-bezier(0.75, 0, 0.125, 1)
-			&:hover
-				&:before
-					transform scale3d(1, 1, 1)
-					opacity 1
-			&__icon-git
-				display block
-				margin-left 10px
+    width 100%
+    .container-video
+        position: fixed
+        top: 0
+        left: 0
+        width: 100vw
+        height: 100vh
+        &:before
+            content: ""
+            width: 100%
+            height: 100%
+            position: absolute
+            top: 0
+            left: 0
+            background: rgba(17,17,17,.8)
+            z-index: 1
+        &__video-bg
+            position: absolute
+            right: 0
+            bottom: 0
+            min-width: 100%
+            min-height: 100%
+            width: auto
+            height: auto
+            display: block
+    .main
+        width: 50%
+        height: 50%
+        min-width: 700px
+        max-width: 700px
+        min-height: 700px
+        max-height: 900px
+        overflow: auto
+        margin: auto
+        padding: 40px 60px
+        position: absolute
+        z-index: 1
+        box-sizing: border-box
+        top: 0
+        left: 0
+        bottom: 0
+        right: 0
+        -webkit-transition: transform ease-in-out .9s, opacity ease-in-out .9s
+        -moz-transition: transform ease-in-out .9s, opacity ease-in-out .9s
+        -o-transition: transform ease-in-out .9s, opacity ease-in-out .9s
+        transition: transform ease-in-out .9s, opacity ease-in-out .9s
+        &__description
+            font-size: 21px
+            color: #fff
+            font-family: robothin
+            width: 480px
+            line-height: 30px
+            margin-bottom: 50px
+        .logo
+            width: 240px
+            margin-bottom: 50px
+            &__logo
+                max-width: 100%
+        &__title
+            font-size: 40px
+            line-height: 50px
+            color: #fff
+            font-family: American
+            margin-bottom: 30px
+        .link-git
+            
+            display: inline-flex
+            align-items: center
+            padding: 16px 25px 14px
+            text-decoration: none
+            font-family: robothin
+            font-size: 15px
+            text-transform: uppercase
+            letter-spacing: 2px
+            color: #fff
+            position: relative
+            border: none
+            border-radius: 6px
+            background: #45cba1
+            &:before
+                content: ""
+                border: 1px solid #fff
+                position: absolute
+                box-sizing: border-box
+                top: 0
+                left: 0
+                width: 100%
+                height: 100%
+                opacity: 0
+                border-radius: 6px;
+                transform: scale3d(0.6, 0.6, 1)
+                transition: transform 0.3s, opacity 0.3s
+                transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1)
+            &:hover
+                &:before
+                    transform: scale3d(1, 1, 1)
+                    opacity: 1
+            &__icon-git
+                display: block
+                margin-left: 10px
+    @media (max-width: 700px), screen and (max-height: 700px)
+        .main
+            transform: scale(0.8)
+            -webkit-transform: scale(0.8)
+            -o-transform: scale(0.8)
+            -moz-transform: scale(0.8)
+    @media (max-width: 550px), screen and (max-height: 550px)
+        .main
+            transform: scale(0.6)
+            -webkit-transform: scale(0.6)
+            -o-transform: scale(0.6)
+            -moz-transform: scale(0.6)
+            min-width: 100px
+            min-height: 100px
+            position: relative
+            width: 100%
+            height: auto
+            padding: 1px 1px
+            &__description
+                width: 99%
+                max-width: 550px

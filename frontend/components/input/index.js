@@ -3,16 +3,16 @@ import './index.styl';
 
 class Input extends React.Component {
 
-	render() {
-		return <input
-			className={this.props.className }
-			type={this.props.type }
-			placeholder={this.props.placeholder}
-			value={this.props.value }
-			onClick={this.props.onClick }
-			/>
+    render() {
+        return <input
+            className={this.props.className }
+            type={this.props.type }
+            placeholder={this.props.placeholder}
+            value={this.props.value }
+            onClick={this.props.onClick }
+            />
 
-	}
+    }
 
 }
 

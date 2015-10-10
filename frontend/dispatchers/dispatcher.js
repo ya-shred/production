@@ -3,13 +3,13 @@ import  assign  from 'react/lib/Object.assign';
 
 var AppDispatcher = assign(new Dispatcher(), {
 
-	handleViewAction: function (action) {
-		//console.log('action: ', action);
-		this.dispatch({
-			source: "VIEW_ACTION",
-			action: action
-		})
-	},
+    handleViewAction: function (action) {
+        //console.log('action: ', action);
+        this.dispatch({
+            source: "VIEW_ACTION",
+            action: action
+        })
+    },
 
 	handleSocketAction: function (action) {
 		//console.log('socket action: ', action);
