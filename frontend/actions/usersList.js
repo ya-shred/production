@@ -28,7 +28,7 @@ export default {
         });
     },
     searchUser(text) {
-        AppDispatcher.handleSocketAction({
+        AppDispatcher.handleViewAction({
             actionType: SEARCH_USER,
             text: text
         });

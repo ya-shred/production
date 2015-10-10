@@ -1,6 +1,5 @@
 import React from 'react';
 import Textarea from '../textarea';
-import Input from '../input';
 import SearchMessage from '../searchMessage';
 import MessageStore from '../../stores/message.js';
 import UsersListStore from '../../stores/usersList';

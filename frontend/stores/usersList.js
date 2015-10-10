@@ -19,20 +19,11 @@ var resetItems = function (items) {
 };
 
 var setOnline = function (userId) {
-    users.some(function (el) {
-        if (el.id === userId) {
-            return el.online = true;
-        }
-    });
+    usersHash[userId].online = true;
 };
 
 var setOffline = function (userId) {
-    users.some(function (el) {
-        if (el.id === userId) {
-            el.online = false;
-            return true;
-        }
-    });
+    usersHash[userId].online = false;
 };
 
 let searchUser = (text) => {
