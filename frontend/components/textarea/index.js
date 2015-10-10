@@ -18,7 +18,7 @@ class Textarea extends React.Component {
                 minRows={2}
                 style={{maxHeight: 200}}
                 onKeyDown={this._onKeyDown}
-                placeholder="Введите сообщение"
+                placeholder="Введит"
                 className="textarea"
                 onChange={this._onChange}/>
         )

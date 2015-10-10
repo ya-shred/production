@@ -81,8 +81,8 @@ model = {
     getHistory: function () {
         return new Promise(function (resolve, reject) {
             var collection = db.collection('messages');
-            collection.find({}).toArray(function (err, result) {
-                resolve(result);
+            collection.find({}).sort({ $natural: -1 }).limit(20).toArray(function (err, result) {
+                resolve(result.reverse());
             });
         });
     },

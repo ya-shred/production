@@ -14,7 +14,7 @@ class ChatWindowMessage extends React.Component {
     constructor() {
         super();
         this.state = {
-            messages: getMessages(),
+            messages: getMessages()
         }
     }
     componentDidMount() {
