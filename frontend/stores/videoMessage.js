@@ -109,6 +109,7 @@ const store = assign({}, BaseStore, {
         return VideoAPI.getUserMedia()
             .then((stream) => {
                 curMessageStream = stream;
+                //record = RecordRTC(stream, {recorderType: MediaStreamRecorder });
                 record = RecordRTC(stream, {recorderType: WhammyRecorder });
                 record.startRecording();
                 store.emitChange();
