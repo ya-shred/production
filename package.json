@@ -31,6 +31,7 @@
     "flux": "^2.1.1",
     "hbs": "^3.1.1",
     "html-webpack-plugin": "^1.6.1",
+    "lodash": "^3.10.1",
     "method-override": "^2.3.5",
     "moment": "^2.10.6",
     "mongodb": "^2.0.43",
