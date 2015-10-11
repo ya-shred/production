@@ -1,8 +1,8 @@
 import React from 'react';
 import UserItem from '../userItem';
+import UsersListStore from '../../stores/usersList';
 import NotFound from '../notFound';
 import MessageStore from '../../stores/message.js';
-import './index.styl';
 
 export default class UserList extends React.Component {
 

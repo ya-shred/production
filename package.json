@@ -56,18 +56,23 @@
   "homepage": "https://github.com/ya-shred/production#readme",
   "devDependencies": {
     "babel-jest": "^5.3.0",
-    "jest-cli": "^0.5.10",
-    "react-tools": "^0.13.3"
+    "jest-cli": "^0.5.10"
   },
   "jest": {
     "testFileExtensions": [
       "jest.js"
     ],
+    "moduleFileExtensions": [
+      "js"
+    ],
     "testDirectoryName": "frontend",
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
     "unmockedModulePathPatterns": [
       "react",
-      "react-tools"
-    ]
+      "/node_modules/"
+    ],
+    "globals": {
+      "BABEL_JEST_STAGE": 0
+    }
   }
 }

@@ -1,16 +1,20 @@
 jest.dontMock('./index.js');
-
+jest.mock('../../stores/video');
+jest.mock('../../actions/video');
+//jest.mock('./index.js');
 import React from 'react/addons';
+//var VideoCall = require('./index.js');
 import VideoCall from './index.js';
-//let TestUtils = React.addons.TestUtils;
+let TestUtils = React.addons.TestUtils;
+console.log(VideoCall);
 
 describe('VideoCall', () => {
-    it('Невозможность позвонить повторно, после начала звонка', function() {
+    it('Cannot stop call in init state', function() {
 
         // Render a checkbox with label in the document
-        //var video = TestUtils.renderIntoDocument(
-        //    <VideoCall />
-        //);
+        var video = TestUtils.renderIntoDocument(
+            <VideoCall />
+        );
 
         expect(true).toBe(true);
         //// Verify that it's Off by default
