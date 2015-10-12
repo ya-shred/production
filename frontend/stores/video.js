@@ -15,7 +15,7 @@ const store = assign({}, BaseStore, {
 
         return store.getUserStream()
             .then((userStream) => {
-                !streams.length && userStream && store.addStream(userStream);
+                !streams.length && userStream && store.addUserStream(userStream);
                 activeCalls.push(callObj);
 
                 callObj.answer(userStream);
@@ -31,6 +31,12 @@ const store = assign({}, BaseStore, {
                     store.emitChange();
                 });
             })
+    },
+
+    addUserStream: (stream) => {
+        var cloned = stream.clone();
+        cloned.getAudioTracks().forEach((track) => track.stop());
+        store.addStream(cloned);
     },
 
     addStream: (stream) => {
@@ -79,7 +85,7 @@ const store = assign({}, BaseStore, {
     addSelfStream: () => {
         return VideoAPI.getUserMedia()
             .then((stream) => {
-                store.addStream(stream);
+                store.addUserStream(stream);
                 store.emitChange();
             });
     },
