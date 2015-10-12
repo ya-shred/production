@@ -16,6 +16,8 @@ runcmd:
   - /root/init
   # run git update server
   - node /root/shri/update-server
+  # update repo with current branch
+  - /root/shri/update-repo
 write_files:
   - path: /root/init
     permissions: '0755'
@@ -32,6 +34,13 @@ write_files:
       npm i -g pm2
       # connect repo
       git --work-tree=/root/shri/production --git-dir=/root/shri/production.git remote add origin https://github.com/ya-shred/production.git
+
+      echo NODE_ENV='production' >> /etc/environment
+      echo GITHUB_ID='445868a757f11c5e9341' >> /etc/environment
+      echo GITHUB_SECRET='a21ae6337941c5641670a7439f72112151485191' >> /etc/environment
+      echo FRONT_PORT='80' >> /etc/environment
+      echo MONGOLAB_URI='mongodb://localhost:27017/backend' >> /etc/environment
+      echo GITHUB_CALLBACK=http://`echo $(hostname -I)`/auth/github/callback >> /etc/environment
 
   - path: /root/shri/update-repo
     permissions: '0755'
@@ -66,10 +75,4 @@ write_files:
       cd /root/shri/production
       npm i
       pm2 delete shri
-      export NODE_ENV='production'
-      export GITHUB_ID='445868a757f11c5e9341'
-      export GITHUB_SECRET='a21ae6337941c5641670a7439f72112151485191'
-      export FRONT_PORT='80'
-      export MONGOLAB_URI='mongodb://localhost:27017/backend'
-      export GITHUB_CALLBACK=http://`echo $(hostname -I)`/auth/github/callback
       pm2 start prod.js --name shri
