@@ -46,6 +46,10 @@ const store = assign({}, BaseStore, {
     removeStream: (stream) => {
         let ind = streams.indexOf(stream);
         ind !== -1 && store.disconnectStream(streams.splice(ind, 1)[0]);
+        store.removeLast();
+    },
+
+    removeLast: () => {
         if (streams.length === 1) {
             store.disconnectStream(streams[0]);
             streams.length = 0;
@@ -72,7 +76,7 @@ const store = assign({}, BaseStore, {
     },
 
     stopCall: () => {
-        //store.clearStreams();
+        store.removeLast();
         store.closeCalls();
     },
 
