@@ -97,18 +97,20 @@ const store = assign({}, BaseStore, {
     addDestPeers: (peers) => {
         activeCalls = VideoAPI.calling(peers, streams[0]);
         activeCalls.forEach((callObj) => {
-            let stream = null;
+            if (callObj) {
+                let stream = null;
 
-            callObj.on('stream', (st) => {
-                stream = st;
-                store.addStream(stream);
-                store.emitChange();
-            });
+                callObj.on('stream', (st) => {
+                    stream = st;
+                    store.addStream(stream);
+                    store.emitChange();
+                });
 
-            callObj.on('close', () => {
-                store.removeStream(stream);
-                store.emitChange();
-            });
+                callObj.on('close', () => {
+                    store.removeStream(stream);
+                    store.emitChange();
+                });
+            }
         });
     },
 
