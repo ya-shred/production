@@ -14,7 +14,7 @@ config.plugins.push(new webpack.NoErrorsPlugin());
 var compiler = webpack(config);
 
 console.log('start building');
+require('./serve.js');
 compiler.run(function() {
     console.log('building completed');
-    require('./serve.js');
 });

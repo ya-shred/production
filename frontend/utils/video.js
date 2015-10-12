@@ -13,7 +13,12 @@ navigator.getUserMedia = navigator.getUserMedia ||
 var model = {
     init: (() => {
         return new Promise(function (resolve, reject) {
-            var peer = new Peer({key: key});
+            var peer = new Peer({
+                port:443,
+                key: 'peerjs',
+                host: 'shri-peer.herokuapp.com',
+                secure: true
+            });
             peer.on('open', (id) => {
                 SocketAPI.connectPeer(id);
                 peerId = id;
