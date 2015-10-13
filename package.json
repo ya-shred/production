@@ -57,6 +57,7 @@
   "homepage": "https://github.com/ya-shred/production#readme",
   "devDependencies": {
     "babel-plugin-rewire": "^0.1.22",
+    "git-hooks": "^1.0.1",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.10",
     "karma-chrome-launcher": "^0.2.1",
