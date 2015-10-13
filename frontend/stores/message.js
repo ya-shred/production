@@ -62,11 +62,15 @@ const store = assign({}, BaseStore, {
     },
 
     getCurrentMessages() {
+
         if (UsersListStore.getAllUsers().length){
+
             return searchMessage(searchMessageText);
+
         } else {
             return [];
         }
+
     },
 
     getUserLastMessage(userId) {
@@ -80,6 +84,7 @@ const store = assign({}, BaseStore, {
 });
 
 AppDispatcher.register(function (payload) {
+
     var action = payload.action;
     switch (action.actionType) {
         case Actions.NEW_MESSAGE:
