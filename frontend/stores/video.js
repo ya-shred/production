@@ -11,37 +11,26 @@ let state = '';
 
 const store = assign({}, BaseStore, {
     answerCall: (callObj) => {
-        var stream = null;
+        let answer = (callObj, userStream) => {
+            activeCalls.push(callObj);
+            callObj.answer(userStream);
+            store.bindCallObj(callObj);
+        };
 
-        return store.getUserStream()
-            .then((userStream) => {
-                !streams.length && userStream && store.addUserStream(userStream);
-                activeCalls.push(callObj);
-
-                callObj.answer(userStream);
-
-                callObj.on('stream', (stream) => {
-                    callObj.stream = stream;
-                    store.addStream(stream);
-                    store.emitChange();
+        if (streams.length) {
+            answer(callObj, streams[0]);
+        } else {
+            return store.getUserStream()
+                .then((userStream) => {
+                    userStream && store.addUserStream(userStream);
+                    answer(callObj, userStream);
                 });
-
-                callObj.on('close', () => {
-                    store.removeStream(callObj.stream);
-                    store.disconnectStream(userStream);
-                    callObj.close();
-                    let ind = activeCalls.indexOf(callObj);
-                    activeCalls.splice(ind, 1);
-                    store.emitChange();
-                });
-            })
+        }
     },
 
     addUserStream: (stream) => {
-        var cloned = stream.clone();
-        cloned.getAudioTracks().forEach((track) => track.stop());
-        store.addStream(cloned);
-        return cloned;
+        stream.isSelf = true;
+        store.addStream(stream);
     },
 
     addStream: (stream) => {
@@ -95,30 +84,30 @@ const store = assign({}, BaseStore, {
         return VideoAPI.getUserMedia()
             .then((stream) => {
                 store.addUserStream(stream);
-                store.disconnectStream(stream);
                 store.emitChange();
             });
+    },
+
+    bindCallObj: (callObj) => {
+        callObj.on('stream', (stream) => {
+            callObj.stream = stream;
+            store.addStream(stream);
+            store.emitChange();
+        });
+
+        callObj.on('close', () => {
+            store.removeStream(callObj.stream);
+            callObj.close();
+            let ind = activeCalls.indexOf(callObj);
+            activeCalls.splice(ind, 1);
+            store.emitChange();
+        });
     },
 
     addDestPeers: (peers) => {
         activeCalls = VideoAPI.calling(peers, streams[0]);
         activeCalls.forEach((callObj) => {
-            if (callObj) {
-
-                callObj.on('stream', (stream) => {
-                    callObj.stream = stream;
-                    store.addStream(stream);
-                    store.emitChange();
-                });
-
-                callObj.on('close', () => {
-                    store.removeStream(callObj.stream);
-                    callObj.close();
-                    let ind = activeCalls.indexOf(callObj);
-                    activeCalls.splice(ind, 1);
-                    store.emitChange();
-                });
-            }
+            callObj && store.bindCallObj(callObj);
         });
     },
 
