@@ -1,7 +1,5 @@
 import AppDispatcher from '../dispatchers/dispatcher';
 import Actions from '../constants/video';
-import VideoAPI from '../utils/video';
-import SocketAPI from '../utils/socket';
 
 export default {
     receiveCall: function (data) {

@@ -45,3 +45,11 @@ https://github.com/yandex/codestyle/blob/master/javascript.ru.md
 - запускаем создание droplet
 - после создания нужно поменять адрес webhook в проекте https://github.com/ya-shred/production/settings/hooks/6036173
 - поменять адреса callback при гит авторизации https://github.com/organizations/ya-shred/settings/applications/250785
+
+Для деплоя на heroku
+- git remote add heroku https://git.heroku.com/shri-production.git
+- git push heroku master
+
+Для запуска тестов
+- npm test
+- для дебага тестов. Нужно поменять в karma.conf.js параметр singleRun на false

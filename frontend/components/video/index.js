@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.styl';
 import VideoStore from '../../stores/video'
 import VideoAction from '../../actions/video'
 
@@ -29,7 +28,7 @@ export default class VideoCall extends React.Component {
         });
     }
 
-    bindStream = (video, stream) => {
+    bindStream (video, stream) {
         video.src = window.URL.createObjectURL(stream);
         video.onloadedmetadata = function (e) {
             video.play();
@@ -40,17 +39,17 @@ export default class VideoCall extends React.Component {
         var streams = getStreams();
         this.setState(streams);
         this.setState({callDisabled: !!streams.videos.length});
-    }
+    };
 
     call = () => {
         this.setState({callDisabled: true});
         VideoAction.callToAll();
-    }
+    };
 
-    stopCall = () => {
+    stopCall = () =>  {
         this.setState({callDisabled: false});
         VideoAction.stopCall();
-    }
+    };
 
     render() {
         let videos = this.state.videos.map((video) => {
@@ -62,10 +61,10 @@ export default class VideoCall extends React.Component {
         return (
             <div className='video'>
                 {videos}
-                <button className='video__call' onClick={this.call} disabled={this.state.callDisabled}>
+                <button className='video__call' ref='call' onClick={this.call} disabled={this.state.callDisabled}>
                     Позвонить
                 </button>
-                <button className='video__call' onClick={this.stopCall} disabled={!this.state.callDisabled}>
+                <button className='video__call' ref='stopCall' onClick={this.stopCall} disabled={!this.state.callDisabled}>
                     Завершить разговор
                 </button>
             </div>
