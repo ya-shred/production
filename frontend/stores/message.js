@@ -44,10 +44,13 @@ const AppStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function (payload) {
     var action = payload.action;
+
     switch (action.actionType) {
+
         case Actions.NEW_MESSAGE:
             addItem(action.message);
         break;
+
         case Actions.HISTORY_MESSAGE:
             saveHistory(action.message);
         break;

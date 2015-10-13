@@ -17,8 +17,11 @@ var userModel = require('./socket/models/user');
 var userController = require('./socket/controllers/user');
 
 var EXPRESS_SID_KEY = 'connect.sid';
+
 var COOKIE_SECRET = 'shred 15';
+
 var cookieParser = expressCookieParser(COOKIE_SECRET);
+
 var sessionStore = new MongoStore({
     url: config.get('dbConnectionUrl')
 });

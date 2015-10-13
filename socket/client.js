@@ -9,6 +9,7 @@ var socket = null;
  * Модель для формирования сообщений
  */
 var api = {
+
     send_message: function (params) {
         if (!params.data.channel) {
             return {error: 'Не указан канал отправки'};
@@ -21,12 +22,15 @@ var api = {
             data: params.data
         }
     },
+
     users_list_request: function (params) {
         return params;
     },
+
     user_info_request: function (params) {
         return params;
     },
+
     history_message: function (params) {
         return params;
     }
@@ -58,14 +62,17 @@ var model = {
     connect: function (onConnectCallback = () => {
     }, onMessageCallback = () => {
     }) {
+
         if (!socket) {
             socket = io.connect(socketServerUrl);
         }
+
         var numberOfConnect = 0;
         socket.on('connect', function () {
             numberOfConnect++;
             onConnectCallback(numberOfConnect);
         });
+
         socket.on('message', onMessageCallback);
         return new Socket(socket);
     }

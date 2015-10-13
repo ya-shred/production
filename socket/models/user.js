@@ -43,6 +43,7 @@ var model = {
      * @param {User} profile
      * @returns {Promise}
      */
+
     findOrCreateUser: function (profile) {
         return model.getUser(profile.id)
             .catch(function (err) {
@@ -52,6 +53,7 @@ var model = {
                 return model.storeUser(profile);
             });
     },
+
     /**
      * Вернуть учетную запись пользователя
      * @param user.id

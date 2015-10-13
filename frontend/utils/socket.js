@@ -19,12 +19,15 @@ var socket = null;
 var model = {
     init: function () {
         socket = socketClient.connect(
+
             function (numberOfConnect) {
                 if (numberOfConnect === 1) { // Первое подключение
-                    socket.send({type: 'user_info_request'});
 
+                    socket.send({ type: 'user_info_request'}  );
                 }
+
                 socket.send( { type: 'history_message'} );
+
                 socket.send( { type: 'users_list_request' } );
 
             }, function (message) {
@@ -32,6 +35,7 @@ var model = {
                 console.log('new message', message);
 
                 var handler = MESSAGES_HANDLERS[message.type];
+
                 if (!handler) {
                     console.log('Неизвестное сообщение');
                 } else {
@@ -39,6 +43,7 @@ var model = {
                 }
             });
     },
+
     handlers: {
         onNewMessage: function (message) {
             MessageActions.newMessage(message.data);
@@ -62,7 +67,6 @@ var model = {
             UsersListActions.newUser(message.data);
         }
     },
-
     sendMessage: function (data) {
         socket.send({
             type: 'send_message',

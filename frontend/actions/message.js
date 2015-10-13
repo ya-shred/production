@@ -1,15 +1,11 @@
 import AppDispatcher from '../dispatchers/dispatcher';
 import { NEW_MESSAGE, SEND_MESSAGE, HISTORY_MESSAGE } from '../constants/message';
-import SocketActions from './socket';
+import SocketAPI from '../utils/socket.js'
 
 export default {
+
     sendMessage: function (data) {
-        SocketActions.sendMessage(data);
-        console.log(data);
-        AppDispatcher.handleViewAction({
-            actionType: SEND_MESSAGE,
-            message: data
-        });
+        SocketAPI.sendMessage(data);
     },
 
     getHistory: function (data) {

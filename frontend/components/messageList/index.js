@@ -4,19 +4,15 @@ import MessageItem from "../messageItem";
 import _ from 'lodash';
 export default class MessageList extends React.Component {
 
-    constructor() {
-        super();
-        this.onScroll = _.throttle(function(e) {
-            if (e.target === null) {
-                debugger;
-            }
-        }, 500);
-    }
-
     componentDidMount() {
         this.scrollToBottom();
     }
 
+    onScroll = (e) => {
+        e.persist();
+        console.log(e.target.scrollTop);
+
+    }
     componentDidUpdate() {
         this.scrollToBottom();
     }
@@ -37,7 +33,7 @@ export default class MessageList extends React.Component {
                 datetime={item.datetime}
                 />
         });
-        return <div className="message-list" key={this.props.key} onScroll={this.onScroll} ref="messageList">
+        return <div className="message-list" key={this.props.key} onScroll={_.throttle(this.onScroll, 200)} ref="messageList">
             {msg}
         </div>
 

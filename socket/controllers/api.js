@@ -72,6 +72,7 @@ var model = {
         },
 
         onUserInfo: function (currentUser) {
+            console.log("currentUser !!!", currentUser);
             return {
                 message: {
                     type: 'user_info_response',

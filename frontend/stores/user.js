@@ -6,7 +6,7 @@ import { EventEmitter } from 'events';
 const CHANGE_EVENT = 'change';
 
 let userInfo = {};
-
+console.log('adasdsa',userInfo);
 const store = assign({}, EventEmitter.prototype, {
 
     emitChange: function () {
