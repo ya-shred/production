@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import VideoStore from '../../stores/video'
 import VideoAction from '../../actions/video'
 
@@ -10,9 +10,6 @@ export default class VideoCall extends React.Component {
     constructor() {
         super();
         this.state = getStreams();
-        this.onChange = this.onChange.bind(this);
-        this.call = this.call.bind(this);
-        this.stopCall = this.stopCall.bind(this);
     }
 
     componentDidMount() {
@@ -38,21 +35,21 @@ export default class VideoCall extends React.Component {
         };
     }
 
-    onChange() {
+    onChange = () => {
         var streams = getStreams();
         this.setState(streams);
         this.setState({callDisabled: !!streams.videos.length});
-    }
+    };
 
-    call() {
+    call = () => {
         this.setState({callDisabled: true});
         VideoAction.callToAll();
-    }
+    };
 
-    stopCall() {
+    stopCall = () =>  {
         this.setState({callDisabled: false});
         VideoAction.stopCall();
-    }
+    };
 
     render() {
         let videos = this.state.videos.map((video) => {
