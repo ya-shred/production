@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - "4.0"
+script: npm test
+env:
+  - NODE_ENV=continuous
+
+before_script: # запуск виртуального дисплея на тревисе
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start

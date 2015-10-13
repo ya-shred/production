@@ -40,12 +40,12 @@ var conf = {
         showSkipped: true, // default: false
         showSkippedSummary: true  // default: false
     },
-    browsers: ['Chrome'],
+    browsers: [process.env.NODE_ENV === 'continuous' ? 'Firefox' : 'Chrome'],
     singleRun: false
     //singleRun: true
 };
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'continuous') {
     conf.singleRun = true;
 }
 
