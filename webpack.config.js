@@ -33,7 +33,7 @@ var config = {
                 exclude: /node_modules/
             },{
                 test: /\.styl$/,
-                loader: TextPlugin.extract('style-loader','css-loader!autoprefixer-loader?browsers=last 5 version!stylus-loader')
+                loader: TextPlugin.extract('style-loader','css-loader!autoprefixer-loader?browsers=last 5 version!stylus-loader?resolve url=true')
             },{
                 test: /\.(png|woff|woff2|eot|ttf|svg)($|\?)/,
                 loader: 'url-loader',
@@ -42,7 +42,9 @@ var config = {
                 }
             }
         ]
-
+    },
+    stylus: {
+        'resolve url': true
     }
 
 };
