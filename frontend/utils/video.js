@@ -11,8 +11,8 @@ navigator.getUserMedia = navigator.getUserMedia ||
     navigator.mozGetUserMedia;
 
 var model = {
-    init: (() => {
-        return new Promise(function (resolve, reject) {
+    init: () => {
+        return model.inited = new Promise(function (resolve, reject) {
             var peer = new Peer({
                 port:443,
                 key: 'peerjs',
@@ -28,7 +28,7 @@ var model = {
                 model.listen();
             });
         });
-    })(),
+    },
 
     listen: () => {
         peerObj.on('call', (call) => {
@@ -52,6 +52,10 @@ var model = {
     },
 
     calling: (peers, mediaStream) => {
+        if (model.inited) {
+            console.log('Peer not inited, cannot call');
+            return [];
+        }
         var calls = [];
         peers.forEach((peer) => {
             calls.push(peerObj.call(peer, mediaStream));

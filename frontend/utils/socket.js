@@ -106,6 +106,4 @@ var model = {
     }
 };
 
-model.init();
-
 export default model;
