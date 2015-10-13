@@ -20,14 +20,18 @@ const store = assign({}, BaseStore, {
 
                 callObj.answer(userStream);
 
-                callObj.on('stream', (st) => {
-                    stream = st;
+                callObj.on('stream', (stream) => {
+                    callObj.stream = stream;
                     store.addStream(stream);
                     store.emitChange();
                 });
 
                 callObj.on('close', () => {
-                    store.removeStream(stream);
+                    store.removeStream(callObj.stream);
+                    store.disconnectStream(userStream);
+                    callObj.close();
+                    let ind = activeCalls.indexOf(callObj);
+                    activeCalls.splice(ind, 1);
                     store.emitChange();
                 });
             })
@@ -37,6 +41,7 @@ const store = assign({}, BaseStore, {
         var cloned = stream.clone();
         cloned.getAudioTracks().forEach((track) => track.stop());
         store.addStream(cloned);
+        return cloned;
     },
 
     addStream: (stream) => {
@@ -90,6 +95,7 @@ const store = assign({}, BaseStore, {
         return VideoAPI.getUserMedia()
             .then((stream) => {
                 store.addUserStream(stream);
+                store.disconnectStream(stream);
                 store.emitChange();
             });
     },
@@ -98,16 +104,18 @@ const store = assign({}, BaseStore, {
         activeCalls = VideoAPI.calling(peers, streams[0]);
         activeCalls.forEach((callObj) => {
             if (callObj) {
-                let stream = null;
 
-                callObj.on('stream', (st) => {
-                    stream = st;
+                callObj.on('stream', (stream) => {
+                    callObj.stream = stream;
                     store.addStream(stream);
                     store.emitChange();
                 });
 
                 callObj.on('close', () => {
-                    store.removeStream(stream);
+                    store.removeStream(callObj.stream);
+                    callObj.close();
+                    let ind = activeCalls.indexOf(callObj);
+                    activeCalls.splice(ind, 1);
                     store.emitChange();
                 });
             }

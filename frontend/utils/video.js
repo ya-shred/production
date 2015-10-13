@@ -52,13 +52,15 @@ var model = {
     },
 
     calling: (peers, mediaStream) => {
-        if (model.inited) {
+        if (!model.inited) {
             console.log('Peer not inited, cannot call');
             return [];
         }
         var calls = [];
         peers.forEach((peer) => {
-            calls.push(peerObj.call(peer, mediaStream));
+            if (peer !== peerId) {
+                calls.push(peerObj.call(peer, mediaStream));
+            }
         });
         return calls;
     }
