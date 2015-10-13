@@ -1,10 +1,16 @@
 language: node_js
 node_js:
-  - "4.0"
+- '4.0'
 script: npm test
 env:
-  - NODE_ENV=continuous
-
-before_script: # запуск виртуального дисплея на тревисе
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+- NODE_ENV=continuous
+before_script:
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+deploy:
+  provider: heroku
+  api_key:
+    secure: mGZcZdMUwip0AKFQ23DkUnsIVEAxuH4C1sARV2lvJYgH0EZ8iaiuugl33LQsyOEfJ7WLx6kIJw+MVAP/8IphCWRm2Fe+WVZinKRid0g1kDzvinxhGfqKQamythGIQRcfrdnIWdpgbB6hxQARiYYd40xFbeb6ZdXzg6n0ZP5Il1+SMYxkSqEKvenYbFDScMo2pZhhbOYWyHV/cXfnI51ENSo6CWMveUWeEoFUKFISWiLqHZuwYzM4jXoZh9FbM8fKhXiYQp+DRxDJKtpd6ATDLq+q1ld2Npifu0A1LfvpiCtLR89W45mdNerElk08Tf51ce6QgiROrxNTuCBoLBBtOtSKvXA5R7w7aZtb1AQhqVbZBLSFA0EvIKOuFzCaF+Z0E9EyzR8kAjoJ5mGQ0PWSg9Xec+04XuHnMFcF8B1oSHchzA9L7jnQC+zZNVYilqVP/M5aORXcES4AalQraGn5Wxg/JZTPLgc06kfaBIRmWQXXLGUsNkcZ+SL+wBIDxxaH1PPZ6Mgek1BWK39SXGM0YAab9MY2YCMzb+d7iTAgJf0s7lJG0PvYeeWuSQACMakGgyyefc4DanzDi3/qlf8js6TrkrxElz/gXhYcuBuivoISbu1p88gV+FopAR5kFUvxxtSL+CghpLsZ9bdaLTzPKOfCUPsxI2ubEMSeKOuVYcg=
+  app: shri-production
+  on:
+    repo: ya-shred/production
