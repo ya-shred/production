@@ -26,8 +26,8 @@ var model = {
             function (numberOfConnect) {
                 if (numberOfConnect === 1) { // Первое подключение
                     socket.send({type: 'user_info_request'});
+                    socket.send( { type: 'history_request'} );
                 }
-                socket.send( { type: 'history_request'} );
                 socket.send( { type: 'users_list_request' } );
 
             }, function (message) {

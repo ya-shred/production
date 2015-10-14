@@ -33,6 +33,8 @@
     "flux": "^2.1.1",
     "hbs": "^3.1.1",
     "html-webpack-plugin": "^1.6.1",
+    "image-webpack-loader": "^1.6.1",
+    "imagemin": "^3.2.0",
     "lodash": "^3.10.1",
     "method-override": "^2.3.5",
     "moment": "^2.10.6",
