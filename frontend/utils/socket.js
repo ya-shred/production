@@ -75,7 +75,11 @@ var model = {
             UsersListActions.newUser(message.data);
         },
         onGotPeers: function(message) {
-            VideoActions.gotDestPeer(message.data.peers);
+            switch (message.data.channel) {
+                case 'video':
+                    VideoActions.gotDestPeer(message.data.peers);
+                    break;
+            }
         }
     },
 
@@ -91,9 +95,12 @@ var model = {
             data: data
         });
     },
-    getDestPeers: function () {
+    getDestPeers: function (type) {
         socket.send({
-            type: 'peers_request'
+            type: 'peers_request',
+            data: {
+                channel: type || 'video'
+            }
         });
     },
     connectPeer: (peerId) => {

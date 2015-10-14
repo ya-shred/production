@@ -14,14 +14,15 @@ var MESSAGE_HANDLERS = {
 
 var model = {
     handlers: {
-        onPeersRequest: function (user) {
+        onPeersRequest: function (user, message) {
             return userModel.getUsersPeer(user)
                 .then(function (peers) {
                     return {
                         message: {
                             type: 'peers_response',
                             data: {
-                                peers: peers
+                                peers: peers,
+                                channel: message.data.channel
                             }
                         }
                     }
