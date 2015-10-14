@@ -70,6 +70,9 @@ var model = {
                 if (err !== 'not found') {
                     return Promise.reject(err);
                 }
+                if(!profile.displayName){
+                    profile.displayName = profile.username
+                }
                 return model.storeUser(profile);
             });
     },

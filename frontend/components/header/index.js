@@ -1,5 +1,8 @@
 import React from 'react';
-import logo from './logo.svg'
+import './index.styl';
+import Logout from '../Logout';
+import logo from './logo.svg';
+
 export default class Header extends React.Component {
 
     render() {
@@ -8,8 +11,8 @@ export default class Header extends React.Component {
                 <figure className="header__logo">
                     <img src={logo}/>
                 </figure>
+                <Logout />
             </header>
-        )
-
+        );
     }
 }
