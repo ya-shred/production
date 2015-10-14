@@ -28,7 +28,7 @@ var model = {
         peers.forEach((peer) => {
             if (peer !== Peer.getId()) {
                 let conn = peerObj.connect(peer);
-                conn.on('open', () => {
+                conn && conn.on('open', () => {
                     files.forEach((file) => {
                         conn.send(file);
                     });
