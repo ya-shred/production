@@ -2,13 +2,14 @@ import Actions from '../constants/user.js';
 import AppDispatcher from '../dispatchers/dispatcher';
 import assign  from 'react/lib/Object.assign';
 import BaseStore from './base';
+import UsersListStore from './usersList';
 
 let userInfo = {};
 
 const store = assign({}, BaseStore, {
 
     getUserInfo: function () {
-        return userInfo;
+            return userInfo;
     },
 
     dispatcherIndex: AppDispatcher.register(function (payload) {

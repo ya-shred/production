@@ -64,9 +64,7 @@ const store = assign({}, BaseStore, {
     getCurrentMessages() {
 
         if (UsersListStore.getAllUsers().length){
-
             return searchMessage(searchMessageText);
-
         } else {
             return [];
         }
