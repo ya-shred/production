@@ -131,7 +131,7 @@ const store = assign({}, BaseStore, {
                 if (state === '') {
                     state = 'start call';
                     store.addSelfStream()
-                        .then(SocketAPI.getDestPeers);
+                        .then(() => SocketAPI.getDestPeers('video'));
                 }
                 break;
             case Actions.DEST_PEERS:

@@ -31,7 +31,7 @@ export default class MessageItem extends React.Component {
             contentItemClass = "chat-window__content-item"
         }
 
-        if (this.props.message.userId === currentUser.id){
+        if (this.props.message.userId === currentUser.id && !this.props.message.notEditable){
             editButton = <span className="chat-window__content-edit" onClick={this.openEditArea}></span>
         }
         return (

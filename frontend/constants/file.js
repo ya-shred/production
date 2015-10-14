@@ -1,0 +1,5 @@
+export default {
+    DEST_PEERS_FILE: 'DEST_PEERS_FILE',
+    RECEIVE_FILE: 'RECEIVE_FILE',
+    SEND_FILE: 'SEND_FILE'
+};

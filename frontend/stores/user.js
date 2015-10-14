@@ -9,7 +9,7 @@ let userInfo = {};
 const store = assign({}, BaseStore, {
 
     getUserInfo: function () {
-            return userInfo;
+        return userInfo;
     },
 
     dispatcherIndex: AppDispatcher.register(function (payload) {

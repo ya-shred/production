@@ -1,7 +1,7 @@
 import React from 'react';
 import Textarea from '../textarea';
 import SearchMessage from '../searchMessage';
-import MessageStore from '../../stores/message.js';
+import MessageStore from '../../stores/message';
 import UsersListStore from '../../stores/usersList';
 import MessageList from "../messageList";
 
