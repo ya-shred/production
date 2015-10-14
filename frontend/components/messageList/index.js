@@ -1,9 +1,16 @@
 import React from 'react';
+import ActionMessage from '../../actions/message';
 import MessageItem from "../messageItem";
 import UsersListStore from '../../stores/usersList';
 import NotFound from '../notFound';
+import _ from "lodash";
 
 export default class MessageList extends React.Component {
+
+    constructor() {
+        super();
+        this.throttledScroll = _.throttle(this.scroll, 500);
+    }
 
     componentDidMount() {
         this.scrollToBottom();
@@ -18,6 +25,17 @@ export default class MessageList extends React.Component {
         messageList.scrollTop = messageList.scrollHeight;
     };
 
+    onScroll = (e) => {
+        e.persist();
+        this.throttledScroll(e);
+    };
+
+    scroll = (e) => {
+        console.log(e.target.scrollTop);
+        if(e.target.scrollTop <= 150) {
+            ActionMessage.getMoreMessage;
+        }
+    };
     render() {
 
         let msg;
@@ -37,7 +55,7 @@ export default class MessageList extends React.Component {
             });
         }
         return (
-            <div className="message-list" ref="messageList">
+            <div className="message-list" ref="messageList" onScroll={this.onScroll}>
                 {msg}
             </div>
         );

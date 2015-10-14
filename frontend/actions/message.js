@@ -38,6 +38,9 @@ export default {
         SocketActions.sendUpdatedMessage(data);
     },
 
+    getMoreMessage(){
+        SocketActions.getMoreMessage();
+    },
     getUpdatedMessage(data) {
         AppDispatcher.handleViewAction({
             actionType: GET_UPDATED_MESSAGE,

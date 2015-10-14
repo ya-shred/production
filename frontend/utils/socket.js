@@ -87,6 +87,10 @@ var model = {
         }
     },
 
+    sendMoreMessage: function () {
+        socket.send({ type: 'upload_message'})
+    },
+
     sendMessage: function (data) {
         socket.send({
             type: 'send_message',

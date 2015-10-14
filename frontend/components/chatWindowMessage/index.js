@@ -4,7 +4,6 @@ import SearchMessage from '../searchMessage';
 import MessageStore from '../../stores/message';
 import UsersListStore from '../../stores/usersList';
 import MessageList from "../messageList";
-
 var getMessages = () => {
     return MessageStore.getCurrentMessages();
 };
@@ -17,7 +16,8 @@ export default class ChatWindowMessage extends React.Component {
         super();
         this.state = {
             messages: getMessages()
-        }
+        };
+
     }
 
     componentDidMount() {

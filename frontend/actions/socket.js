@@ -6,5 +6,8 @@ export default {
     },
     sendUpdatedMessage(data) {
         SocketAPI.sendUpdatedMessage(data);
+    },
+    getMoreMessage() {
+        SocketAPI.sendMoreMessage();
     }
-};
+}
