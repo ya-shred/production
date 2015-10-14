@@ -9,13 +9,13 @@ export default {
         });
     },
     sendFile: function(data) {
-        AppDispatcher.handleSocketAction({
+        AppDispatcher.handleViewAction({
             actionType: Actions.SEND_FILE,
             data: data
         });
     },
     receiveFile: function(data) {
-        AppDispatcher.handleSocketAction({
+        AppDispatcher.handlePeerAction({
             actionType: Actions.RECEIVE_FILE,
             data: data
         });

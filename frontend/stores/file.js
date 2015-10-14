@@ -9,8 +9,12 @@ let files = [];
 
 const store = assign({}, BaseStore, {
     sendDestPeers: (peers) => {
-        FileAPI.sending(peers, files.slice());
+        let oldFiles = files.slice();
+        FileAPI.sending(peers, oldFiles);
         files.length = 0;
+        oldFiles.forEach((file) => {
+            store.receiveFile(file);
+        });
     },
 
     receiveFile: (file) => {
