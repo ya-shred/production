@@ -4,6 +4,7 @@ import UsersListActions from '../actions/usersList';
 import MessageActions from '../actions/message';
 import '../../socket/client';
 import VideoActions from '../actions/video'
+import FileActions from '../actions/file'
 
 var MESSAGES_HANDLERS = {
     new_message: 'onNewMessage',
@@ -78,6 +79,9 @@ var model = {
             switch (message.data.channel) {
                 case 'video':
                     VideoActions.gotDestPeer(message.data.peers);
+                    break;
+                case 'file':
+                    FileActions.sendDestPeers(message.data.peers);
                     break;
             }
         }

@@ -1,30 +1,34 @@
-import Actions from '../constants/video';
+import Actions from '../constants/file';
 import SocketAPI from '../utils/socket';
 import FileAPI from '../utils/file';
+import UserStore from './user';
 import AppDispatcher from '../dispatchers/dispatcher';
 import assign  from 'react/lib/Object.assign';
 import BaseStore from './base';
 
 let files = [];
+let oldFiles = [];
 
 const store = assign({}, BaseStore, {
     sendDestPeers: (peers) => {
-        let oldFiles = files.slice();
+        oldFiles = files.slice();
         FileAPI.sending(peers, oldFiles);
         files.length = 0;
-        oldFiles.forEach((file) => {
-            store.receiveFile(file);
-        });
     },
 
-    receiveFile: (file) => {
-        debugger;
-        console.log(file);
+    getOldFiles: () => {
+        return oldFiles;
     },
 
     addFile: (file) => {
         if (files.indexOf(file) === -1) {
-            files.push(file);
+            files.push({
+                file: file,
+                userId: UserStore.getUserInfo().id,
+                mime: file.type,
+                name: file.name,
+                datetime: file.lastModified
+            });
         }
     },
 
@@ -39,9 +43,6 @@ const store = assign({}, BaseStore, {
             case Actions.SEND_FILE:
                 SocketAPI.getDestPeers('file');
                 store.addFile(action.data);
-                break;
-            case Actions.RECEIVE_FILE:
-                store.receiveFile(action.data);
                 break;
         }
 

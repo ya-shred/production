@@ -1,7 +1,11 @@
-import Actions from '../constants/message.js';
+import React from 'react';
+import Actions from '../constants/message';
+import ActionsFile from '../constants/file';
+import ActionsUsersList from '../constants/usersList';
 import AppDispatcher from '../dispatchers/dispatcher';
 import assign  from 'react/lib/Object.assign';
 import UsersListStore from './usersList';
+import FileStore from './file';
 import BaseStore from './base';
 import _ from 'lodash';
 
@@ -53,6 +57,30 @@ let updateMessage = (message) => {
     }
 };
 
+let receiveFile = (fileObj) => {
+    let file = fileObj.file;
+    file = file  instanceof Blob ? file : new Blob([file], {type: fileObj.mime});
+    let url = window.URL.createObjectURL(file);
+    addItem({
+        _id: fileObj.datetime,
+        datetime: fileObj.datetime,
+        userId: fileObj.userId,
+        message: (
+            <span>Пользователь загрузил файл:
+                <a href={url}>{fileObj.name}</a>
+            </span>
+        ),
+        notEditable: true
+    });
+};
+
+let sendFileSelf = () => {
+    let files = FileStore.getOldFiles();
+    files.forEach((fileObj) => {
+        receiveFile(fileObj);
+    });
+};
+
 let searchMessageText;
 
 const store = assign({}, BaseStore, {
@@ -77,30 +105,44 @@ const store = assign({}, BaseStore, {
 
     countUserMessagesNumber(userId) {
         return countUserMessageNumber(userId);
-    }
+    },
+
+    dispatcherIndex: AppDispatcher.register(function (payload) {
+
+        var action = payload.action;
+        switch (action.actionType) {
+            case Actions.NEW_MESSAGE:
+                addItem(action.message);
+                store.emitChange();
+                break;
+            case Actions.HISTORY_MESSAGE:
+                saveHistory(action.message);
+                store.emitChange();
+                break;
+            case Actions.SEARCH_MESSAGE:
+                searchMessageText = action.text;
+                store.emitChange();
+                break;
+            case Actions.GET_UPDATED_MESSAGE:
+                updateMessage(action.message);
+                store.emitChange();
+                break;
+            case ActionsFile.RECEIVE_FILE:
+                receiveFile(action.data);
+                store.emitChange();
+                break;
+            case ActionsFile.DEST_PEERS_FILE:
+                AppDispatcher.waitFor([FileStore.dispatcherIndex]);
+                sendFileSelf();
+                store.emitChange();
+                break;
+            case ActionsUsersList.RESET_USERS:
+                store.emitChange();
+                break;
+        }
+        return true;
+    })
 
 });
 
-AppDispatcher.register(function (payload) {
-
-    var action = payload.action;
-    switch (action.actionType) {
-        case Actions.NEW_MESSAGE:
-            addItem(action.message);
-        break;
-        case Actions.HISTORY_MESSAGE:
-            saveHistory(action.message);
-        break;
-        case Actions.SEARCH_MESSAGE:
-            searchMessageText = payload.action.text;
-            break;
-        case Actions.GET_UPDATED_MESSAGE:
-            updateMessage(payload.action.message);
-            break;
-
-    }
-    store.emitChange();
-    return true;
-});
-
-module.exports = store;
+export default store;

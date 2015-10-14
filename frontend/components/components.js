@@ -4,6 +4,8 @@ import DropZone from './dropZone';
 import ContainerChat from './containerChat';
 import SocketAPI from '../utils/socket';
 import VideoAPI from '../utils/video';
+import FileAPI from '../utils/file';
+import FileStore from '../stores/file';
 import FileAction from '../actions/file';
 
 export default class Components extends React.Component {
@@ -17,6 +19,7 @@ export default class Components extends React.Component {
     componentWillMount() {
         SocketAPI.init();
         VideoAPI.init();
+        FileAPI.init();
     }
 
     dragleave = (e) => {
