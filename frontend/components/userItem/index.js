@@ -20,13 +20,6 @@ export default class UserItem extends React.Component {
 
                         <div className="user-list__status"/>
                     </div>
-                    <div className="user-list__date">{lastMessageDatetime}</div>
-                </div>
-                <div className="user-list__content">
-                    <div className="user-list__last-message">
-                        {lastMessageText}
-                    </div>
-                    <div className="user-list__current-new-message">{this.props.messagesNumber}</div>
                 </div>
             </div>
         </li>;

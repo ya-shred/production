@@ -1,5 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
+var file = require('file-loader');
+var imageWebpack = require('image-webpack-loader');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var TextPlugin = require('extract-text-webpack-plugin');
 

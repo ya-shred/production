@@ -1,7 +1,6 @@
 import React from 'react';
 import MessageActions from '../../actions/message';
 import UserActions from '../../actions/usersList.js';
-import './index.styl';
 import TextareaSize from 'react-textarea-autosize';
 const ENTER_KEY_CODE = 13; // код клавиши enter
 const ESC_KEY_CODE = 27; // код клавиши esc

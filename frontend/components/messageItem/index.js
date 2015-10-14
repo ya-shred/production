@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.styl';
 import moment from 'moment';
 import EditArea from '../editArea';
 import MessageActions from '../../actions/message';
@@ -38,7 +37,7 @@ export default class MessageItem extends React.Component {
         }
 
         if (this.props.message.userId === currentUser.id){
-            editButton = <span className="chat-window__content-edit" onClick={this.openEditArea}>редактировать</span>
+            editButton = <span className="chat-window__content-edit" onClick={this.openEditArea}></span>
         }
         return (
             <div className={contentItemClass} key={ this.props.key }>

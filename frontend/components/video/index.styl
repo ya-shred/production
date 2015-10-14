@@ -1,17 +1,34 @@
 .video
     background: rgba(0,0,0,0.2)
     color: black
-    position: relative
+    //position: relative
     z-index: 1
     box-shadow: 2px 2px 2px black
     border: 1px solid transparent
     overflow-y: auto
     max-height: 100%
 
-.video__out
-    background: black
-    width: 100%
+    &__out
+        background: black
+        width: 100%
 
-.video__call
-    margin: 20px auto
-    display: block
+
+
+    &__call
+        top: 0
+        background: url("phone.svg") no-repeat center
+        background-size: 20px
+
+    &__stop
+        top: 50px
+        background url("close.svg") no-repeat center
+        background-size: 20px
+
+    .video_button
+        width: 50px
+        height: 50px
+        display: block
+        left: 0
+        cursor: pointer
+        position: absolute
+        border-bottom 1px solid #f8f8f8

@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.styl';
 import MessageItem from "../messageItem";
 import UsersListStore from '../../stores/usersList';
 import NotFound from '../notFound';

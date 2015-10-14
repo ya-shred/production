@@ -1,22 +1,14 @@
 .aside-right
-    width: 250px
-    position: relative
+    width: 350px
+    position: absolute
     overflow: hidden
-    height: 100%
-
-    &:before, &:after
-        content: ""
-        position absolute
-        top: 0
-        left: 0
-        width: 100%
-        height: 100%
-        z-index: 0
-
-    &:before
-        background: url('http://i10.fotocdn.net/s1/1/gallery_m/1044/1044393/1044393492.jpg') no-repeat
-        filter: blur(2px);
-
-    &:after
-        background: rgba(255, 221, 85, .8)
-
+    height: calc(100% - 50px)
+    right: -300px
+    bottom: 0
+    background #f3f1ed
+    transition right .5s
+    &.hover
+        right 0
+    &__content
+        width calc(100% - 50px)
+        margin-left auto

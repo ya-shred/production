@@ -1,5 +1,4 @@
 import React from 'react';
-import '../app-styles/app.styl';
 import Header from './header';
 import ContainerChat from './containerChat';
 import SocketAPI from '../utils/socket';
