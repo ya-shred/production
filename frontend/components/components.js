@@ -23,7 +23,7 @@ export default class Components extends React.Component {
     }
 
     dragleave = (e) => {
-        console.log('drag leave');
+        //console.log('drag leave');
         this.dragLeaveCount++;
         if (this.dragLeaveCount === this.dragEnterCount) {
             this.setState({drop: false});
@@ -33,7 +33,7 @@ export default class Components extends React.Component {
     };
 
     dragenter = (e) => {
-        console.log('drag enter');
+        //console.log('drag enter');
         this.dragEnterCount++;
         this.setState({drop: true});
         e.stopPropagation();
@@ -41,13 +41,13 @@ export default class Components extends React.Component {
     };
 
     dragover = (e) => {
-        console.log('drag over');
+        //console.log('drag over');
         e.stopPropagation();
         e.preventDefault();
     };
 
     drop = (e) => {
-        console.log('drop');
+        //console.log('drop');
         e.stopPropagation();
         e.preventDefault();
         this.dragEnterCount = 0;
