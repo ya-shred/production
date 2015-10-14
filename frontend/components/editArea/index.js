@@ -1,7 +1,6 @@
 import React from 'react';
 import MessageActions from '../../actions/message';
 import UserActions from '../../actions/usersList.js';
-import './index.styl';
 import TextareaSize from 'react-textarea-autosize';
 const ENTER_KEY_CODE = 13; // код клавиши enter
 const ESC_KEY_CODE = 27; // код клавиши esc
@@ -27,21 +26,21 @@ export default class EditArea extends React.Component {
             var text = this.state.value.trim();
             if (text) {
                 this._save(this.state.value);
+                this._close();
             }
         }
         if (event.keyCode === ESC_KEY_CODE){
-            this._cancel();
+            this._close();
         }
     };
 
     _save = (text) => {
-        this.props.onSave(this.state.value);
+        MessageActions.sendUpdatedMessage({channel: 'general', newText: text, messageObj: this.props.message, messageUser: this.props.messageUser});
     };
 
-    _cancel = () => {
-        this.props.onCancel();
+    _close = () => {
+        this.props.onClose();
     };
-
 
     render() {
         return (
@@ -52,11 +51,9 @@ export default class EditArea extends React.Component {
                 minRows={2}
                 onChange={this._onChange}
                 onKeyDown={this._onKeyDown}
-                onBlur={this._save}
+                onBlur={this._close}
                 autoFocus={focus}/>
         );
     }
 
 }
-//EditArea.propTypes = { value: React.PropTypes.string };
-//EditArea.defaultProps = { value: 0 };

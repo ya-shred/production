@@ -10,6 +10,7 @@ export default class VideoCall extends React.Component {
     constructor() {
         super();
         this.state = getStreams();
+
     }
 
     componentDidMount() {
@@ -58,16 +59,13 @@ export default class VideoCall extends React.Component {
                 <video className='video__out' ref={'video_' + video.id} key={video.id} />
             )
         });
-
         return (
             <div className='video'>
                 {videos}
-                <button className='video__call' ref='call' onClick={this.call} disabled={this.state.callDisabled}>
-                    Позвонить
-                </button>
-                <button className='video__call' ref='stopCall' onClick={this.stopCall} disabled={!this.state.callDisabled}>
-                    Завершить разговор
-                </button>
+                <div className='video__call video_button' ref='call' onClick={this.call} disabled={this.state.callDisabled}>
+                </div>
+                <div className='video__stop video_button' ref='stopCall' onClick={this.stopCall} disabled={!this.state.callDisabled}>
+                </div>
             </div>
         )
 

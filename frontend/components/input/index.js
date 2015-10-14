@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.styl';
 
 class Input extends React.Component {
 

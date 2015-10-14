@@ -43,5 +43,12 @@ export default {
             actionType: GET_UPDATED_MESSAGE,
             message: data
         });
+    },
+
+    cancelUpdatingMessage(date) {
+        AppDispatcher.handleViewAction({
+            actionType: CANCEL_UPDATING_MESSAGE,
+            message: data
+        });
     }
 };

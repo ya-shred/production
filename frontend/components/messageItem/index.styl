@@ -2,8 +2,11 @@
     &__content-item
         width: 100%
         display: flex
-        padding: 15px 0 5px 10px
+        padding: 15px 20px
         box-sizing: border-box
+        &:hover
+            .chat-window__content-edit
+                display: block
         &_editing
             .chat-window__content-sending
                 display: none
@@ -22,6 +25,8 @@
         font-family: PTS
         color: #2d2d2d
         margin-bottom: 5px
+        position relative
+        display inline-block
 
     &__content-message
         width: 100%
@@ -40,10 +45,15 @@
     &__content-sending
         padding-top: 5px
 
+
     &__content-edit
-        padding-left: 10px
-        font-family: PT
-        cursor: pointer
-        font-size: 13px
+        position absolute
+        width: 14px;
+        height: 19px;
+        right: -23px;
+        cursor pointer
+        top: -3px;
+        display none
+        background url("marker.svg") no-repeat
         &:hover
-            text-decoration: underline
+            background url("marker-active.svg") no-repeat

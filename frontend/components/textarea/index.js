@@ -1,6 +1,5 @@
 import React from 'react';
 import MessageActions from '../../actions/message';
-import './index.styl';
 import TextareaSize from 'react-textarea-autosize';
 const ENTER_KEY_CODE = 13; // код клавиши enter
 

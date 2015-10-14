@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.styl';
 import UserListActions from '../../actions/usersList.js'
 
 export default class SearchUser extends React.Component {

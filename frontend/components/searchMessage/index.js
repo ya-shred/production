@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.styl';
 import MessageActions from '../../actions/message';
 
 export default class SearchMessage extends React.Component {

@@ -4,7 +4,6 @@ import SearchMessage from '../searchMessage';
 import MessageStore from '../../stores/message.js';
 import UsersListStore from '../../stores/usersList';
 import MessageList from "../messageList";
-import './index.styl';
 
 var getMessages = () => {
     return MessageStore.getCurrentMessages();

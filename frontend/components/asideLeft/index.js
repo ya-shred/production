@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.styl';
 import UsersListStore from '../../stores/usersList';
 import MessageStore from '../../stores/message.js';
 import UserList from '../userList';

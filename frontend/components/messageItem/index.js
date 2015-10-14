@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.styl';
 import moment from 'moment';
 import EditArea from '../editArea';
 import MessageActions from '../../actions/message';
@@ -15,12 +14,7 @@ export default class MessageItem extends React.Component {
         this.setState({editing: true});
     };
 
-    saveMessage = (text) => {
-        MessageActions.sendUpdatedMessage({channel: 'general', newText: text, messageObj: this.props.message, messageUser: this.props.messageUser});
-        this.setState({editing: false});
-    };
-
-    cancelEditing = () => {
+    closeEditArea = () => {
         this.setState({editing: false});
     };
 
@@ -31,14 +25,14 @@ export default class MessageItem extends React.Component {
 
         const currentUser = UserStore.getUserInfo();
         if (this.state.editing) {
-            editAera = <EditArea message={ this.props.message } onSave={this.saveMessage} onCancel={this.cancelEditing}/>;
+            editAera = <EditArea message={ this.props.message } messageUser={ this.props.messageUser } onClose={this.closeEditArea} />;
             contentItemClass = "chat-window__content-item chat-window__content-item_editing"
         } else {
             contentItemClass = "chat-window__content-item"
         }
 
         if (this.props.message.userId === currentUser.id){
-            editButton = <span className="chat-window__content-edit" onClick={this.openEditArea}>редактировать</span>
+            editButton = <span className="chat-window__content-edit" onClick={this.openEditArea}></span>
         }
         return (
             <div className={contentItemClass} key={ this.props.key }>
