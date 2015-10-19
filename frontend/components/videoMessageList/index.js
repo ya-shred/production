@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.styl';
 import VideoMessageStore from '../../stores/videoMessage'
 import VideoMessageAction from '../../actions/videoMessage'
 //import VideoMessageItem from '../videoMessageItem'
@@ -77,30 +76,33 @@ export default class VideoMessage extends React.Component {
     }
 
     render() {
-        let messages = '';
-        //this.state.messages.map((message) => {
-        //    return (
-        //        <VideoMessageItem message={message} />
-        //    )
-        //});
 
         return (
             <div className='video'>
                 <video className='video__out' ref='self_video' />
-                <button className='video__call' onClick={this.record} disabled={this.state.isRecording}>
-                    Начать запись
-                </button>
-                <button className='video__call' onClick={this.stopRecord} disabled={!this.state.isRecording}>
-                    Окончить запись
-                </button>
-                <button className='video__call' onClick={this.del} disabled={!this.state.curMessage}>
-                    Удалить
-                </button>
-                <button className='video__call' onClick={this.send} disabled={!this.state.curMessage}>
-                    Отправить
-                </button>
-                <div className='video-message__list'>
-                    {messages}
+                <div
+                    className='video__button_record video__button'
+                    onClick={this.record}
+                    disabled={this.state.isRecording}
+                    title="Начать запись">
+                </div>
+                <div
+                    className='video__button_stop-record video__button'
+                    onClick={this.stopRecord}
+                    disabled={!this.state.isRecording}
+                    title="Окончить запись">
+                </div>
+                <div
+                    className='video__button_remove video__button'
+                    onClick={this.del}
+                    disabled={!this.state.curMessage}
+                    title="Удалить">
+                </div>
+                <div
+                    className='video__button_send video__button'
+                    onClick={this.send}
+                    disabled={!this.state.curMessage}
+                    title="Отправить всем">
                 </div>
             </div>
         )
