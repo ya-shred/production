@@ -1,6 +1,5 @@
 import React from 'react';
-import './index.styl';
-import Logout from '../Logout';
+import Logout from '../logout';
 import logo from './logo.svg';
 
 export default class Header extends React.Component {
