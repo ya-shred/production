@@ -33,6 +33,7 @@ export default class Components extends React.Component {
     };
 
     dragenter = (e) => {
+        console.log(e);
         //console.log('drag enter');
         this.dragEnterCount++;
         this.setState({drop: true});
@@ -54,7 +55,7 @@ export default class Components extends React.Component {
         this.dragLeaveCount = 0;
         this.setState({drop: false});
         var file = e.dataTransfer.files[0];
-        this.sendFile(file);
+        file && this.sendFile(file);
     };
 
     sendFile(file) {

@@ -61,13 +61,6 @@ let receiveFile = (fileObj) => {
     addItem(fileObj);
 };
 
-let sendFileSelf = () => {
-    let files = FileStore.getOldFiles();
-    files.forEach((fileObj) => {
-        receiveFile(fileObj);
-    });
-};
-
 let searchMessageText = '';
 
 const store = assign({}, BaseStore, {
@@ -116,11 +109,6 @@ const store = assign({}, BaseStore, {
                 break;
             case ActionsFile.RECEIVE_FILE:
                 receiveFile(action.data);
-                store.emitChange();
-                break;
-            case ActionsFile.DEST_PEERS_FILE:
-                AppDispatcher.waitFor([FileStore.dispatcherIndex]);
-                sendFileSelf();
                 store.emitChange();
                 break;
             case ActionsUsersList.RESET_USERS:

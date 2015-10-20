@@ -12,9 +12,13 @@ var model = {
         Peer.getPeer().on('connection', (conn) => {
             conn.on('data', (data) => {
                 console.log('someone send file', data);
-                FileAction.receiveFile(data);
+                model.receive(data);
             });
         });
+    },
+
+    receive: (data) => {
+        FileAction.receiveFile(data);
     },
 
     sending: (peers, files) => {
@@ -31,6 +35,7 @@ var model = {
                 conn && conn.on('open', () => {
                     files.forEach((file) => {
                         conn.send(file);
+                        model.receive(file);
                     });
                 });
             }

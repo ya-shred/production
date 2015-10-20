@@ -81,7 +81,7 @@ const store = assign({}, BaseStore, {
     },
 
     sendRecord: (peers) => {
-        if (curMessage) {
+        if (curMessageBlob) {
             FileAPI.sending(peers, [{
                 type: 'video_message',
                 _id: Math.random(),
@@ -95,6 +95,7 @@ const store = assign({}, BaseStore, {
                     videoMime: curMessageBlob[1].mime
                 }
             }]);
+            curMessageBlob = null;
         }
     },
 
@@ -122,6 +123,7 @@ const store = assign({}, BaseStore, {
                 break;
             case Actions.SEND_RECORD:
                 SocketAPI.getDestPeers('videoMessage');
+                store.removeRecord();
                 break;
             case Actions.DEST_PEERS_VIDEOMESSAGE:
                 store.sendRecord(action.data);
