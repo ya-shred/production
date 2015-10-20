@@ -1,20 +1,24 @@
 .video__button
     &_record
         background-image: url("./img/record.png")
-        top: -20px
+        top: -10px
         background-size: 25px
 
     &_stop-record
         background-image: url("./img/stop-record.png")
-        top: 15px
+        top: 25px
         background-size: 25px
 
     &_remove
         background-image: url("./img/remove.png")
-        top: 50px
+        top: 60px
         background-size: 25px
 
     &_send
         background-image: url("./img/send.png")
-        top: 80px
+        top: 90px
         background-size: 25px
+
+.video__out
+    &::-webkit-media-controls-mute-button
+        display: none;

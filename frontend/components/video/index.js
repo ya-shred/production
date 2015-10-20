@@ -62,10 +62,10 @@ export default class VideoCall extends React.Component {
         return (
             <div className='video video_phone'>
                 {videos}
-                <div className='video__button_call video__button' ref='call' onClick={this.call} disabled={this.state.callDisabled} title="Начать звонок">
-                </div>
-                <div className='video__button_stop video__button' ref='stopCall' onClick={this.stopCall} disabled={!this.state.callDisabled} title="Закончить звонок">
-                </div>
+                <button className='video__button_call video__button' ref='call' onClick={this.call} disabled={this.state.callDisabled} title="Начать звонок">
+                </button>
+                <button className='video__button_stop video__button' ref='stopCall' onClick={this.stopCall} disabled={!this.state.callDisabled} title="Закончить звонок">
+                </button>
             </div>
         )
 

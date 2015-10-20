@@ -1,11 +1,6 @@
 import React from 'react';
 import VideoMessageStore from '../../stores/videoMessage'
 import VideoMessageAction from '../../actions/videoMessage'
-//import VideoMessageItem from '../videoMessageItem'
-
-let getMessages = () => {
-    return {messages: VideoMessageStore.getAllMessages()};
-};
 
 let getCurMessage = () => {
     return VideoMessageStore.getCurMessage();
@@ -15,13 +10,19 @@ let getCurMessageStream = () => {
     return VideoMessageStore.getCurMessageStream();
 };
 
+let getCurState = () => {
+    return {
+        curMessage: getCurMessage(),
+        curMessageStream: getCurMessageStream()
+    }
+};
+
 export default class VideoMessage extends React.Component {
     constructor() {
         super();
-        this.state = getMessages();
+        this.state = getCurState();
         this.state.isRecording = false;
-        this.state.curMessage = getCurMessage();
-        this.state.curMessageStream = getCurMessageStream();
+        this.state.hasRecord = false;
     }
 
     componentDidMount() {
@@ -33,14 +34,27 @@ export default class VideoMessage extends React.Component {
     }
 
     componentDidUpdate() {
+        this.updateAudioVideo();
+    }
+
+    updateAudioVideo = () => {
         let stream;
         let video = this.refs.self_video.getDOMNode();
+        let audio = this.refs.self_audio.getDOMNode();
         if (stream = this.state.curMessageStream) {
             this.bindStream(video, stream);
         } else if (stream = this.state.curMessage) {
-            this.bindVideo(video, stream);
+            this.bindAudioVideo(audio, video, stream[0], stream[1]);
+        } else {
+            this.unbindAudioVideo(audio, video);
         }
-    }
+    };
+
+    unbindAudioVideo = (audio, video) => {
+        audio.src = '';
+        video.src = '';
+        video.controls = false;
+    };
 
     bindStream = (video, stream) => {
         video.src = window.URL.createObjectURL(stream);
@@ -48,62 +62,83 @@ export default class VideoMessage extends React.Component {
         video.onloadedmetadata = function (e) {
             video.play();
         };
-    }
+    };
 
-    bindVideo = (video, stream) => {
-        video.src = window.URL.createObjectURL(stream);
+    bindAudioVideo = (audio, video, streamAudio, streamVideo) => {
+        video.src = streamVideo;
         video.controls = true;
-    }
+        audio.src = streamAudio;
+        video.onplay = () => {
+            audio.currentTime = video.currentTime;
+            audio.play();
+        };
+        video.onpause = () => {
+            audio.pause();
+        };
+        video.onseeking = () => {
+            audio.currentTime = video.currentTime;
+        };
+        video.onseeked = () => {
+            audio.currentTime = video.currentTime;
+        };
+        video.play();
+    };
 
     onChange = () => {
-        this.setState(getMessages());
-        this.setState({curMessage: getCurMessage()});
-        this.setState({curMessageStream: getCurMessageStream()});
-    }
+        let state = getCurState();
+        state.hasRecord = !!state.curMessage;
+        this.setState(state);
+    };
 
     record = () => {
         this.setState({isRecording: true});
         VideoMessageAction.startRecord();
-    }
+    };
 
     stopRecord = () => {
         this.setState({isRecording: false});
         VideoMessageAction.stopRecord();
-    }
+    };
 
     del = () => {
+        this.setState({hasRecord: false});
         VideoMessageAction.remove();
-    }
+    };
+
+    send = () => {
+        VideoMessageAction.send();
+    };
 
     render() {
 
         return (
             <div className='video'>
-                <video className='video__out' ref='self_video' />
-                <div
+                <video className='video__out' ref='self_video'/>
+                <audio className='audio__out hide' ref='self_audio'/>
+                <button
                     className='video__button_record video__button'
                     onClick={this.record}
                     disabled={this.state.isRecording}
                     title="Начать запись">
-                </div>
-                <div
+                </button>
+                <button
                     className='video__button_stop-record video__button'
                     onClick={this.stopRecord}
                     disabled={!this.state.isRecording}
                     title="Окончить запись">
-                </div>
-                <div
+                </button>
+                <button
                     className='video__button_remove video__button'
                     onClick={this.del}
-                    disabled={!this.state.curMessage}
+                    disabled={!this.state.hasRecord}
                     title="Удалить">
-                </div>
-                <div
+                </button>
+                <button
                     className='video__button_send video__button'
                     onClick={this.send}
-                    disabled={!this.state.curMessage}
+                    disabled={!this.state.hasRecord}
                     title="Отправить всем">
-                </div>
+                </button>
             </div>
         )
 

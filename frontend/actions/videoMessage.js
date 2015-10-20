@@ -21,5 +21,11 @@ export default {
             actionType: Actions.REMOVE_RECORD,
             data: data
         });
+    },
+    send: function (data) {
+        AppDispatcher.handleViewAction({
+            actionType: Actions.REMOVE_RECORD,
+            data: data
+        });
     }
 };
