@@ -23,11 +23,16 @@ const store = assign({}, BaseStore, {
     addFile: (file) => {
         if (files.indexOf(file) === -1) {
             files.push({
-                file: file,
+                type: 'simple_file',
+                _id: Math.random(),
+                channel: 'general',
+                datetime: +new Date(),
                 userId: UserStore.getUserInfo().id,
-                mime: file.type,
-                name: file.name,
-                datetime: file.lastModified
+                additional: {
+                    file: file,
+                    mime: file.type,
+                    name: file.name
+                }
             });
         }
     },

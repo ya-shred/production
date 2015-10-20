@@ -58,20 +58,7 @@ let updateMessage = (message) => {
 };
 
 let receiveFile = (fileObj) => {
-    let file = fileObj.file;
-    file = file  instanceof Blob ? file : new Blob([file], {type: fileObj.mime});
-    let url = window.URL.createObjectURL(file);
-    addItem({
-        _id: fileObj.datetime,
-        datetime: fileObj.datetime,
-        userId: fileObj.userId,
-        message: (
-            <span>Пользователь загрузил файл:
-                <a href={url}>{fileObj.name}</a>
-            </span>
-        ),
-        notEditable: true
-    });
+    addItem(fileObj);
 };
 
 let sendFileSelf = () => {
@@ -81,7 +68,7 @@ let sendFileSelf = () => {
     });
 };
 
-let searchMessageText;
+let searchMessageText = '';
 
 const store = assign({}, BaseStore, {
 

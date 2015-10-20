@@ -21,7 +21,13 @@ export default class Textarea extends React.Component {
             event.preventDefault();
             var text = this.state.value.trim();
             if (text) {
-                MessageActions.sendMessage({channel: 'general', message: text});
+                MessageActions.sendMessage({
+                    channel: 'general',
+                    type: 'simple_message',
+                    additional: {
+                        message: text
+                    }
+                });
             }
             this.setState({value: ''});
         }

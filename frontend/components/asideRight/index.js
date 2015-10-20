@@ -1,6 +1,6 @@
 import React from 'react';
 import VideoCall from '../video';
-import VideoMessageList from '../videoMessageList';
+import VideoMessageList from '../videoMessage';
 
 class AsideRight extends React.Component {
 

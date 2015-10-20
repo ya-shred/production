@@ -1,12 +1,15 @@
 import Actions from '../constants/videoMessage';
 import VideoAPI from '../utils/video';
 import SocketAPI from '../utils/socket';
+import FileAPI from '../utils/file';
 import AppDispatcher from '../dispatchers/dispatcher';
 import assign  from 'react/lib/Object.assign';
 import BaseStore from './base';
+import UserStore from './user';
 import RecordRTC from 'recordrtc';
 
 let curMessage = null;
+let curMessageBlob = null;
 let curMessageStream = null;
 let currentMessageStreamRecords = [];
 let state = '';
@@ -66,6 +69,7 @@ const store = assign({}, BaseStore, {
             currentMessageStreamRecords[1].stopRecording((videoURL) => {
                 curMessageStream = null;
                 curMessage = [audioURL, videoURL];
+                curMessageBlob = [currentMessageStreamRecords[0].getBlob(), currentMessageStreamRecords[1].getBlob()];
                 store.emitChange();
             });
         });
@@ -76,8 +80,22 @@ const store = assign({}, BaseStore, {
         store.emitChange();
     },
 
-    sendRecord: () => {
-
+    sendRecord: (peers) => {
+        if (curMessage) {
+            FileAPI.sending(peers, [{
+                type: 'video_message',
+                _id: Math.random(),
+                channel: 'general',
+                datetime: +new Date(),
+                userId: UserStore.getUserInfo().id,
+                additional: {
+                    audio: curMessageBlob[0],
+                    audioMime: curMessageBlob[0].mime,
+                    video: curMessageBlob[1],
+                    videoMime: curMessageBlob[1].mime
+                }
+            }]);
+        }
     },
 
     getCurMessage: () => {
@@ -103,7 +121,10 @@ const store = assign({}, BaseStore, {
                 store.removeRecord();
                 break;
             case Actions.SEND_RECORD:
-                store.sendRecord();
+                SocketAPI.getDestPeers('videoMessage');
+                break;
+            case Actions.DEST_PEERS_VIDEOMESSAGE:
+                store.sendRecord(action.data);
                 break;
         }
 

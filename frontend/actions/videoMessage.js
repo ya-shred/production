@@ -24,7 +24,13 @@ export default {
     },
     send: function (data) {
         AppDispatcher.handleViewAction({
-            actionType: Actions.REMOVE_RECORD,
+            actionType: Actions.SEND_RECORD,
+            data: data
+        });
+    },
+    gotDestPeer: function (data) {
+        AppDispatcher.handleViewAction({
+            actionType: Actions.DEST_PEERS_VIDEOMESSAGE,
             data: data
         });
     }
