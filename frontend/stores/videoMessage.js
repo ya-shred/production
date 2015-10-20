@@ -76,6 +76,10 @@ const store = assign({}, BaseStore, {
         store.emitChange();
     },
 
+    sendRecord: () => {
+
+    },
+
     getCurMessage: () => {
         return curMessage;
     },
@@ -97,6 +101,9 @@ const store = assign({}, BaseStore, {
                 break;
             case Actions.REMOVE_RECORD:
                 store.removeRecord();
+                break;
+            case Actions.SEND_RECORD:
+                store.sendRecord();
                 break;
         }
 
