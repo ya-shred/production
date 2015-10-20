@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './header';
 import DropZone from './dropZone';
+import Popup from './popup';
 import ContainerChat from './containerChat';
 import SocketAPI from '../utils/socket';
 import VideoAPI from '../utils/video';
@@ -33,7 +34,6 @@ export default class Components extends React.Component {
     };
 
     dragenter = (e) => {
-        console.log(e);
         //console.log('drag enter');
         this.dragEnterCount++;
         this.setState({drop: true});
@@ -64,10 +64,16 @@ export default class Components extends React.Component {
 
     render() {
         return (
-            <div onDragEnter={this.dragenter} onDragOver={this.dragover} onDrop={this.drop} onDragLeave={this.dragleave} >
-                {this.state.drop && (<DropZone />)}
-                <Header/>
-                <ContainerChat/>
+            <div>
+                <div onDragEnter={this.dragenter}
+                     onDragOver={this.dragover}
+                     onDrop={this.drop}
+                     onDragLeave={this.dragleave}>
+                    {this.state.drop && (<DropZone />)}
+                    <Header/>
+                    <ContainerChat/>
+                </div>
+                <Popup/>
             </div>
         );
     }
