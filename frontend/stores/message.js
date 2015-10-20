@@ -58,30 +58,10 @@ let updateMessage = (message) => {
 };
 
 let receiveFile = (fileObj) => {
-    let file = fileObj.file;
-    file = file  instanceof Blob ? file : new Blob([file], {type: fileObj.mime});
-    let url = window.URL.createObjectURL(file);
-    addItem({
-        _id: fileObj.datetime,
-        datetime: fileObj.datetime,
-        userId: fileObj.userId,
-        message: (
-            <span>Пользователь загрузил файл:
-                <a href={url}>{fileObj.name}</a>
-            </span>
-        ),
-        notEditable: true
-    });
+    addItem(fileObj);
 };
 
-let sendFileSelf = () => {
-    let files = FileStore.getOldFiles();
-    files.forEach((fileObj) => {
-        receiveFile(fileObj);
-    });
-};
-
-let searchMessageText;
+let searchMessageText = '';
 
 const store = assign({}, BaseStore, {
 
@@ -129,11 +109,6 @@ const store = assign({}, BaseStore, {
                 break;
             case ActionsFile.RECEIVE_FILE:
                 receiveFile(action.data);
-                store.emitChange();
-                break;
-            case ActionsFile.DEST_PEERS_FILE:
-                AppDispatcher.waitFor([FileStore.dispatcherIndex]);
-                sendFileSelf();
                 store.emitChange();
                 break;
             case ActionsUsersList.RESET_USERS:

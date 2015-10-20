@@ -1,35 +1,37 @@
 .video
     background: rgba(0,0,0,0.2)
     color: black
-    //position: relative
-    z-index: 1
-    box-shadow: 2px 2px 2px black
-    border: 1px solid transparent
-    overflow-y: auto
-    max-height: 100%
-    max-width: 200px
+    position: relative
+    max-height: calc(50% - 20px)
+    width: 250px
+    margin-bottom: 20px
+    min-height: 100px
 
     &__out
-        background: black
         width: 100%
 
-
-
-    &__call
-        top: 0
-        background: url("phone.svg") no-repeat center
-        background-size: 20px
-
-    &__stop
-        top: 50px
-        background url("close.svg") no-repeat center
-        background-size: 20px
-
-    .video_button
+    &__button
+        background-size: 30px
+        background-repeat: no-repeat
+        background-position: center
+        background-color: transparent
         width: 50px
         height: 50px
         display: block
-        left: 0
+        left: -50px
         cursor: pointer
         position: absolute
-        border-bottom 1px solid #f8f8f8
+        border: none
+        outline: none;
+
+        &[disabled]
+            opacity: 0.5
+            cursor: default
+
+        &_call
+            background-image: url("./img/call.png")
+            top: 0
+
+        &_stop
+            background-image: url("./img/stop.png")
+            top: 40px

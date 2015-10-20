@@ -33,7 +33,7 @@ export default class MessageList extends React.Component {
     scroll = (e) => {
         console.log(e.target.scrollTop);
         if(e.target.scrollTop <= 150) {
-            ActionMessage.getMoreMessage;
+            //ActionMessage.getMoreMessage;
         }
     };
     render() {
@@ -49,7 +49,7 @@ export default class MessageList extends React.Component {
                     <MessageItem
                         key={item._id}
                         messageUser={messageUser}
-                        message={item}
+                        messageObj={item}
                         />
                 );
             });

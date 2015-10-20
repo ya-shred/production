@@ -13,7 +13,7 @@ var api = {
         if (!params.data.channel) {
             return {error: 'Не указан канал отправки'};
         }
-        if (!params.data.message) {
+        if (!params.data.additional.message) {
             return {error: 'Пустое сообщение недопустимо'};
         }
         return {
