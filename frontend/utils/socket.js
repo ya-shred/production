@@ -128,6 +128,12 @@ var model = {
             type: 'new_payment',
             data: data
         })
+    },
+    saveMessageFile: (data) => {
+        socket.send({
+            type: 'save_message_file',
+            data: data
+        })
     }
 };
 

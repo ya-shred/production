@@ -9,5 +9,8 @@ export default {
     },
     getMoreMessage() {
         SocketAPI.sendMoreMessage();
+    },
+    saveMessageFile(data) {
+        SocketAPI.saveMessageFile(data);
     }
 }

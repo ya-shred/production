@@ -1,6 +1,5 @@
 import AppDispatcher from '../dispatchers/dispatcher';
 import {NEW_USER, RESET_USERS, USER_CONNECTED, USER_DISCONNECTED, SEARCH_USER} from '../constants/usersList';
-import SocketActions from './socket';
 
 export default {
     newUser: function (data) {

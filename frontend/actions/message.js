@@ -1,57 +1,61 @@
 import AppDispatcher from '../dispatchers/dispatcher';
 
-import { NEW_MESSAGE, SEND_MESSAGE, SEARCH_MESSAGE, HISTORY_MESSAGE, SEND_UPDATED_MESSAGE, GET_UPDATED_MESSAGE } from '../constants/message';
+import Action from '../constants/message';
 
-import SocketActions from './socket';
+import SocketAPI from '../utils/socket';
 
 export default {
     sendMessage: function (data) {
-        SocketActions.sendMessage(data);
+        SocketAPI.sendMessage(data);
         AppDispatcher.handleViewAction({
-            actionType: SEND_MESSAGE,
+            actionType: Action.SEND_MESSAGE,
             message: data
         });
     },
 
     getHistory: function (data) {
         AppDispatcher.handleSocketAction({
-            actionType: HISTORY_MESSAGE,
+            actionType: Action.HISTORY_MESSAGE,
             message: data.history
         });
     },
 
     newMessage: function (data) {
         AppDispatcher.handleSocketAction({
-            actionType: NEW_MESSAGE,
+            actionType: Action.NEW_MESSAGE,
             message: data.message
         });
     },
 
     searchMessage(text) {
         AppDispatcher.handleViewAction({
-            actionType: SEARCH_MESSAGE,
+            actionType: Action.SEARCH_MESSAGE,
             text: text
         });
     },
 
     sendUpdatedMessage(data) {
-        SocketActions.sendUpdatedMessage(data);
+        SocketAPI.sendUpdatedMessage(data);
     },
 
-    getMoreMessage(){
-        SocketActions.getMoreMessage();
+    getMoreMessage() {
+        SocketAPI.sendMoreMessage();
     },
     getUpdatedMessage(data) {
         AppDispatcher.handleViewAction({
-            actionType: GET_UPDATED_MESSAGE,
+            actionType: Action.GET_UPDATED_MESSAGE,
             message: data
         });
     },
 
-    cancelUpdatingMessage(date) {
+    cancelUpdatingMessage(data) {
         AppDispatcher.handleViewAction({
-            actionType: CANCEL_UPDATING_MESSAGE,
+            actionType: Action.CANCEL_UPDATING_MESSAGE,
             message: data
         });
+    },
+
+    saveFileMessage(data) {
+        SocketAPI.saveMessageFile(data);
     }
 };

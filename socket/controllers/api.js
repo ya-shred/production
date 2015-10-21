@@ -13,7 +13,8 @@ var MESSAGE_HANDLERS = {
     user_info_request: 'onUserInfo',
     peer_connect: 'onPeerConnect',
     peers_request: 'onPeersRequest',
-    new_payment: 'onNewPayment'
+    new_payment: 'onNewPayment',
+    save_message_file: 'onSaveMessageFile'
 };
 
 var model = {
@@ -161,6 +162,12 @@ var model = {
                             });
                         });
                 });
+
+            });
+        },
+
+        onSaveMessageFile: function (user, message) {
+            return new Promise(function (resolve, reject) {
 
             });
         }
