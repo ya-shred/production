@@ -22,7 +22,6 @@ export default class MessageItem extends React.Component {
 
     save = () => {
         MessageActions.saveFileMessage(this.props.messageObj);
-        console.log('save message');
     };
 
     render() {

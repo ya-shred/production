@@ -1,7 +1,6 @@
 import AppDispatcher from '../dispatchers/dispatcher';
 
 import Action from '../constants/message';
-
 import SocketAPI from '../utils/socket';
 
 export default {
@@ -41,6 +40,7 @@ export default {
     getMoreMessage() {
         SocketAPI.sendMoreMessage();
     },
+
     getUpdatedMessage(data) {
         AppDispatcher.handleViewAction({
             actionType: Action.GET_UPDATED_MESSAGE,
@@ -56,6 +56,9 @@ export default {
     },
 
     saveFileMessage(data) {
-        SocketAPI.saveMessageFile(data);
+        AppDispatcher.handleViewAction({
+            actionType: Action.SAVE_FILE_MESSAGE,
+            data: data
+        });
     }
 };

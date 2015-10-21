@@ -74,6 +74,7 @@ var model = {
         onSendMessage: function (user, message) {
             message.data.datetime = +new Date();
             message.data.userId = user.id;
+            message.data.id = user.id + +new Date();
             return mongo.insertMessage(message.data)
                 .then(result => {
                     return {
@@ -168,7 +169,21 @@ var model = {
 
         onSaveMessageFile: function (user, message) {
             return new Promise(function (resolve, reject) {
-
+                if (user.messageAvailable > user.messageUsed) {
+                    user.messageUsed++;
+                    mongo.insertMessage(message.data)
+                        .then(function (newMessage) {
+                           resolve({
+                               message: {
+                                   type: 'status',
+                                   data: {
+                                       status: 'ok',
+                                       message: 'message ' + newMessage._id + ' updated'
+                                   }
+                               }
+                           })
+                        });
+                }
             });
         }
     },

@@ -82,7 +82,7 @@ model = {
     getHistory: function () {
         return new Promise(function (resolve, reject) {
             var collection = db.collection('messages');
-            collection.find({}).toArray(function (err, result) {
+            collection.find().sort({'datetime': 1}).toArray(function (err, result) {
                 if (err) {
                     reject(err);
                 } else {
@@ -107,7 +107,7 @@ model = {
     updateMessage: function (data) {
         return new Promise(function (resolve, reject) {
             var collection = db.collection('messages');
-            collection.findOneAndUpdate({_id: new ObjectId(data.id)}, {$set: {additional: data.additional}}, function (err, result) {
+            collection.findOneAndUpdate({id: data.id}, {$set: {additional: data.additional}}, function (err, result) {
                 if (err) {
                     return reject(err);
                 }

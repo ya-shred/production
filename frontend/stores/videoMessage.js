@@ -84,7 +84,7 @@ const store = assign({}, BaseStore, {
         if (curMessageBlob) {
             FileAPI.sending(peers, [{
                 type: 'video_message',
-                _id: Math.random(),
+                id: UserStore.getUserInfo().id + +new Date(),
                 channel: 'general',
                 datetime: +new Date(),
                 userId: UserStore.getUserInfo().id,

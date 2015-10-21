@@ -24,7 +24,7 @@ const store = assign({}, BaseStore, {
         if (files.indexOf(file) === -1) {
             files.push({
                 type: 'simple_file',
-                _id: Math.random(),
+                id: UserStore.getUserInfo().id + +new Date(),
                 channel: 'general',
                 datetime: +new Date(),
                 userId: UserStore.getUserInfo().id,
