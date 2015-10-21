@@ -122,6 +122,12 @@ var model = {
                 id: peerId
             }
         })
+    },
+    makePayment: (data) => {
+        socket.send({
+            type: 'new_payment',
+            data: data
+        })
     }
 };
 

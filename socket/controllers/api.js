@@ -1,5 +1,8 @@
 var mongo = require('../services/mongo.js');
 var userModel = require('../models/user');
+var config = require('config');
+var stripe = require("stripe")(config.get('stripeKey'));
+
 
 var MESSAGE_HANDLERS = {
     error: 'onErrorMessage',
@@ -9,7 +12,8 @@ var MESSAGE_HANDLERS = {
     users_list_request: 'onUsersList',
     user_info_request: 'onUserInfo',
     peer_connect: 'onPeerConnect',
-    peers_request: 'onPeersRequest'
+    peers_request: 'onPeersRequest',
+    new_payment: 'onNewPayment'
 };
 
 var model = {
@@ -28,7 +32,7 @@ var model = {
                     }
                 });
         },
-        
+
         onPeerConnect: function (user, message) {
             user.peerId = message.data.id;
             return {
@@ -41,7 +45,7 @@ var model = {
                 }
             }
         },
-        
+
         onErrorMessage: function () {
             return Promise.reject({
                 type: 'status',
@@ -65,7 +69,7 @@ var model = {
                     };
                 });
         },
-        
+
         onSendMessage: function (user, message) {
             message.data.datetime = +new Date();
             message.data.userId = user.id;
@@ -83,7 +87,7 @@ var model = {
                 });
         },
         onSendUpdatedMessage: function (user, message) {
-            if(user.id === message.data.userId) {
+            if (user.id === message.data.userId) {
                 return mongo.updateMessage(message.data)
                     .then(result => {
                         return {
@@ -128,6 +132,37 @@ var model = {
                     }
                 }
             }
+        },
+
+        onNewPayment: function (user, message) {
+            return new Promise(function (resolve, reject) {
+                var token = message.data.token;
+                var amount = message.data.amount;
+                var num = message.data.num;
+                stripe.charges.create({
+                    amount: amount * 100, // amount in cents, again
+                    currency: "usd",
+                    source: token,
+                    description: "Оплата хранения файлов SHRED"
+                }, function (err, charge) {
+                    if (err && err.type === 'StripeCardError') {
+                        // The card has been declined
+                        return reject('Карта отклонена');
+                    }
+                    mongo.addPayment(user, num)
+                        .then(function (user) {
+                            resolve({
+                                message: {
+                                    type: 'user_info_response',
+                                    data: {
+                                        user: user
+                                    }
+                                }
+                            });
+                        });
+                });
+
+            });
         }
     },
     /**

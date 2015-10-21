@@ -66,7 +66,9 @@ model = {
                 displayName: user.displayName,
                 email: user.email,
                 profileUrl: user.profileUrl,
-                avatarUrl: user._json.avatar_url
+                avatarUrl: user._json.avatar_url,
+                messageAvailable: 0,
+                messageUsed: 0
             }, function (err, doc) {
                 if (err) {
                     reject(err);
@@ -103,8 +105,6 @@ model = {
     },
 
     updateMessage: function (data) {
-        console.log('data.message'+data.message);
-        console.log('data.id'+data.id);
         return new Promise(function (resolve, reject) {
             var collection = db.collection('messages');
             collection.findOneAndUpdate({_id: new ObjectId(data.id)}, {$set: {message: data.message}}, function (err, result) {
@@ -159,6 +159,19 @@ model = {
                 resolve(result);
             });
         });
+    },
+
+    addPayment: function (user, num) {
+        return new Promise(function (resolve, reject) {
+            user.messageAvailable += num;
+            var collection = db.collection('messages');
+            collection.findOneAndUpdate({id: user.id}, {$set: {messageAvailable: user.messageAvailable}}, function (err, result) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(user);
+            });
+        })
     }
 };
 
