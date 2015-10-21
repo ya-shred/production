@@ -35,10 +35,14 @@ var model = {
                 conn && conn.on('open', () => {
                     files.forEach((file) => {
                         conn.send(file);
-                        model.receive(file);
                     });
                 });
             }
+            setTimeout(() => {
+                files.forEach((file) => {
+                    model.receive(file);
+                });
+            }, 0);
         });
     }
 };

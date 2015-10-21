@@ -10,7 +10,7 @@ export default class EditArea extends React.Component {
     constructor(props) {
         super();
         this.state = {
-            value: props.message.message || '',
+            value: props.message.additional.message || '',
             messageId: props.message._id || ''
         }
     }

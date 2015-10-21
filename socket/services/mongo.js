@@ -107,7 +107,7 @@ model = {
     updateMessage: function (data) {
         return new Promise(function (resolve, reject) {
             var collection = db.collection('messages');
-            collection.findOneAndUpdate({_id: new ObjectId(data.id)}, {$set: {message: data.message}}, function (err, result) {
+            collection.findOneAndUpdate({_id: new ObjectId(data.id)}, {$set: {additional: data.additional}}, function (err, result) {
                 if (err) {
                     return reject(err);
                 }
@@ -164,7 +164,7 @@ model = {
     addPayment: function (user, num) {
         return new Promise(function (resolve, reject) {
             user.messageAvailable += num;
-            var collection = db.collection('messages');
+            var collection = db.collection('users');
             collection.findOneAndUpdate({id: user.id}, {$set: {messageAvailable: user.messageAvailable}}, function (err, result) {
                 if (err) {
                     return reject(err);

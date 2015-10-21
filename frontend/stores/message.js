@@ -51,7 +51,7 @@ let countUserMessageNumber = (userId) => {
 let updateMessage = (message) => {
     for (let key in messages) {
         if (messages[key]._id === message.id) {
-            messages[key].message = message.message;
+            messages[key].additional = message.additional;
             break;
         }
     }

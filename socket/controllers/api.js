@@ -96,7 +96,7 @@ var model = {
                                 type: 'get_updated_message',
                                 data: {
                                     id: message.data.id,
-                                    message: message.data.message
+                                    additional: message.data.additional
                                 }
                             }
                         };

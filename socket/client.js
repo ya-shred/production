@@ -32,7 +32,9 @@ var api = {
             type: 'send_updated_message',
             data: {
                 id: params.data.messageObj._id,
-                message: params.data.newText,
+                additional: {
+                    message: params.data.newText
+                },
                 userId: params.data.messageUser.id,
                 channel: params.data.channel
             }

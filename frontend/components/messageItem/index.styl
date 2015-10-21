@@ -1,18 +1,4 @@
 .chat-window
-    &__content-item
-        width: 100%
-        display: flex
-        padding: 15px 20px
-        box-sizing: border-box
-        &:hover
-            .chat-window__content-edit
-                display: block
-        &_editing
-            .chat-window__content-sending
-                display: none
-    &__content-avatar
-        position: relative
-        margin-right: 10px
 
     &__avatar
         width: 50px
@@ -20,40 +6,72 @@
         border-radius: 50%
         border: 1px solid #fd5
 
-    &__content-name
-        font-size: 16px
-        font-family: PTS
-        color: #2d2d2d
-        margin-bottom: 5px
-        position relative
-        display inline-block
+    &__content
 
-    &__content-message
-        width: 100%
-        font-size: 14px
-        line-height: 20px
-        font-family: PT
-        color: #3d3c40
+        &-item
+            width: 100%
+            display: flex
+            padding: 15px 20px
+            box-sizing: border-box
 
-    &__content-date
-        text-indent: 10px
-        padding-left: 5px
-        font-size: 13px
-        color: #999
-        font-family: robothin
+            &:hover
+                .chat-window__content-pic
+                    display: inline-block
 
-    &__content-sending
-        padding-top: 5px
+            &_editing
+                .chat-window__content-sending
+                    display: none
 
+        &-avatar
+            position: relative
+            margin-right: 10px
 
-    &__content-edit
-        position absolute
-        width: 14px;
-        height: 19px;
-        right: -23px;
-        cursor pointer
-        top: -3px;
-        display none
-        background url("marker.svg") no-repeat
-        &:hover
-            background url("marker-active.svg") no-repeat
+        &-name
+            font-size: 16px
+            height: 21px
+            font-family: PTS
+            color: #2d2d2d
+            margin-bottom: 5px
+            position relative
+            display inline-block
+
+        &-message
+            width: 100%
+            font-size: 14px
+            line-height: 20px
+            font-family: PT
+            color: #3d3c40
+
+        &-date
+            text-indent: 10px
+            padding-left: 5px
+            font-size: 13px
+            color: #999
+            font-family: robothin
+
+        &-sending
+            padding-top: 5px
+
+        &-pic
+            position relative
+            width: 14px;
+            height: 19px;
+            right: -7px;
+            cursor pointer
+            top: 2px;
+            display none
+            vertical-align: top
+            background-size: contain
+            background-repeat: no-repeat
+
+            &_edit
+                background-image: url("img/marker.svg")
+
+                &:hover
+                    background-image: url("img/marker-active.svg")
+
+            &_save
+                background-image: url("img/save.png")
+
+                &:hover
+                    background-image: url("img/save-active.png")
