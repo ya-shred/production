@@ -36,13 +36,14 @@ let model = {
                     res.push((<span key={res.length}>{firstPart}</span>));
                     res.push((
                         <MessageItem
-                            key={replyMessage.id}
+                            key={res.length}
                             messageUser={messageUser}
                             messageObj={replyMessage}
                             disabled={true}
                             />
                     ));
                     message = message.slice(ind + str[0].length);
+                    exp.lastIndex = 0;
                 }
             }
             if (res.length) {
