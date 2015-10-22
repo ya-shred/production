@@ -1,5 +1,8 @@
 import React from 'react';
 import VideoAudio from './videoAudio'
+import MessageStore from '../../stores/message'
+import UsersListStore from '../../stores/usersList';
+import MessageItem from "../messageItem";
 
 let PLUGINS = {
     'simple_message': 'simple',
@@ -20,7 +23,34 @@ let model = {
     },
     plugins: {
         simple: (data) => {
-            return data.message;
+            let res = [];
+            let message = data.message;
+            let exp = /{([^{]*)}/g;
+            let str, ind, firstPart, replyMessage, messageUser;
+            while (str = exp.exec(message)) {
+                replyMessage = MessageStore.getMessageById(str[1]);
+                if (replyMessage) { // Если пользователь цитирует другого
+                    messageUser = UsersListStore.getUserById(replyMessage.userId);
+                    ind = message.indexOf(str[0]);
+                    firstPart = message.slice(0, ind);
+                    res.push((<span key={res.length}>{firstPart}</span>));
+                    res.push((
+                        <MessageItem
+                            key={replyMessage.id}
+                            messageUser={messageUser}
+                            messageObj={replyMessage}
+                            disabled={true}
+                            />
+                    ));
+                    message = message.slice(ind + str[0].length);
+                }
+            }
+            if (res.length) {
+                res.push((<span key={res.length}>{message}</span>));
+                return (<span>{res}</span>);
+            }
+
+            return message;
         },
         file: (data) => {
             let url = model.getArrayUrl(data.file, data.mime);
