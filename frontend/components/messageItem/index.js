@@ -3,7 +3,7 @@ import moment from 'moment';
 import EditArea from '../editArea';
 import MessageActions from '../../actions/message';
 import UserStore from '../../stores/user.js';
-import MessageTransform from '../messageTransform/messageTransform';
+import MessageTransform from '../messageTransform';
 
 export default class MessageItem extends React.Component {
 
@@ -20,10 +20,15 @@ export default class MessageItem extends React.Component {
         this.setState({editing: false});
     };
 
+    save = () => {
+        MessageActions.saveFileMessage(this.props.messageObj);
+    };
+
     render() {
         let editAera;
         let contentItemClass;
         let editButton;
+        let saveButton;
 
         const currentUser = UserStore.getUserInfo();
         if (this.state.editing) {
@@ -35,8 +40,15 @@ export default class MessageItem extends React.Component {
             contentItemClass = "chat-window__content-item"
         }
 
-        if (this.props.messageObj.userId === currentUser.id && this.props.messageObj.type === 'simple_message') {
-            editButton = <span className="chat-window__content-edit" onClick={this.openEditArea}></span>
+        if (this.props.messageObj.userId === currentUser.id) {
+            if (this.props.messageObj.type === 'simple_message') {
+                editButton = <span className="chat-window__content-pic chat-window__content-pic_edit" onClick={this.openEditArea}></span>
+            }
+
+            if ((this.props.messageObj.type === 'simple_file' || this.props.messageObj.type === 'video_message')
+                && currentUser.messageAvailable > currentUser.messageUsed) {
+                saveButton = <span className="chat-window__content-pic chat-window__content-pic_save" onClick={this.save}></span>
+            }
         }
 
         let message = MessageTransform.transform(this.props.messageObj.type, this.props.messageObj.additional);
@@ -53,6 +65,7 @@ export default class MessageItem extends React.Component {
                             {moment(+this.props.messageObj.datetime).format('DD.MM.YYYY в HH:mm')}
                         </span>
                         {editButton}
+                        {saveButton}
                     </div>
                     <div className="chat-window__content-message">{message}</div>
                 </div>

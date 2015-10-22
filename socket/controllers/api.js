@@ -1,4 +1,4 @@
-var mongo = require('../services/mongo.js');
+var mongo = require('../models/mongo.js');
 var userModel = require('../models/user');
 var config = require('config');
 var stripe = require("stripe")(config.get('stripeKey'));
@@ -13,7 +13,8 @@ var MESSAGE_HANDLERS = {
     user_info_request: 'onUserInfo',
     peer_connect: 'onPeerConnect',
     peers_request: 'onPeersRequest',
-    new_payment: 'onNewPayment'
+    new_payment: 'onNewPayment',
+    save_middle_message: 'onSaveMiddleMessage'
 };
 
 var model = {
@@ -73,6 +74,7 @@ var model = {
         onSendMessage: function (user, message) {
             message.data.datetime = +new Date();
             message.data.userId = user.id;
+            message.data.id = user.id + +new Date();
             return mongo.insertMessage(message.data)
                 .then(result => {
                     return {
@@ -96,7 +98,7 @@ var model = {
                                 type: 'get_updated_message',
                                 data: {
                                     id: message.data.id,
-                                    message: message.data.message
+                                    additional: message.data.additional
                                 }
                             }
                         };
@@ -149,8 +151,9 @@ var model = {
                         // The card has been declined
                         return reject('Карта отклонена');
                     }
-                    mongo.addPayment(user, num)
-                        .then(function (user) {
+                    user.messageAvailable += num;
+                    return userModel.updateUser(user)
+                        .then(function () {
                             resolve({
                                 message: {
                                     type: 'user_info_response',
@@ -162,6 +165,32 @@ var model = {
                         });
                 });
 
+            });
+        },
+
+        onSaveMiddleMessage: function (user, message) {
+            return new Promise(function (resolve, reject) {
+                if (user.messageAvailable > user.messageUsed) {
+                    user.messageUsed++;
+                    mongo.insertMessage(message.data)
+                        .then(function (newMessage) {
+                            return userModel.updateUser(user)
+                                .then(function () {
+                                    return newMessage
+                                });
+                        })
+                        .then(function (newMessage) {
+                            resolve({
+                                message: {
+                                    type: 'status',
+                                    data: {
+                                        status: 'ok',
+                                        message: 'message ' + newMessage.id + ' updated'
+                                    }
+                                }
+                            })
+                        });
+                }
             });
         }
     },

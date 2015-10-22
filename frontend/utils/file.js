@@ -3,7 +3,7 @@ import FileAction from '../actions/file';
 
 var model = {
     init: () => {
-        return model.inited = Peer.init().then(() => {
+        return model.inited = Peer.inited.then(() => {
             model.listen();
         });
     },
@@ -35,10 +35,14 @@ var model = {
                 conn && conn.on('open', () => {
                     files.forEach((file) => {
                         conn.send(file);
-                        model.receive(file);
                     });
                 });
             }
+            setTimeout(() => {
+                files.forEach((file) => {
+                    model.receive(file);
+                });
+            }, 0);
         });
     }
 };

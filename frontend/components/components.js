@@ -6,7 +6,7 @@ import ContainerChat from './containerChat';
 import SocketAPI from '../utils/socket';
 import VideoAPI from '../utils/video';
 import FileAPI from '../utils/file';
-//import Stripe from '../utils/stripe';
+import PeerAPI from '../utils/peer';
 import FileStore from '../stores/file';
 import FileAction from '../actions/file';
 
@@ -19,10 +19,10 @@ export default class Components extends React.Component {
     }
 
     componentWillMount() {
+        PeerAPI.init();
         SocketAPI.init();
         VideoAPI.init();
         FileAPI.init();
-        //Stripe.init();
     }
 
     dragleave = (e) => {

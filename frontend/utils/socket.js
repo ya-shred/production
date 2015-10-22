@@ -128,6 +128,12 @@ var model = {
             type: 'new_payment',
             data: data
         })
+    },
+    saveMiddleMessage: (data) => {
+        socket.send({
+            type: 'save_middle_message',
+            data: data
+        })
     }
 };
 

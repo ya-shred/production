@@ -1,6 +1,5 @@
 import AppDispatcher from '../dispatchers/dispatcher';
 import Actions from '../constants/user';
-import SocketActions from './socket';
 
 export default {
     infoFetched(data) {

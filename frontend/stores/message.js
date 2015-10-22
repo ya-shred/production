@@ -7,6 +7,8 @@ import assign  from 'react/lib/Object.assign';
 import UsersListStore from './usersList';
 import FileStore from './file';
 import BaseStore from './base';
+import AjaxAPI from '../utils/ajax';
+import SocketAPI from '../utils/socket';
 import _ from 'lodash';
 
 let messages = [];
@@ -50,8 +52,8 @@ let countUserMessageNumber = (userId) => {
 
 let updateMessage = (message) => {
     for (let key in messages) {
-        if (messages[key]._id === message.id) {
-            messages[key].message = message.message;
+        if (messages[key].id === message.id) {
+            messages[key].additional = message.additional;
             break;
         }
     }
@@ -62,6 +64,32 @@ let receiveFile = (fileObj) => {
 };
 
 let searchMessageText = '';
+
+let makeFromData = (data) => {
+    let flat = null;
+    switch (data.type) {
+        case 'simple_file':
+            flat = {
+                type: data.type,
+                file: data.additional.file
+            };
+            break;
+        case 'video_message':
+            flat = {
+                type: data.type,
+                video: data.additional.video,
+                audio: data.additional.audio
+            };
+            break;
+    }
+
+    let form = new FormData();
+
+    for (let key in flat) {
+        form.append(key, flat[key]);
+    }
+    return form;
+};
 
 const store = assign({}, BaseStore, {
 
@@ -113,6 +141,20 @@ const store = assign({}, BaseStore, {
                 break;
             case ActionsUsersList.RESET_USERS:
                 store.emitChange();
+                break;
+            case Actions.SAVE_FILE_MESSAGE:
+                let sendData = makeFromData(action.data);
+                action.data.type = 'simple_message';
+                action.data.additional = { message: 'Идёт сохранение файла, не перезагружайте страницу' };
+                store.emitChange();
+                AjaxAPI.saveFile(sendData)
+                    .then((url) => {
+                        console.log('file_url');
+                        action.data.additional = { url: url };
+                        action.data.type = 'simple_file_saved';
+                        SocketAPI.saveMiddleMessage(action.data);
+                        store.emitChange();
+                    });
                 break;
         }
         return true;

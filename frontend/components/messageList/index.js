@@ -47,7 +47,7 @@ export default class MessageList extends React.Component {
                 var messageUser = UsersListStore.getUserById(item.userId);
                 return (
                     <MessageItem
-                        key={item._id}
+                        key={item.id}
                         messageUser={messageUser}
                         messageObj={item}
                         />

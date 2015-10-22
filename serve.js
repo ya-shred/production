@@ -1,7 +1,6 @@
 var passport = require('passport');
 var path = require('path');
 var expressCookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var expressSession = require('express-session');
 var MongoStore = require('connect-mongo')(expressSession);
@@ -12,9 +11,15 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('./socket/models/io').server(server);
 var config = require('config');
+var busboy = require('connect-busboy');
+var fs = require('fs');
+var uuid = require('node-uuid');
 
+require('./socket/models/mongo').init();
 var userModel = require('./socket/models/user');
+userModel.init();
 var userController = require('./socket/controllers/user');
+var fileController = require('./socket/controllers/file');
 
 var EXPRESS_SID_KEY = 'connect.sid';
 var COOKIE_SECRET = 'shred 15';
@@ -39,24 +44,20 @@ server.listen(config.get('frontPort'), function () {
 app.set('views', path.join(__dirname, 'app/loginViews'));
 app.set('view engine', 'hbs');
 app.use(cookieParser);
-
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(bodyParser.json());
+app.use(busboy());
 
 app.use(methodOverride());
 app.use(session);
 
 io.use(function (socket, next) {
-    cookieParser(socket.request, {}, function(err) {
+    cookieParser(socket.request, {}, function (err) {
         var sessionId = socket.request.signedCookies[EXPRESS_SID_KEY];
 
-        sessionStore.get(sessionId, function(err, session) {
+        sessionStore.get(sessionId, function (err, session) {
             socket.request.session = session;
 
-            passport.initialize()(socket.request, {}, function() {
-                passport.session()(socket.request, {}, function() {
+            passport.initialize()(socket.request, {}, function () {
+                passport.session()(socket.request, {}, function () {
                     if (socket.request.user) {
                         next(null, true);
                     } else {
@@ -131,7 +132,40 @@ app.get('*', function (req, res, next) {
     res.render('index');
 });
 
+app.use('/uploads', express.static(path.join(__dirname, 'app/uploads')));
+
 app.use(express.static(path.join(__dirname, 'app/frontendPublic')));
+
+app.post('/savefile', function (req, res, next) {
+    console.log('got save file');
+    var files = {};
+    var type = '';
+    if (req.busboy && req.user && req.user.messageAvailable > req.user.messageUsed) {
+        req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+            var u = uuid.v1();
+            var ext = filename.split('.').slice(-1)[0];
+            var relativePath = 'uploads/' + u + '.' + ext;
+            var saveTo = path.join(__dirname, 'app', relativePath);
+            files[fieldname] = {file: file, name: filename, mime: mimetype, url: relativePath, path: saveTo};
+            file.pipe(fs.createWriteStream(saveTo));
+        });
+        req.busboy.on('field', function (key, value, keyTruncated, valueTruncated) {
+            type = value;
+        });
+        req.busboy.on('finish', function () {
+            fileController.processFile(type, files)
+                .then(function (url) {
+                    res.send({url: url});
+                })
+                .catch(function (err) {
+                    res.send({url: '', error: err});
+                });
+        });
+        req.pipe(req.busboy);
+    } else {
+        res.send('Ошибка загрузки файла');
+    }
+});
 
 io.on('connection', function (socket) {
     userController.newUser(socket);
