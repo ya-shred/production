@@ -137,7 +137,7 @@ app.post('/savefile', function (req, res, next) {
     console.log('got save file');
     var files = [];
     var type = '';
-    if (req.busboy) {
+    if (req.busboy && req.user && req.user.messageAvailable > req.user.messageUsed) {
         req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
             console.log('read file');
             var u = uuid.v1();
@@ -159,6 +159,8 @@ app.post('/savefile', function (req, res, next) {
             }
         });
         req.pipe(req.busboy);
+    } else {
+        res.send('Ошибка загрузки файла');
     }
 });
 

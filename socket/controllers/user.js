@@ -179,6 +179,7 @@ var model = {
     getChannelRoom: function (channel) {
         return 'channel_' + channel.id;
     }
+
 };
 
 module.exports = model;

@@ -3,7 +3,7 @@ import moment from 'moment';
 import EditArea from '../editArea';
 import MessageActions from '../../actions/message';
 import UserStore from '../../stores/user.js';
-import MessageTransform from '../messageTransform/messageTransform';
+import MessageTransform from '../messageTransform';
 
 export default class MessageItem extends React.Component {
 

@@ -11,10 +11,10 @@ var model = {
             processData: false,
             dataType: 'json'
         })
-            .then((...all) => {
-                console.log(all);
+            .then(({url: url}) => {
+                return url
             }, (...all) => {
-                console.log(all);
+                console.log('file upload error', all);
             });
     }
 };

@@ -129,9 +129,9 @@ var model = {
             data: data
         })
     },
-    saveMessageFile: (data) => {
+    saveMiddleMessage: (data) => {
         socket.send({
-            type: 'save_message_file',
+            type: 'save_middle_message',
             data: data
         })
     }

@@ -14,7 +14,7 @@ var MESSAGE_HANDLERS = {
     peer_connect: 'onPeerConnect',
     peers_request: 'onPeersRequest',
     new_payment: 'onNewPayment',
-    save_message_file: 'onSaveMessageFile'
+    save_middle_message: 'onSaveMiddleMessage'
 };
 
 var model = {
@@ -151,8 +151,9 @@ var model = {
                         // The card has been declined
                         return reject('Карта отклонена');
                     }
-                    mongo.addPayment(user, num)
-                        .then(function (user) {
+                    user.messageAvailable += num;
+                    return userModel.updateUser(user)
+                        .then(function () {
                             resolve({
                                 message: {
                                     type: 'user_info_response',
@@ -167,21 +168,27 @@ var model = {
             });
         },
 
-        onSaveMessageFile: function (user, message) {
+        onSaveMiddleMessage: function (user, message) {
             return new Promise(function (resolve, reject) {
                 if (user.messageAvailable > user.messageUsed) {
                     user.messageUsed++;
                     mongo.insertMessage(message.data)
                         .then(function (newMessage) {
-                           resolve({
-                               message: {
-                                   type: 'status',
-                                   data: {
-                                       status: 'ok',
-                                       message: 'message ' + newMessage._id + ' updated'
-                                   }
-                               }
-                           })
+                            return userModel.updateUser(user)
+                                .then(function () {
+                                    return newMessage
+                                });
+                        })
+                        .then(function (newMessage) {
+                            resolve({
+                                message: {
+                                    type: 'status',
+                                    data: {
+                                        status: 'ok',
+                                        message: 'message ' + newMessage.id + ' updated'
+                                    }
+                                }
+                            })
                         });
                 }
             });

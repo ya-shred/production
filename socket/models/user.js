@@ -107,6 +107,13 @@ var model = {
      */
     getUsers: function (currentUser) {
         return mongo.getUsers(currentUser);
+    },
+    /**
+     * Обновление информации о текущем пользователе
+     * @param {User} user
+     */
+    updateUser: function (user) {
+        return mongo.updateUser(user);
     }
 };
 

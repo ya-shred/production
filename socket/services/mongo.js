@@ -105,73 +105,28 @@ model = {
     },
 
     updateMessage: function (data) {
-        return new Promise(function (resolve, reject) {
-            var collection = db.collection('messages');
-            collection.findOneAndUpdate({id: data.id}, {$set: {additional: data.additional}}, function (err, result) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(result);
-            });
-        });
+        var collection = db.collection('messages');
+        return collection.findOneAndUpdate({id: data.id}, {$set: {additional: data.additional}});
     },
 
     getChannels: function (user) {
-        return new Promise(function (resolve, reject) {
-            // Get the documents collection
-            var collection = db.collection('channels');
-            // Find some documents
-            collection.find().toArray(function (err, result) {
-                if (err) {
-                    return reject(err);
-                }
-
-                resolve(result);
-            });
-        });
+        var collection = db.collection('channels');
+        return collection.find().toArray();
     },
 
     getUsers: function (user) {
-        return new Promise(function (resolve, reject) {
-            // Get the documents collection
-            var collection = db.collection('users');
-            // Find some documents
-            collection.find().toArray(function (err, result) {
-                if (err) {
-                    return reject(err);
-                }
-
-                resolve(result);
-            });
-        });
+        var collection = db.collection('users');
+        return collection.find().toArray();
     },
 
     getExistedUsers: function () {
-        return new Promise(function (resolve, reject) {
-            // Get the documents collection
-            var collection = db.collection('users');
-            // Find some documents
-            collection.find().toArray(function (err, result) {
-                if (err) {
-                    return reject(err);
-                }
-
-                resolve(result);
-            });
-        });
+        var collection = db.collection('users');
+        return collection.find().toArray();
     },
 
-    addPayment: function (user, num) {
-        return new Promise(function (resolve, reject) {
-            user.messageAvailable += num;
-            var collection = db.collection('users');
-            collection.findOneAndUpdate({id: user.id}, {$set: {messageAvailable: user.messageAvailable}}, function (err, result) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(user);
-            });
-        })
+    updateUser: function (user) {
+        var collection = db.collection('users');
+        return collection.findOneAndReplace({id: user.id}, user);
     }
 };
 
