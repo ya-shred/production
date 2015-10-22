@@ -13,10 +13,12 @@ var FILE_HANDLERS = {
 
 var model = {
     handlers: {
-        onSimpleFile: function (message) {
+        onSimpleFile: function (files) {
+            return files.file.url
         },
 
-        onVideoMessage: function (message) {
+        onVideoMessage: function (files) {
+
         },
 
         onErrorMessage: function () {
@@ -30,21 +32,15 @@ var model = {
         }
 
     },
-    processFile: function (message) {
-        var messageHandler = model.handlers[FILE_HANDLERS[message.type]];
+    processFile: function (type, files) {
+        var messageHandler = model.handlers[FILE_HANDLERS[type]];
         if (!messageHandler) {
             return Promise.resolve(model.handlers[FILE_HANDLERS['error']]());
         }
 
-        return Promise.resolve(messageHandler(message))
+        return Promise.resolve(messageHandler(files))
             .catch(function (error) {
-                return Promise.reject({
-                    type: 'status',
-                    data: {
-                        status: 'error',
-                        message: error
-                    }
-                });
+                return Promise.reject('Неизвестный формат файла');
             });
     }
 };

@@ -90,9 +90,9 @@ const store = assign({}, BaseStore, {
                 userId: UserStore.getUserInfo().id,
                 additional: {
                     audio: curMessageBlob[0],
-                    audioMime: curMessageBlob[0].mime,
+                    audioMime: curMessageBlob[0].type,
                     video: curMessageBlob[1],
-                    videoMime: curMessageBlob[1].mime
+                    videoMime: curMessageBlob[1].type
                 }
             }]);
             curMessageBlob = null;

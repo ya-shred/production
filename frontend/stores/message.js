@@ -77,8 +77,8 @@ let makeFromData = (data) => {
         case 'video_message':
             flat = {
                 type: data.type,
-                video: data.video,
-                audio: data.audio
+                video: data.additional.video,
+                audio: data.additional.audio
             };
             break;
     }

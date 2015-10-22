@@ -19,6 +19,7 @@ require('./socket/models/mongo').init();
 var userModel = require('./socket/models/user');
 userModel.init();
 var userController = require('./socket/controllers/user');
+var fileController = require('./socket/controllers/file');
 
 var EXPRESS_SID_KEY = 'connect.sid';
 var COOKIE_SECRET = 'shred 15';
@@ -137,7 +138,7 @@ app.use(express.static(path.join(__dirname, 'app/frontendPublic')));
 
 app.post('/savefile', function (req, res, next) {
     console.log('got save file');
-    var files = [];
+    var files = {};
     var type = '';
     if (req.busboy && req.user && req.user.messageAvailable > req.user.messageUsed) {
         req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
@@ -146,7 +147,7 @@ app.post('/savefile', function (req, res, next) {
             var ext = filename.split('.').slice(-1)[0];
             var relativePath = 'uploads/' + u + '.' + ext;
             var saveTo = path.join(__dirname, 'app', relativePath);
-            files.push({file: file, name: filename, mime: mimetype, url: relativePath, path: saveTo});
+            files[fieldname] = {file: file, name: filename, mime: mimetype, url: relativePath, path: saveTo};
             file.pipe(fs.createWriteStream(saveTo));
         });
         req.busboy.on('field', function(key, value, keyTruncated, valueTruncated) {
@@ -154,11 +155,10 @@ app.post('/savefile', function (req, res, next) {
             type = value;
         });
         req.busboy.on('finish', function() {
-            switch (type) {
-                case 'simple_file':
-                    res.send({url: files[0].url});
-                    break;
-            }
+            fileController.processFile(type, files)
+                .then(function (url) {
+                    res.send({url: url});
+                });
         });
         req.pipe(req.busboy);
     } else {

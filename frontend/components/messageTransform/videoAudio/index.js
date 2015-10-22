@@ -26,7 +26,7 @@ export default class VideoAudio extends React.Component {
 
     render() {
         return (
-            <div class="message-video-audio">
+            <div className="message-video-audio">
                 <div>Пользователь прислал вам видеосообщение:</div>
                 <video ref="message-video" src={this.props.video} controls className="message-video-audio__video"/>
                 <audio ref="message-audio" src={this.props.audio}/>

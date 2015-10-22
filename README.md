@@ -35,5 +35,10 @@
 - сервер поднимится не сразу. Он сначала должен собраться
 
 ###Для деплоя на heroku
-- git remote add heroku https://git.heroku.com/shri-production.git
+- git remote add heroku https://git.heroku.com/shri-andrey.git
 - git push heroku master
+
+###Для создания собственного сервера heroku
+ - установить в heroku все переменные среды из config/production
+ - установить несоклько билдпаков:
+   - ``heroku buildpacks:set https://github.com/ddollar/heroku-buildpack-multi``
