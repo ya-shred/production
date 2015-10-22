@@ -44,6 +44,10 @@ let model = {
                 return (
                     <img src={url} className="message-tr__img"/>
                 )
+            } else if (['mp4'].indexOf(ext) !== -1) {
+                return (
+                    <video src={url} className="message-tr__img" controls />
+                )
             }
         }
     },

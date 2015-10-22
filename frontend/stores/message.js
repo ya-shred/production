@@ -143,12 +143,16 @@ const store = assign({}, BaseStore, {
                 store.emitChange();
                 break;
             case Actions.SAVE_FILE_MESSAGE:
-                AjaxAPI.saveFile(makeFromData(action.data))
+                let sendData = makeFromData(action.data);
+                action.data.type = 'simple_message';
+                action.data.additional = { message: 'Идёт сохранение файла, не перезагружайте страницу' };
+                store.emitChange();
+                AjaxAPI.saveFile(sendData)
                     .then((url) => {
                         console.log('file_url');
-                        //action.data.additional = { url: url };
-                        //action.data.type = 'simple_file_saved';
-                        //SocketAPI.saveMiddleMessage(action.data);
+                        action.data.additional = { url: url };
+                        action.data.type = 'simple_file_saved';
+                        SocketAPI.saveMiddleMessage(action.data);
                         store.emitChange();
                     });
                 break;
