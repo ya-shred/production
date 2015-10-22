@@ -1,12 +1,9 @@
-var mongo = require('../models/mongo.js');
-var file = require('file.js');
-var userModel = require('../models/user');
-var config = require('config');
-var stripe = require("stripe")(config.get('stripeKey'));
-
+var ffmpeg = require('fluent-ffmpeg');
+var path = require('path');
+var uuid = require('node-uuid');
+var fs = require('fs');
 
 var FILE_HANDLERS = {
-    error: 'onErrorMessage',
     simple_file: 'onSimpleFile',
     video_message: 'onVideoMessage'
 };
@@ -18,29 +15,34 @@ var model = {
         },
 
         onVideoMessage: function (files) {
-
-        },
-
-        onErrorMessage: function () {
-            return Promise.reject({
-                type: 'status',
-                data: {
-                    status: 'error',
-                    message: 'unknown command'
-                }
+            return new Promise(function (resolve, reject) {
+                var fileUrl = 'uploads/' + uuid.v1() + '.mp4';
+                ffmpeg()
+                    .addInput(files.audio.path)
+                    .addInput(files.video.path)
+                    .on('error', function(err) {
+                        console.log('error2', err);
+                        reject(err);
+                    })
+                    .on('end', function() {
+                        console.log('merged');
+                        fs.unlinkSync(files.audio.path);
+                        fs.unlinkSync(files.video.path);
+                        resolve(fileUrl);
+                    })
+                    .save(path.join('app', fileUrl));
             });
         }
-
     },
     processFile: function (type, files) {
         var messageHandler = model.handlers[FILE_HANDLERS[type]];
         if (!messageHandler) {
-            return Promise.resolve(model.handlers[FILE_HANDLERS['error']]());
+            return Promise.resolve('Неизвестный формат файла');
         }
 
         return Promise.resolve(messageHandler(files))
             .catch(function (error) {
-                return Promise.reject('Неизвестный формат файла');
+                return Promise.reject(error);
             });
     }
 };

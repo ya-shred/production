@@ -50,14 +50,14 @@ app.use(methodOverride());
 app.use(session);
 
 io.use(function (socket, next) {
-    cookieParser(socket.request, {}, function(err) {
+    cookieParser(socket.request, {}, function (err) {
         var sessionId = socket.request.signedCookies[EXPRESS_SID_KEY];
 
-        sessionStore.get(sessionId, function(err, session) {
+        sessionStore.get(sessionId, function (err, session) {
             socket.request.session = session;
 
-            passport.initialize()(socket.request, {}, function() {
-                passport.session()(socket.request, {}, function() {
+            passport.initialize()(socket.request, {}, function () {
+                passport.session()(socket.request, {}, function () {
                     if (socket.request.user) {
                         next(null, true);
                     } else {
@@ -141,8 +141,7 @@ app.post('/savefile', function (req, res, next) {
     var files = {};
     var type = '';
     if (req.busboy && req.user && req.user.messageAvailable > req.user.messageUsed) {
-        req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-            console.log('read file');
+        req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
             var u = uuid.v1();
             var ext = filename.split('.').slice(-1)[0];
             var relativePath = 'uploads/' + u + '.' + ext;
@@ -150,14 +149,16 @@ app.post('/savefile', function (req, res, next) {
             files[fieldname] = {file: file, name: filename, mime: mimetype, url: relativePath, path: saveTo};
             file.pipe(fs.createWriteStream(saveTo));
         });
-        req.busboy.on('field', function(key, value, keyTruncated, valueTruncated) {
-            console.log('read key');
+        req.busboy.on('field', function (key, value, keyTruncated, valueTruncated) {
             type = value;
         });
-        req.busboy.on('finish', function() {
+        req.busboy.on('finish', function () {
             fileController.processFile(type, files)
                 .then(function (url) {
                     res.send({url: url});
+                })
+                .catch(function (err) {
+                    res.send({url: '', error: err});
                 });
         });
         req.pipe(req.busboy);
