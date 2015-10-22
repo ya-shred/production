@@ -3,7 +3,7 @@ import FileAction from '../actions/file';
 
 var model = {
     init: () => {
-        return model.inited = Peer.init().then(() => {
+        return model.inited = Peer.inited.then(() => {
             model.listen();
         });
     },

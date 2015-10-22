@@ -1,4 +1,4 @@
-var mongo = require('../services/mongo.js');
+var mongo = require('../models/mongo.js');
 var userModel = require('../models/user');
 var config = require('config');
 var stripe = require("stripe")(config.get('stripeKey'));

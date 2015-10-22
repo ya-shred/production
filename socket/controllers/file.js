@@ -1,4 +1,4 @@
-var mongo = require('../services/mongo.js');
+var mongo = require('../models/mongo.js');
 var file = require('file.js');
 var userModel = require('../models/user');
 var config = require('config');

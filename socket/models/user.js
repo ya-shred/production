@@ -1,10 +1,10 @@
-var mongo = require('../services/mongo');
+var mongo = require('./mongo');
 var ioModel = require('../models/io');
 var io = ioModel.io;
 
 var model = {
-    inited: (function () {
-        return mongo.init
+    init: function () {
+        return model.inited = mongo.inited
             .then(function () {
                 return mongo.getExistedUsers()
             })
@@ -13,7 +13,7 @@ var model = {
                     return user.id;
                 });
             });
-    })(),
+    },
     existedUsers: [],
     getUsersPeer: function (currentUser) {
         return new Promise(function (resolve, reject) {

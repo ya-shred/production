@@ -1,6 +1,6 @@
 var userModel = require('../models/user');
 var api = require('./api');
-var mongo = require('../services/mongo');
+var mongo = require('../models/mongo');
 var io = require('../models/io').io;
 
 var model = {

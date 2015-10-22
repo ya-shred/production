@@ -15,7 +15,9 @@ var busboy = require('connect-busboy');
 var fs = require('fs');
 var uuid = require('node-uuid');
 
+require('./socket/models/mongo').init();
 var userModel = require('./socket/models/user');
+userModel.init();
 var userController = require('./socket/controllers/user');
 
 var EXPRESS_SID_KEY = 'connect.sid';

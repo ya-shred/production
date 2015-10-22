@@ -7,7 +7,7 @@ window.navigator.getUserMedia = window.navigator.getUserMedia ||
 
 var model = {
     init: () => {
-        return model.inited = Peer.init().then(() => {
+        return model.inited = Peer.inited.then(() => {
             model.listen();
         });
     },
