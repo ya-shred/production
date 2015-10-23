@@ -115,6 +115,16 @@ const store = assign({}, BaseStore, {
         return countUserMessageNumber(userId);
     },
 
+    getMessageById(id) {
+        let res = null;
+        messages.some((el) => {
+            if (el.id === id) {
+                return res = el;
+            }
+        });
+        return res;
+    },
+
     dispatcherIndex: AppDispatcher.register(function (payload) {
 
         var action = payload.action;
@@ -145,7 +155,10 @@ const store = assign({}, BaseStore, {
             case Actions.SAVE_FILE_MESSAGE:
                 let sendData = makeFromData(action.data);
                 action.data.type = 'simple_message';
-                action.data.additional = { message: 'Идёт сохранение файла, не перезагружайте страницу' };
+                action.data.additional = {
+                    message: 'Идёт сохранение файла, не перезагружайте страницу',
+                    disabled: false
+                };
                 store.emitChange();
                 AjaxAPI.saveFile(sendData)
                     .then((url) => {

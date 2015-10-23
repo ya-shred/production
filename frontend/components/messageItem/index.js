@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import EditArea from '../editArea';
 import MessageActions from '../../actions/message';
+import ReplayActions from '../../actions/replay';
 import UserStore from '../../stores/user.js';
 import MessageTransform from '../messageTransform';
 
@@ -24,15 +25,18 @@ export default class MessageItem extends React.Component {
         MessageActions.saveFileMessage(this.props.messageObj);
     };
 
+    replay = () => {
+        ReplayActions.replay(this.props.messageObj.id);
+    };
+
     render() {
-        let editAera;
+        let editArea;
         let contentItemClass;
-        let editButton;
-        let saveButton;
+        let buttons = [];
 
         const currentUser = UserStore.getUserInfo();
         if (this.state.editing) {
-            editAera = <EditArea message={ this.props.messageObj }
+            editArea = <EditArea message={ this.props.messageObj }
                                  messageUser={ this.props.messageUser }
                                  onClose={this.closeEditArea}/>;
             contentItemClass = "chat-window__content-item chat-window__content-item_editing"
@@ -40,14 +44,22 @@ export default class MessageItem extends React.Component {
             contentItemClass = "chat-window__content-item"
         }
 
-        if (this.props.messageObj.userId === currentUser.id) {
-            if (this.props.messageObj.type === 'simple_message') {
-                editButton = <span className="chat-window__content-pic chat-window__content-pic_edit" onClick={this.openEditArea}></span>
-            }
+        if (!this.props.messageObj.additional.disabled && !this.props.disabled) {
+            if (this.props.messageObj.userId === currentUser.id) {
+                if (this.props.messageObj.type === 'simple_message') {
+                    buttons.push(<span key="edit" className="chat-window__content-pic chat-window__content-pic_edit"
+                                       onClick={this.openEditArea}></span>);
+                }
 
-            if ((this.props.messageObj.type === 'simple_file' || this.props.messageObj.type === 'video_message')
-                && currentUser.messageAvailable > currentUser.messageUsed) {
-                saveButton = <span className="chat-window__content-pic chat-window__content-pic_save" onClick={this.save}></span>
+                if ((this.props.messageObj.type === 'simple_file' || this.props.messageObj.type === 'video_message')
+                    && currentUser.messageAvailable > currentUser.messageUsed) {
+                    buttons.push(<span key="save" className="chat-window__content-pic chat-window__content-pic_save"
+                                       onClick={this.save}></span>)
+                }
+            } else {
+                buttons.push(<span key="replay" className="chat-window__content-pic chat-window__content-pic_replay"
+                                   onClick={this.replay}></span>)
+
             }
         }
 
@@ -64,12 +76,11 @@ export default class MessageItem extends React.Component {
                         <span className="chat-window__content-date">
                             {moment(+this.props.messageObj.datetime).format('DD.MM.YYYY в HH:mm')}
                         </span>
-                        {editButton}
-                        {saveButton}
+                        {buttons}
                     </div>
                     <div className="chat-window__content-message">{message}</div>
                 </div>
-                {editAera}
+                {editArea}
             </div>
         );
     }

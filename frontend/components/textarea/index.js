@@ -1,6 +1,7 @@
 import React from 'react';
 import MessageActions from '../../actions/message';
 import TextareaSize from 'react-textarea-autosize';
+import ReplayStore from '../../stores/replay';
 const ENTER_KEY_CODE = 13; // код клавиши enter
 
 export default class Textarea extends React.Component {
@@ -10,6 +11,17 @@ export default class Textarea extends React.Component {
         this.state = {value: ''}
     }
 
+    componentDidMount() {
+        ReplayStore.addChangeListener(this.addReplay);
+    }
+
+    componentWillUnmount() {
+        ReplayStore.removeChangeListener(this.addReplay);
+    }
+
+    addReplay = () => {
+      this.setState({value: this.state.value + '{' + ReplayStore.getReplayId() + '}'});
+    };
 
     _onChange = (event) => {
         this.setState({value: event.target.value});
