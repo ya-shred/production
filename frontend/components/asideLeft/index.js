@@ -3,6 +3,7 @@ import UsersListStore from '../../stores/usersList';
 import MessageStore from '../../stores/message.js';
 import UserList from '../userList';
 import SearchUser from '../searchUser';
+import SearchMessage from '../searchMessage';
 
 
 var getUsersState = () => {
@@ -40,7 +41,9 @@ export default class AsideLeft extends React.Component {
         return (
             <aside className="aside-left">
                 <SearchUser />
-                <UserList users={this.state.users} />
+                <div className="users-list">
+                    <UserList users={this.state.users} />
+                </div>
             </aside>
         );
     }
