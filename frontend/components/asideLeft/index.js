@@ -3,7 +3,6 @@ import UsersListStore from '../../stores/usersList';
 import MessageStore from '../../stores/message.js';
 import UserList from '../userList';
 import SearchUser from '../searchUser';
-import SearchMessage from '../searchMessage';
 
 
 var getUsersState = () => {
