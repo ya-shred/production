@@ -1,0 +1,47 @@
+.logout
+    position: absolute
+    top: 50%
+    transform translateY(-50%)
+    right: 20px
+    &__name
+        display: inline-block
+        vertical-align: top
+        height: 28px
+        margin-left: 10px
+        font-weight: bold
+        font-size: 15px
+        line-height: 28px
+        color: #fff
+        cursor: pointer
+
+    &__button
+        display: inline-block
+        margin-left: 10px;
+        border: 0
+        cursor: pointer
+        width: 26px
+        height: 28px
+        margin-top 2px
+        background-color: transparent
+        background: url(lagout.svg) no-repeat
+        outline: none
+
+        &:hover
+            background: url(lagout-active.svg) no-repeat
+
+    &__wrapper
+        position: relative
+        display: inline-block
+        vertical-align: top
+        width: 28px
+        height: 28px
+        border-radius: 50%
+        border: 1px solid #fd5
+        overflow: hidden
+        box-sizing: border-box
+
+    &__img
+        position: relative
+        width: 100%
+        border-radius: 50%
+        
