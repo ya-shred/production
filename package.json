@@ -49,7 +49,7 @@
     "react": "^0.13.3",
     "react-cookie": "^0.3.4",
     "react-textarea-autosize": "^2.5.3",
-    "recordrtc": "^5.2.2",
+    "recordrtc": "^5.2.3",
     "socket.io": "^1.3.6",
     "socket.io-client": "^1.3.6",
     "stripe": "^4.0.0",
