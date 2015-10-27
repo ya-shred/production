@@ -110,6 +110,11 @@ model = {
     updateUser: function (user) {
         var collection = db.collection('users');
         return collection.findOneAndReplace({id: user.id}, user);
+    },
+
+    removeUserById: function (id) {
+        var collection = db.collection('users');
+        return collection.remove({id: id});
     }
 };
 

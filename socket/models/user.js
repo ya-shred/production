@@ -114,6 +114,13 @@ var model = {
      */
     updateUser: function (user) {
         return mongo.updateUser(user);
+    },
+    /**
+     * Удаляем пользователя из базы по ID
+     * @param {User} user
+     */
+    removeUserById: function(user) {
+        return mongo.removeUserById(user.id);
     }
 };
 

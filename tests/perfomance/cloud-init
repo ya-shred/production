@@ -1,0 +1,39 @@
+#cloud-config
+# install on Ubuntu node v4.1.0 on 14.04
+packages:
+  - git
+  - build-essential
+  - g++
+  - libkrb5-dev
+runcmd:
+  - /root/init
+write_files:
+  - path: /root/init
+    permissions: '0755'
+    content: |
+      #!/bin/sh
+      # create necessary dirs
+      mkdir /root/shri /root/shri/test /root/shri/test.git
+      # instal heroku cli
+      wget -O- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+      # init bare repo
+      cd /root/shri/test.git
+      git init --bare
+      # move post-receive script
+      cp /root/shri/post-receive /root/shri/test.git/hooks/post-receive
+      # install node project management
+      npm i -g pm2
+      #
+      git config --global user.email "you@example.com"
+      git config --global user.name "Your Name"
+
+  - path: /root/shri/post-receive
+    permissions: '0755'
+    content: |
+      #!/bin/sh
+      git --work-tree=/root/shri/test --git-dir=/root/shri/test.git checkout -f
+      cd /root/shri/test/
+      npm i
+      cd ./tests/perfomance/manager
+      npm i
+      pm2 start ecosystem.json

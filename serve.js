@@ -15,11 +15,14 @@ var busboy = require('connect-busboy');
 var fs = require('fs');
 var uuid = require('node-uuid');
 
-require('./socket/models/mongo').init();
 var userModel = require('./socket/models/user');
-userModel.init();
 var userController = require('./socket/controllers/user');
 var fileController = require('./socket/controllers/file');
+
+// Инициализация необходимых модулей
+require('./socket/models/mongo').init();
+userModel.init();
+// конец инициализации
 
 var EXPRESS_SID_KEY = 'connect.sid';
 var COOKIE_SECRET = 'shred 15';
