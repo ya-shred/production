@@ -1,11 +1,11 @@
 var config = require('config');
-var server = require('http').createServer().listen(config.get('frontPort'));
-var io = require('./socket/models/io').server(server);
+var io = require('./socket/models/io').server(config.get('frontPort'));
 var uuid = require('node-uuid');
+var socket = require('socket.io-client')(config.get('managerUrl'));
 
-server.listen(config.get('frontPort'), function () {
-    var port = server.address().port;
-    console.log('Example app listening at http://localhost:%s', port);
+socket.on('connect', function() {
+    console.log('connected');
+    socket.emit('server connected');
 });
 
 var mongo = require('./socket/models/mongo');
@@ -15,9 +15,10 @@ userModel.init();
 var userController = require('./socket/controllers/user');
 
 io.on('connection', function (socket) {
-    socket.request.user = {
+    var user = {
         id: uuid.v1()
     };
+    socket.request.user = user;
     userController.newUser(socket);
     socket.on('disconnect', function() {
         userModel.removeUserById(user);
