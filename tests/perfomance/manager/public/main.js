@@ -170,6 +170,12 @@ $(function () {
         updateStatistics();
     });
 
+    socket.on('new statistics', function (data) {
+        console.log('statistics add', data);
+        info.statistics[data.id][data.date] = data.stat
+        updateStatistics();
+    });
+
     socket.on('clientDefs', function (data) {
         console.log('client params replace', data);
         info.clientDefs = data;

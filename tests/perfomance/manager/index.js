@@ -60,8 +60,9 @@ io.on('connection', function (socket) {
 
         socket.on('client stats', function(data) {
             //console.log('got stats');
-            info.statistics[id][+new Date()] = data.stat;
-            io.to('manager').emit('statistics', {stat: info.statistics});
+            var date = +new Date();
+            info.statistics[id][date] = data.stat;
+            io.to('manager').emit('new statistics', {stat: data.stat, date: date, id: id});
         });
 
         socket.on('disconnect', function() {
