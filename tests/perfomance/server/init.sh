@@ -13,11 +13,11 @@ rm -rf .git
 git init
 git add -A
 git commit -m 'test'
-#heroku apps:destroy -a shri-andrey-performance-server --confirm shri-andrey-performance-server
-#heroku apps:create shri-andrey-performance-server
-#heroku config:set NODE_ENV=TEST_SERVER MANAGER_URI=`dig +short myip.opendns.com @resolver1.opendns.com`
+heroku apps:destroy -a shri-andrey-performance-server --confirm shri-andrey-performance-server
+heroku apps:create shri-andrey-performance-server
+heroku config:set NODE_ENV=TEST_SERVER MANAGER_URI=`dig +short myip.opendns.com @resolver1.opendns.com`
 
-#git push heroku master
+git push heroku master
 
 node server.js
 

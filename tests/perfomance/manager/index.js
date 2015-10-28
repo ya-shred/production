@@ -21,6 +21,8 @@ var info = {
     statistics: {}
 };
 
+var counter = 0;
+
 io.on('connection', function (socket) {
     console.log('connection');
     var isRestartingServer = false;
@@ -95,7 +97,16 @@ io.on('connection', function (socket) {
         socket.on('add client', function () {
             console.log('send add client');
             process.chdir('../client');
-
+            var pc = child_process.spawn(path.join(__dirname, '../client/init.sh'), [++counter]);
+            pc.stdout.on('data', function (data) {
+                console.log(data.toString());
+            });
+            pc.stderr.on('data', function (data) {
+                console.log(data.toString());
+            });
+            pc.on('exit', function (code) {
+                process.chdir('../manager');
+            });
         });
     });
 });
