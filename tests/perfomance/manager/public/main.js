@@ -173,8 +173,11 @@ $(function () {
     });
 
     socket.on('new statistics', function (data) {
-        console.log('statistics add', data);
-        info.statistics[data.id][data.date] = data.stat
+        //console.log('statistics add', data);
+        if (!info.statistics[data.id]) {
+            info.statistics[data.id] = {};
+        }
+        info.statistics[data.id][data.date] = data.stat;
         updateStatistics();
     });
 
