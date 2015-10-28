@@ -23,7 +23,8 @@ var info = {
 
 var clientDefs = {
     timeout: 500,
-    numToSend: 5
+    numToSend: 5,
+    connections: 1
 };
 
 var counter = 0;

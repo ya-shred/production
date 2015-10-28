@@ -7,7 +7,8 @@ var clientId = config.get('number');
 
 var def = {
     timeout: 300,
-    numToSend: 3
+    numToSend: 3,
+    connections: 1
 };
 
 var stats = {};
@@ -18,17 +19,16 @@ manager.on('connect', function () {
     manager.emit('client connected');
 });
 
+manager.on('send def', function(data) {
+    def = data.def;
+});
+
 var isServer = false;
 
 server.on('connect', function () {
     isServer = true;
     console.log('server connected');
 });
-
-server.on('send def', function(data) {
-   def = data.def;
-});
-
 server.on('disconnect', function () {
     isServer = false;
     console.log('server disconnected');
