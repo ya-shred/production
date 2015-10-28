@@ -69,11 +69,13 @@ $(function () {
                     var avg = timeInt.reduce(function (last, cur) {
                             return last + cur[1] - cur[0];
                         }, 0) / timeInt.length;
-                    newUser.push([time, avg]);
-                    min = Math.min(avg, min);
-                    max = Math.max(avg, max);
-                    minTime = Math.min(minTime, time);
-                    maxTime = Math.max(maxTime, time);
+                    if (avg) {
+                        newUser.push([time, avg]);
+                        min = Math.min(avg, min);
+                        max = Math.max(avg, max);
+                        minTime = Math.min(minTime, time);
+                        maxTime = Math.max(maxTime, time);
+                    }
                 }
                 var ind = ++counter;
                 if (!colors[ind]) {
