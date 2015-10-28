@@ -21,6 +21,11 @@ var info = {
     statistics: {}
 };
 
+var clientDefs = {
+    timeout: 500,
+    numToSend: 5
+};
+
 var counter = 0;
 
 io.on('connection', function (socket) {
@@ -50,6 +55,8 @@ io.on('connection', function (socket) {
         var name = 'client_' + info.clients.length;
         info.clients.push(name);
         io.to('manager').emit('client', {clients: info.clients});
+
+        socket.emit('send def', {def: clientDefs});
 
         socket.on('client stats', function(data) {
             console.log('got stats');

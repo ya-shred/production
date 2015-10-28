@@ -25,6 +25,10 @@ server.on('connect', function () {
     console.log('server connected');
 });
 
+server.on('send def', function(data) {
+   def = data.def;
+});
+
 server.on('disconnect', function () {
     isServer = false;
     console.log('server disconnected');
@@ -33,13 +37,16 @@ server.on('disconnect', function () {
 server.on('message', function (data) {
     if (data.type === 'new_message') {
         var id = data.data.message.additional.message;
-        stats[id].push(+new Date());
-        newstats.push(stats[id]);
-        delete stats[id];
-        if (newstats.length === def.numToSend) {
-            console.log(newstats);
-            manager.emit('client stats', {stat: newstats});
-            newstats.length = 0;
+        // Если это наше сообщение, то ведем его учет
+        if (stats[id]) {
+            stats[id].push(+new Date());
+            newstats.push(stats[id]);
+            delete stats[id];
+            if (newstats.length === def.numToSend) {
+                console.log(newstats);
+                manager.emit('client stats', {stat: newstats});
+                newstats.length = 0;
+            }
         }
     } else {
         console.log(data);
