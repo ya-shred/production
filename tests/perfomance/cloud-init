@@ -36,4 +36,4 @@ write_files:
       npm i
       cd ./tests/perfomance/manager
       npm i
-      pm2 start ecosystem.json
+      env -i pm2 start ecosystem.json
