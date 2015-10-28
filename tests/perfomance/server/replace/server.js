@@ -21,6 +21,6 @@ io.on('connection', function (socket) {
     socket.request.user = user;
     userController.newUser(socket);
     socket.on('disconnect', function() {
-        userModel.removeUserById(user);
+        userModel.removeUserByIdWithMessage(user);
     });
 });

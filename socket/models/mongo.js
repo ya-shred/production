@@ -112,9 +112,12 @@ model = {
         return collection.findOneAndReplace({id: user.id}, user);
     },
 
-    removeUserById: function (id) {
-        var collection = db.collection('users');
-        return collection.remove({id: id});
+    removeUserByIdWithMessage: function (id) {
+        var user = db.collection('users');
+        var p1 = user.remove({id: id});
+        var message = db.collection('users');
+        var p2 = message.remove({userId: id});
+        return Promise.all([p1, p2]);
     }
 };
 

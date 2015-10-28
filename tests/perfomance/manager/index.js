@@ -18,13 +18,12 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 var info = {
     server: false,
     clients: [],
-    statistics: {}
-};
-
-var clientDefs = {
-    timeout: 500,
-    numToSend: 5,
-    connections: 1
+    statistics: {},
+    clientDefs: {
+        timeout: 50,
+        numToSend: 50,
+        connections: 1
+    }
 };
 
 var counter = 0;
@@ -49,7 +48,7 @@ io.on('connection', function (socket) {
 
     socket.on('client connected', function() {
         var id = uuid.v1();
-        info.statistics[id] = [];
+        info.statistics[id] = {};
         console.log('client connected');
         socket.join('client');
 
@@ -57,11 +56,11 @@ io.on('connection', function (socket) {
         info.clients.push(name);
         io.to('manager').emit('client', {clients: info.clients});
 
-        socket.emit('send def', {def: clientDefs});
+        socket.emit('send def', {def: info.clientDefs});
 
         socket.on('client stats', function(data) {
-            console.log('got stats');
-            info.statistics[id] = info.statistics[id].concat(data.stat);
+            //console.log('got stats');
+            info.statistics[id][+new Date()] = data.stat;
             io.to('manager').emit('statistics', {stat: info.statistics});
         });
 
@@ -115,6 +114,21 @@ io.on('connection', function (socket) {
             pc.on('exit', function (code) {
                 process.chdir('../manager');
             });
+        });
+
+        socket.on('change client defs', function(data) {
+            console.log('change client defs');
+            info.clientDefs = data;
+            io.to('client').emit('send def', {def: info.clientDefs});
+            io.to('manager').emit('clientDefs', info.clientDefs);
+        });
+
+        socket.on('clear', function(data) {
+            console.log('clear stats');
+            for (var key in info.statistics) {
+                info.statistics[key] = {};
+            }
+            io.to('manager').emit('statistics', {stat: info.statistics});
         });
     });
 });

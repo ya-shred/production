@@ -48,14 +48,14 @@ var model = {
 
         socket.on('message', function (message) {
 
-            console.log('got message!!!', message);
+            //console.log('got message!!!', message);
 
             // Процессим сообщение
             api.processMessage(user, message)
 
                 // Если обработка сообщения прошла успешна
                 .then(function (response) {
-                    console.log('sending', response);
+                    //console.log('sending', response);
                     // Отправляем необходимые данные в комнату
                     if (response.message) {
                         if (response.channel) {
