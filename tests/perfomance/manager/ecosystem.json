@@ -3,7 +3,7 @@
     "name"      : "SHRI",
     "script"    : "index.js",
     "env": {
-      "NODE_ENV": "TEST_MANAGER",
+      "NODE_ENV": "test_manager",
       "PORT": 6001
     }
   }]

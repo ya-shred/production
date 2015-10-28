@@ -19,6 +19,6 @@ heroku config:set NODE_ENV=TEST_SERVER MANAGER_URI=`dig +short myip.opendns.com 
 
 git push heroku master
 
-node server.js
+#node server.js
 
 echo server restarting finish
