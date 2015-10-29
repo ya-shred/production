@@ -33,9 +33,12 @@ var updateConnections = function () {
 
 var createRunner = function (id) {
     var server = SocketClient(config.get('serverUrl'));
+    var messageId = 0;
+    var isFirst = true;
 
     server.on('message', function (data) {
         if (data.type === 'new_message') {
+            isFirst = false;
             var id = data.data.message.additional.message;
             // Если это наше сообщение, то ведем его учет
             if (stats[id]) {
@@ -53,9 +56,7 @@ var createRunner = function (id) {
         }
     });
 
-    var messageId = 0;
-
-    var run = function (isFirst) {
+    var run = function () {
         if (id <= def.connections) {
             //console.log('try to send message', messageId);
             var message = clientId + '_' + id + '_' + messageId;
