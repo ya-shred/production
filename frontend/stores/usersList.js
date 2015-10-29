@@ -33,7 +33,8 @@ var setOffline = function (userId) {
 let searchUser = (text) => {
     if (text) {
         return users.filter((user) => {
-            let userDisplayName = user.displayName.toLowerCase();
+            let userDisplayName = user.displayName || user.userName;
+            userDisplayName = userDisplayName.toLowerCase();
             let test = text.toLowerCase();
             return userDisplayName.indexOf(test) > -1;
         });

@@ -24,12 +24,15 @@ let saveHistory = function(his) {
 let searchMessage = (text) => {
     if (text){
         return messages.filter((message) => {
-            let messageUser = UsersListStore.getUserById(message.userId);
-            let userDisplayName = messageUser.displayName.toLowerCase();
-            let messageText = message.message.toLowerCase();
-            let test = text.toLowerCase();
+            if (message.type === 'simple_message') {
+                let messageUser = UsersListStore.getUserById(message.userId);
+                let userDisplayName = messageUser.displayName || messageUser.userName;
+                userDisplayName = userDisplayName.toLowerCase();
+                let messageText = message.additional.message.toLowerCase();
+                let test = text.toLowerCase();
 
-            return userDisplayName.indexOf(test) > -1 || messageText.indexOf(test) > -1;
+                return userDisplayName.indexOf(test) > -1 || messageText.indexOf(test) > -1;
+            }
         });
     } else{
         return messages
