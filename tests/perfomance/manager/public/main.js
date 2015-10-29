@@ -87,6 +87,8 @@ $(function () {
                     color: colors[ind]
                 });
             }
+
+            max = Math.max(0, 1000); // Считаем максимальную задержку в 1с, обрезаем остальное
         }
 
         $.plot(ui.$plot, dataset, {
