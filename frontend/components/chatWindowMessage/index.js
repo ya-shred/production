@@ -2,6 +2,7 @@ import React from 'react';
 import Textarea from '../textarea';
 import SearchMessage from '../searchMessage';
 import MessageStore from '../../stores/message';
+import UserStore from '../../stores/user';
 import UsersListStore from '../../stores/usersList';
 import MessageList from "../messageList";
 var getMessages = () => {
@@ -22,6 +23,7 @@ export default class ChatWindowMessage extends React.Component {
 
     componentDidMount() {
         MessageStore.addChangeListener(this.onChange);
+        UserStore.addChangeListener(this.onChange);
     }
 
 
@@ -31,6 +33,7 @@ export default class ChatWindowMessage extends React.Component {
 
     componentWillUnmount() {
         MessageStore.removeChangeListener(this.onChange);
+        UserStore.removeChangeListener(this.onChange);
     }
 
 
