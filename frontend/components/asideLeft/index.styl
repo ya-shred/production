@@ -1,5 +1,20 @@
 .aside-left
+    display: block
     width: 250px
     height: 100%
     background: #fff
     box-sizing: border-box
+    -webkit-transition: all 0.1s ease-out 0.3s;
+    -moz-transition: all 0.1s ease-out 0.3s;
+    -o-transition: all 0.1s ease-out 0.3s;
+    transition: all 0.1s ease-out 0.3s;
+    @media (max-width: 768px)
+        width: 200px
+    @media handheld, only screen and (max-device-width:480px), all and (orientation:portrait)
+        width: 0
+
+.users-list
+    width: 100%
+    height: calc(100% - 60px)
+    overflow-y: scroll
+    overflow-x: hidden

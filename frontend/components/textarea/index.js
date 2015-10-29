@@ -35,7 +35,10 @@ export default class Textarea extends React.Component {
                 placeholder="Введите сообщение"
                 minRows={2}
                 onChange={this._onChange}
-                onKeyDown={this._onKeyDown}/>
+                onKeyDown={this._onKeyDown}
+                maxLength={5000}
+                autoFocus={focus}
+                />
         )
     }
 

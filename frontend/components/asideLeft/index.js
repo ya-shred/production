@@ -40,7 +40,9 @@ export default class AsideLeft extends React.Component {
         return (
             <aside className="aside-left">
                 <SearchUser />
-                <UserList users={this.state.users} />
+                <div className="users-list">
+                    <UserList users={this.state.users} />
+                </div>
             </aside>
         );
     }

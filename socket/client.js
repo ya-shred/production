@@ -16,6 +16,12 @@ var api = {
         if (!params.data.message) {
             return {error: 'Пустое сообщение недопустимо'};
         }
+        if (params.data.message.length > 5000) {
+            return {error: 'Слишком длинное сообщение',
+                    long: alert('Слишком длинное сообщение. Постарайтесь до 5000 символов.'),
+                    longLog: console.log('Слишком длинное сообщение. Постарайтесь до 5000 символов.')
+            };
+        }
         return {
             type: 'send_message',
             data: params.data
@@ -27,6 +33,12 @@ var api = {
         }
         if (!params.data.newText) {
             return {error: 'Пустое сообщение недопустимо'};
+        }
+        if (params.data.newText.length > 5000) {
+            return {error: 'Слишком длинное сообщение',
+                long: alert('Слишком длинное сообщение. Постарайтесь до 5000 символов.'),
+                longLog: console.log('Слишком длинное сообщение. Постарайтесь до 5000 символов.')
+            };
         }
         return {
             type: 'send_updated_message',
