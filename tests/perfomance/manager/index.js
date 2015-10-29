@@ -20,8 +20,8 @@ var info = {
     clients: [],
     statistics: {},
     clientDefs: {
-        timeout: 50,
-        numToSend: 50,
+        timeout: 500,
+        numToSend: 3,
         connections: 1
     }
 };
