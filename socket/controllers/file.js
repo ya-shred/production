@@ -21,7 +21,7 @@ var model = {
                     .addInput(files.audio.path)
                     .addInput(files.video.path)
                     .on('error', function(err) {
-                        console.log('error2', err);
+                        console.log('error2', arguments);
                         reject(err);
                     })
                     .on('end', function() {

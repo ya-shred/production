@@ -162,11 +162,15 @@ const store = assign({}, BaseStore, {
                 store.emitChange();
                 AjaxAPI.saveFile(sendData)
                     .then((url) => {
-                        console.log('file_url');
-                        action.data.additional = { url: url };
-                        action.data.type = 'simple_file_saved';
-                        SocketAPI.saveMiddleMessage(action.data);
-                        store.emitChange();
+                        if (url) {
+                            action.data.additional = {url: url};
+                            action.data.type = 'simple_file_saved';
+                            SocketAPI.saveMiddleMessage(action.data);
+                            store.emitChange();
+                        } else {
+                            action.data.additional.message = 'Ошибка при сохранении файла';
+                            store.emitChange();
+                        }
                     });
                 break;
         }
