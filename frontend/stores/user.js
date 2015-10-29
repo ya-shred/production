@@ -1,8 +1,8 @@
-import Actions from '../constants/user.js';
+import Actions from '../constants/user';
+import ActionsMessage from '../constants/message';
 import AppDispatcher from '../dispatchers/dispatcher';
 import assign  from 'react/lib/Object.assign';
 import BaseStore from './base';
-import UsersListStore from './usersList';
 import SocketAPI from '../utils/socket';
 
 let userInfo = {};
@@ -35,6 +35,10 @@ const store = assign({}, BaseStore, {
                 break;
             case Actions.NEW_PAYMENT:
                 newPayment(action.data);
+                store.emitChange();
+                break;
+            case ActionsMessage.SAVE_FILE_MESSAGE:
+                userInfo.messageUsed++;
                 store.emitChange();
                 break;
         }
