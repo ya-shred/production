@@ -52,8 +52,8 @@ export default class EditArea extends React.Component {
                 onChange={this._onChange}
                 onKeyDown={this._onKeyDown}
                 onBlur={this._close}
-                autoFocus={focus}/>
-                maxLength={5000}
+                autoFocus={focus}
+                maxLength={5000}/>
 
         );
     }
