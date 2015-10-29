@@ -19,8 +19,8 @@
 - npm test
 - для дебага тестов. Нужно поменять в karma.conf.js параметр singleRun на false
 
-### Если хотите настроить прод сервер на digitalocean
-####Развертка прод сервера
+### Развертывание прод сервера
+####Развертка прод сервера на digitalocean
 - сервер не ниже 1Gb ram
 - Distributions: ubuntu 14.04
 - Applications: node v4.1.0 on 14.04

@@ -114,6 +114,13 @@ var model = {
      */
     updateUser: function (user) {
         return mongo.updateUser(user);
+    },
+    /**
+     * Удаляем пользователя из базы по ID и все его сообщения
+     * @param {User} user
+     */
+    removeUserByIdWithMessage: function(user) {
+        return mongo.removeUserByIdWithMessage(user.id);
     }
 };
 

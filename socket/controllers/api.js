@@ -75,18 +75,16 @@ var model = {
             message.data.datetime = +new Date();
             message.data.userId = user.id;
             message.data.id = user.id + +new Date();
-            return mongo.insertMessage(message.data)
-                .then(result => {
-                    return {
-                        channel: message.data.channel,
-                        message: {
-                            type: 'new_message',
-                            data: {
-                                message: result
-                            }
-                        }
-                    };
-                });
+            mongo.insertMessage(message.data);
+            return {
+                channel: message.data.channel,
+                message: {
+                    type: 'new_message',
+                    data: {
+                        message: message.data
+                    }
+                }
+            }
         },
         onSendUpdatedMessage: function (user, message) {
             if (user.id === message.data.userId) {

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Manager - тестирование производительности</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="vendors/jquery.flot.min.js"></script>
+    <script src="vendors/jquery.flot.time.js"></script>
+    <script src="vendors/jquery.flot.axislabels.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
+</head>
+<body>
+<button class="clear-all">Очистить статистику</button>
+<div class="server">
+    Статус сервера:
+    <div class="server__status"></div>
+    <button class="server__restart">Перезагрузить сервер</button>
+</div>
+<div class="client">
+    Клиенты:
+    <div class="client__list"></div>
+    <button class="client__add">Добавить клиент</button>
+</div>
+<div class="stat">
+    Статистика:
+    <div class="stat__list"></div>
+</div>
+<div id="flot-placeholder" style="width:600px;height:300px"></div>
+<div class="controls">
+    <div>
+        Таймаут отправки сообщения: <input type="text" class="controls__timeout" />
+    </div>
+    <div>
+        Количество сообщений для отчета: <input type="text" class="controls__number" />
+    </div>
+    <div>
+        Количество коннекшенов на клиента: <input type="text" class="controls__connections" />
+    </div>
+    <button class="controls__button">Обновить</button>
+</div>
+</body>
+</html>
