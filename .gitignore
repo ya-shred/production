@@ -4,5 +4,3 @@ node_modules
 app/frontendPublic
 .DS_Store
 app/loginPublic/index.css
-app/uploads
-tmp
