@@ -1,8 +1,13 @@
 .chat-window
-    width: calc(100vw - 301px);
+    width: calc(100vw - 301px)
     height: 100%
     border-left: 1px solid #E6E9F0
     border-right: 1px solid #E6E9F0
+
+    @media (max-width: 768px)
+        width: calc(100vw - 250px)
+    @media handheld, only screen and (max-device-width:480px), all and (orientation:portrait)
+        width: calc(100vw - 50px)
 
     &__content
         height: calc(100% - 110px)
