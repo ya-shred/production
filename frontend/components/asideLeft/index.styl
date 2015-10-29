@@ -8,9 +8,10 @@
     -moz-transition: all 0.1s ease-out 0.3s;
     -o-transition: all 0.1s ease-out 0.3s;
     transition: all 0.1s ease-out 0.3s;
+    @media (max-width: 768px)
+        width: 200px
     @media handheld, only screen and (max-device-width:480px), all and (orientation:portrait)
-      /*display: none*/
-      width: 0
+        width: 0
 
 .users-list
     width: 100%
